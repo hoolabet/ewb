@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ewb.mapper.EWBMapper">
+	<select id="ewbLogin" resultType="org.ewb.model.MemberVO">
+		SELECT * FROM ewb_member WHERE id=#{id} and pw=#{pw}
+	</select>
+	
+	<insert id="ewbSignUp">
+		INSERT INTO ewb_member(id,pw,name)
+		VALUES(#{id},#{pw},#{name})
+	</insert>
+</mapper>

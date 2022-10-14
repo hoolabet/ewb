@@ -1,0 +1,64 @@
+@charset "UTF-8";
+body{
+	text-align: center;
+	margin-top: 200px;
+}
+
+#container{
+	width: 250px;
+	height: 250px;
+	border: 1px solid black;
+	border-radius: 50px;
+	display:inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+#container_title{
+	font-size: 30px;
+}
+
+#begin{
+	font-size: 30px;
+	width: 130px;
+	height: 50px;
+	border: 1px solid black;
+	cursor: pointer;
+	color: black;
+}
+
+#begin:hover{
+	background-color: black;
+	color: white;
+}
+
+#login {
+	display:none;
+	padding: 10px;
+}
+
+.login_input_text{
+	
+}
+
+#login_btn_td, #signup_btn_td{
+	text-align: center;
+	cursor: pointer;
+}
+
+.login_btn, #signup_btn {
+	border: 1px solid black;
+	margin: 10px;
+	padding: 3px;
+}
+
+.login_btn:hover, #signup_btn:hover {
+	background-color: black;
+	color: white;
+}
+
+#signup {
+	display:none;
+}
+
