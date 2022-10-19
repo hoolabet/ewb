@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="../resources/css/home.css">
 </head>
 <body>
+	<input type="hidden" value="${ewbUser.id}" id="id">
 	<div id="container">
 		<div id="container_title">EWB</div>
 		<div id="begin">START</div>

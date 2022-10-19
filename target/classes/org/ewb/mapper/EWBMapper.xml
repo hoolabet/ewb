@@ -12,4 +12,66 @@
 		INSERT INTO ewb_member(id,pw,name)
 		VALUES(#{id},#{pw},#{name})
 	</insert>
+	
+	<insert id="saveContent">
+		INSERT INTO 
+		${type}
+		<choose>
+		<when test="type == 'home_page'">
+		(id,url,content,opt)
+		</when>
+		<otherwise>
+		(url,content)
+		</otherwise>
+		</choose>
+		VALUES
+		<choose>
+		<when test="type == 'home_page'">
+		(#{id},#{url},#{content},#{opt})
+		</when>
+		<otherwise>
+		(#{url},#{content})
+		</otherwise>
+		</choose>
+	</insert>
+	
+	<update id="modifyContent">
+		UPDATE ${type}
+		SET	content = #{content}
+		WHERE url = #{url}
+	</update>
+	
+	<delete id="deleteContent">
+		DELETE FROM ${type} WHERE url = #{url}
+	</delete>
+	
+	<select id="loadContent" resultType="org.ewb.model.ContentVO">
+		SELECT * FROM ${type} WHERE url = #{url}
+	</select>
+	
+	<select id="getPage" resultType="org.ewb.model.ContentVO">
+		SELECT * FROM home_page WHERE id=#{id} ORDER BY create_date desc
+	</select>
+	
+	<insert id="createMemTable" parameterType="java.lang.String">
+		${value}
+	</insert>
+	
+	<insert id="createFirstAccount" >
+		INSERT INTO member_${id} (id,pw)
+		VALUES (#{id},#{pw})
+	</insert>
+	
+	<update id="dropTable" parameterType="java.lang.String">
+		drop table IF EXISTS ${value}
+	</update>
+	
+	<select id="dupCheck" resultType="org.ewb.model.MemberVO">
+		SELECT * FROM member_${sign_date} WHERE id=#{id}
+	</select>
+	
+	<insert id="signUp" >
+		INSERT INTO member_${url} (id,pw,name,phone,email,birth)
+		VALUES (#{id},#{pw},#{name},#{phone},#{email},#{birth})
+	</insert>
 </mapper>

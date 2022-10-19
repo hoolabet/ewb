@@ -4,8 +4,30 @@ public class MemberVO {
 	private String id;
 	private String pw;
 	private String name;
+	private String email;
+	private String phone;
+	private String birth;
 	private String sign_date;
 	private String url;
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getBirth() {
+		return birth;
+	}
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
 	public String getId() {
 		return id;
 	}
@@ -38,8 +60,8 @@ public class MemberVO {
 	}
 	@Override
 	public String toString() {
-		return "MemberVO [id=" + id + ", pw=" + pw + ", name=" + name + ", sign_date=" + sign_date + ", url=" + url
-				+ "]";
+		return "MemberVO [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", phone=" + phone
+				+ ", birth=" + birth + ", sign_date=" + sign_date + ", url=" + url + "]";
 	}
 	
 	

@@ -1,10 +1,14 @@
 /**
  * 
  */
-
+const id = $("#id").val();
 $("#begin").on("click", function() {
-	$(this).css("display","none");
-	$("#login").css("display","flex");
+	if(id != ""){
+		location.href = "/main";
+	}else{
+		$(this).css("display","none");
+		$("#login").css("display","flex");
+	}
 })
 
 $("#login_btn").on("click",function(){

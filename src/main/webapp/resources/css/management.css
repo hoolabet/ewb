@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+#to_main{
+	position:absolute;
+	width: 80px;
+	height: 40px;
+	top: 20px;
+	right: 20px;
+	border: 1px solid black;
+	cursor:pointer;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#to_main:hover{
+	background-color: black;
+	color: white;
+}
+
+#management_entry{
+	margin-top: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#status{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 600px;
+	height: 400px;
+	border: 1px solid black;
+	border-radius: 30px;
+	position: relative;
+}
+
+.status{
+	border: 1px solid black;
+	width: 100px;
+	height: 60px;
+	border-radius: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 30px;
+	cursor: pointer;
+}
+
+.status:hover{
+	background-color: black;
+	color: white;
+}
+
+#delete{
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+}
