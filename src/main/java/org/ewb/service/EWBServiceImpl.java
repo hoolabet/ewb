@@ -69,4 +69,5 @@ public class EWBServiceImpl implements EWBService{
 	public ArrayList<ProductVO> productList(ProductVO pvo){
 		return em.productList(pvo);
 	}
+	
 }

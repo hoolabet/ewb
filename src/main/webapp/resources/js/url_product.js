@@ -136,13 +136,12 @@ function displayData(currentPage, dataPerPage) {
         i++
     ) {
         chartHtml +=
-            "<tr><td>" +
-            dataList[i].pname +
-            "</td><td>" +
-            dataList[i].content +
-            "</td><td>" +
-            dataList[i].price +
-            "</td></tr>";
+        `<tr>
+        	<td>
+        		<a href="detail?pno=${dataList[i].pno}">${dataList[i].pname}</a>
+        	</td>
+        	<td>${dataList[i].price}</td>
+        </tr>`;
     } //dataList는 임의의 데이터임.. 각 소스에 맞게 변수를 넣어주면 됨...
     $("#dataTableBody").html(chartHtml);
 }
@@ -153,3 +152,7 @@ $("#dataPerPage").change(function () {
     paging(totalData, dataPerPage, pageCount, globalCurrentPage);
     displayData(globalCurrentPage, dataPerPage);
 });
+
+$("#add_product").on("click", function() {
+	
+})

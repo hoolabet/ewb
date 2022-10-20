@@ -404,6 +404,9 @@ public class EWBController {
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_content'>\r\n"+
 							"			<div>\r\n"+
+							"				<c:if test='${userInfo.admin eq true}'>\r\n"+
+							"				<div id='add_product'>상품 추가</div>\r\n"+
+							"				</c:if>\r\n"+
 							"				<select id=\"dataPerPage\">\r\n" + 
 							"	                 <option value=\"10\">10개씩보기</option>\r\n" + 
 							"		   	         <option value=\"15\">15개씩보기</option>\r\n" + 
@@ -639,10 +642,13 @@ public class EWBController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> login(MemberVO mvo, HttpSession session) {
-		String url = (String)session.getAttribute("url");
-		mvo.setSign_date(url);
 		session.setAttribute("userInfo", es.login(mvo));
 		return new ResponseEntity<>(es.login(mvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public void logout(HttpSession session) {
+		session.setAttribute("userInfo", "");
 	}
 	
 	@RequestMapping(value = "/productlist", method = RequestMethod.GET)

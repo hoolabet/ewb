@@ -483,6 +483,15 @@ function afterLoadCreateLogin(){
 			$(this).attr("contenteditable",false);
 		}
 	})
+	
+	$(".login_btn").on("click", function() {
+		const target = $(this).data("target");
+		const id = $(`#login_id_${target}`).val();
+		const pw = $(`#login_pw_${target}`).val();
+		$.getJSON("/login",{id,pw,url},function(res){
+			alert(res.id);
+		})
+	})
 }
 
 $("#create_login").on("click", function(){
@@ -498,7 +507,7 @@ $("#create_login").on("click", function(){
 		</tr>
 		<tr>
 		<td><span class="modi_span" id="modi_pw_${target}">PW</span></td>
-		<td><input type="text" id="login_pw_${target}"></td>
+		<td><input type="password" id="login_pw_${target}"></td>
 		</tr>
 		<tr>
 		<td colspan=2>
