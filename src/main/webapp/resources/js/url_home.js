@@ -2,6 +2,24 @@
  * 
  */
 const url = $("#url").val();
+
+const reg = new RegExp("(.*?)\.(exe|zip|alz)$");
+const maxSize = 5242880;
+
+function checkExtension(fileName, size){
+	if(size > maxSize){
+		alert("파일 용량 초과");
+		return false;
+	}
+	
+	if(reg.test(fileName)){
+		alert("해당 확장자 파일은 업로드 할 수 없음");
+		return false;
+	}
+	
+	return true;
+}
+
 $("#save").on("click", function(){
 	$("#header_style").val($("#header").attr("style"));
 	$("#footer_style").val($("#footer").attr("style"));
@@ -54,6 +72,7 @@ $("#load").on("click", function(){
 		$(".ul_div").each(function(i,e){
 			dragElement(e);
 		})
+		afterLoadCreateEditable();
 		$(".editable_div").each(function(i,e){
 			dragElement(e);
 		})
@@ -149,6 +168,7 @@ $(document).on("contextmenu", function(e){
 			$("#center").css("display","flex");
 			$("#inner_margin").css("display","none");
 			$("#place").css("display","flex");
+			$("#position").css("display","none");
 		}else if(e.target.className == "ul_div"){
 			$("#create_home").css("display","none");
 			$("#create_element").css("display","none");
@@ -157,6 +177,7 @@ $(document).on("contextmenu", function(e){
 			$("#margin").css("display","none");
 			$("#center").css("display","flex");
 			$("#place").css("display","flex");
+			$("#position").css("display","none");
 		}else if(e.target.className.includes("ul_li")){
 			$("#create_home").css("display","none");
 			$("#create_element").css("display","none");
@@ -164,6 +185,7 @@ $(document).on("contextmenu", function(e){
 			$("#direction").css("display","none");
 			$("#inner_margin").css("display","none");
 			$("#place").css("display","none");
+			$("#position").css("display","none");
 		}else if(e.target.id == "header"){
 			$("#create_home").css("display","block");
 			$("#create_element").css("display","flex");
@@ -172,6 +194,16 @@ $(document).on("contextmenu", function(e){
 			$("#center").css("display","none");
 			$("#inner_margin").css("display","none");
 			$("#place").css("display","none");
+			$("#position").css("display","flex");
+		}else if(e.target.id == "footer"){
+			$("#create_home").css("display","none");
+			$("#create_element").css("display","flex");
+			$("#direction").css("display","none");
+			$("#margin").css("display","flex");
+			$("#center").css("display","none");
+			$("#inner_margin").css("display","none");
+			$("#place").css("display","none");
+			$("#position").css("display","flex");
 		}else{
 			$("#create_home").css("display","none");
 			$("#create_element").css("display","flex");
@@ -180,6 +212,7 @@ $(document).on("contextmenu", function(e){
 			$("#center").css("display","none");
 			$("#inner_margin").css("display","none");
 			$("#place").css("display","none");
+			$("#position").css("display","none");
 		}
 	}
 })
@@ -193,6 +226,7 @@ function menuClose(){
 	$("#size_menu").css("display","none");
 	$("#place_menu").css("display","none");
 	$("#font_size_menu").css("display","none");
+	$("#position_menu").css("display","none");
 }
 $("#body_controller_btn").on("click", function(){
 	menuClose();
@@ -402,14 +436,19 @@ function afterLoadRemoveElement(){
 function afterLoadCreateHome(){
 	$(".home_span").on("click", function(){
 		const target = $(this).data("target");
-		console.log(target)
-		if($(`#home_span_${target}_modi`).val() == ""){
+		if($(`#home_span_${target}_modi`).html().replace(" ","") == ""){
 			alert("1 자 이상 적으세요.");
 			return false;
 		}
-		$(`#home_span_${target}`).html($(`#home_span_${target}_modi`).val());
+		$(`#home_span_${target}`).html($(`#home_span_${target}_modi`).html());
 		$(`#home_span_${target}`).toggle();
 		$(`#home_span_${target}_modi`).toggle();
+		$(`#img_home_${target}`).toggle();
+	})
+	
+	$(".img_home").on("click", function() {
+		const target = $(this).data("target");
+		$("#upload_input").data("target",`home_span_${target}_modi`).click();
 	})
 }
 
@@ -420,8 +459,9 @@ $("#create_home").on("click", function(){
 		<div class="move_divs_handler buttons" id="home_div_handler_${target}">✔</div>
 		<div id="home_a_${target}" class="home_a">
 		<a href="#"><span id="home_span_${target}">HOME</span></a>
-		<input value="HOME" size="8" type="text" id="home_span_${target}_modi" style="display:none;">
-		<span class="home_span buttons" data-target="${target}">🛠</span>
+		<div contenteditable="true" id="home_span_${target}_modi" style="display:none;background-color:white;border:1px solid black">HOME</div>
+		<div id="img_home_${target}" class="img_home" data-target="${target}" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
+		<div class="home_span buttons" data-target="${target}" style="position:absolute;right:30px;top:10px;">🛠</div>
 		</div>
 		<div class="remo_element buttons">✖</div>
 		</div>
@@ -487,7 +527,8 @@ function afterLoadCreateUl(){
 			<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}" data-target="${target}" data-ndnow="${ndnow}">
 			<a href="#" id="li_a_${target}_${ndnow}"><span id="li_span_${target}_${ndnow}">목록</span></a>
 			<input value="#" size="4" type="text" id="li_a_${target}_${ndnow}_modi" style="display:none;">
-			<input value="목록" size="4" type="text" id="li_span_${target}_${ndnow}_modi" style="display:none;">
+			<div contenteditable="true" id="li_span_${target}_${ndnow}_modi" style="display:none;background-color:white;border:1px solid black;">목록</div>
+			<div id="img_li_${target}_${ndnow}" class="img_li" data-target="${target}" data-ndnow="${ndnow}" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
 			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}" style="cursor:pointer">🛠</span>
 			<span class="remo_li buttons" style="cursor:pointer">✖</span>
 			</li>
@@ -502,21 +543,27 @@ function afterLoadCreateLi(){
 		const target = $(this).data("target");
 		const ndnow = $(this).data("ndnow");
 
-		if($(`#li_span_${target}_${ndnow}_modi`).val() == ""
+		if($(`#li_span_${target}_${ndnow}_modi`).html().replace(" ","") == ""
 			|| $(`#li_a_${target}_${ndnow}_modi`).val() == ""
 		){
 			alert("1 자 이상 적으세요.");
 			return false;
 		}
 		$(`#li_a_${target}_${ndnow}`).attr("href",$(`#li_a_${target}_${ndnow}_modi`).val());
-		$(`#li_span_${target}_${ndnow}`).html($(`#li_span_${target}_${ndnow}_modi`).val());
+		$(`#li_span_${target}_${ndnow}`).html($(`#li_span_${target}_${ndnow}_modi`).html());
 
 		$(`#li_span_${target}_${ndnow}`).toggle();
 		$(`#li_span_${target}_${ndnow}_modi`).toggle();
 		$(`#li_a_${target}_${ndnow}_modi`).toggle();
+		$(`#img_li_${target}_${ndnow}`).toggle();
 	})
 	$(".remo_li").on("click", function(){
 		$(this).parent().remove();
+	})
+	$(".img_li").on("click", function() {
+		const target = $(this).data("target");
+		const ndnow = $(this).data("ndnow");
+		$("#upload_input").data("target",`li_span_${target}_${ndnow}_modi`).click();
 	})
 }
 
@@ -576,6 +623,19 @@ $("#inner_margin_apply").on("click", function(){
 	;
 })
 
+$("#position").on("click", function(e){
+	menuClose();
+	$("#position_menu").css("display","flex").css("top",e.clientY).css("left",e.clientX);
+})
+
+function afterLoadCreateEditable() {
+	$(".file_upload_btn").off("click").on("click", function() {
+		const target = $(this).data("target");
+		const dnow = $(this).data("dnow");
+		$("#upload_input").data("target",`editable_${target}_${dnow}`).click();
+	})
+}
+
 $("#create_editable").on("click", function(){
 	const target = $("#controller").data("target");
 	const dnow = Date.now();
@@ -583,10 +643,77 @@ $("#create_editable").on("click", function(){
 		<div id="editable_div_${target}_${dnow}" class="editable_div" data-target="${target}" data-dnow="${dnow}">
 		<div class="move_divs_handler buttons" id="editable_div_handler_${target}_${dnow}">✔</div>
 		<div class="remo_element buttons">✖</div>
-		<div contenteditable="true"></div>
+		<div contenteditable="true" id="editable_${target}_${dnow}"></div>
+		<div class="file_upload_btn" data-target="${target}" data-dnow="${dnow}"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
 		</div>
 		`;
 	$(`#${target}`).append(editable);
 	afterLoadRemoveElement();
+	afterLoadCreateEditable();
 	dragElement($(`#editable_div_${target}_${dnow}`)[0]);
+})
+
+$("#upload_input").on("change",function(){
+	const formData = new FormData();
+	const inputFile = $("#upload_input");
+	const files = inputFile[0].files;
+	
+	for(j = 0; j < files.length; j++){
+		console.log(files[j]);
+		if(!checkExtension(files[j].fileName, files[j].size)){
+			return false;
+		} 
+		formData.append("uploadFile", files[j]);
+	}
+	$.ajax({
+		type: "post",
+		url: "/uploadAjaxAction",
+		data: formData,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+		success: function(r){
+			let files = "";
+			r.forEach((u)=>{
+				const fullPath = encodeURIComponent(`${u.path}/${u.uuid}_${u.fileName}`);
+				if(u.checkI){
+					const width = prompt(u.fileName+" 가로 길이 (px)");
+					const height = prompt(u.fileName+" 세로 길이 (px)");
+					if(isNaN(width) || isNaN(height) || width < 0 || height < 0){
+						alert("0 보다 큰 숫자만 입력하세요.");
+						return false;
+					}else if(width == 0 && height == 0){
+						files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;"><br>`;
+					}else{
+						files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;width:${width}px;height:${height}px"><br>`;
+					}
+				}else{
+					files += `<a href="/download?fileName=${fullPath}">${u.fileName}</a><br>`;
+				}
+			})
+			$(`#${$("#upload_input").data("target")}`).html($(`#${$("#upload_input").data("target")}`).html() + files);
+		}
+	})
+})
+
+$(".position").on("click", function() {
+	const target = $("#controller").data("target");
+	const pos = $(this).data("position");
+	if(pos != "default"){
+		const y = prompt("y 좌표");
+		const x = prompt("x 좌표");
+		if(isNaN(y) || isNaN(x)){
+			alert("숫자만 입력가능합니다.");
+			return false;
+		}
+		if(pos == "sticky"){
+			$(`#${target}`).css("position","sticky").css("top",y+"px").css("left",x+"px").css("width","100%").css("z-index","90");
+		}else{
+			const width = $(`#${target}`).css("width");
+			const marL = $("body").css("margin-left").replace("px","");
+			$(`#${target}`).css("position","fixed").css("top",y+"px").css("left",x+marL+"px").css("width",width).css("z-index","90");
+		}
+	}else{
+		$(`#${target}`).css("position","relative").css("top","0px").css("left","0px").css("width","100%").css("z-index","1");
+	}
 })

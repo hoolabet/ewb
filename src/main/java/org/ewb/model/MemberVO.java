@@ -9,7 +9,14 @@ public class MemberVO {
 	private String birth;
 	private String sign_date;
 	private String url;
+	private boolean admin;
 	
+	public boolean isAdmin() {
+		return admin;
+	}
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -61,7 +68,7 @@ public class MemberVO {
 	@Override
 	public String toString() {
 		return "MemberVO [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", phone=" + phone
-				+ ", birth=" + birth + ", sign_date=" + sign_date + ", url=" + url + "]";
+				+ ", birth=" + birth + ", sign_date=" + sign_date + ", url=" + url + ", admin=" + admin + "]";
 	}
 	
 	

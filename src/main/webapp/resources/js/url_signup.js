@@ -3,8 +3,6 @@
  */
 const url = $("#url").val();
 function getHF() {
-//    $("#header").html(localStorage.getItem("header"));
-//    $("#footer").html(localStorage.getItem("footer"));
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
 		$("#header").html(res.content);
 		$("#header").attr("style", $("#header_style").val());
@@ -41,12 +39,45 @@ getHF();
 
 $("#load").on("click", function () {
     getHF();
-    alert("불러오기를 실행했습니다.");
+    $.getJSON("/loadcontent",{type:"signup_page",url},function(res){
+    	$("#signup_content").html(res.content);
+    	alert("불러오기를 실행했습니다.");
+    	$(".check_span").html("");
+		$(".modi_input").val("");
+		$(document).off("contextmenu").on("contextmenu", function (e) {
+		    e.preventDefault();
+		    contextmenuFunc(e);
+		})
+		loadFunc();
+		$("#sign_img").toggle();
+		$(".tr_remove").toggle();
+    })
 })
 
-$(document).on("contextmenu", function (e) {
+$("#save").on("click", function() {
+	$("#sign_img").toggle();
+	$(".tr_remove").toggle();
+	$.ajax({
+		type:"put",
+		url:"/modifycontent",
+		data:JSON.stringify({url,content:$("#signup_content").html(),type:"signup_page"}),
+		contentType: "application/json; charset=utf-8",
+		success: function() {
+			alert("저장되었습니다.");
+			$(document).off("contextmenu");
+			$(".modi_span").off("click");
+		}
+	})
+	
+})
+
+$(document).off("contextmenu").on("contextmenu", function (e) {
     e.preventDefault();
-    if (e.target.className == "modi_input") {
+    contextmenuFunc(e);
+})
+
+function contextmenuFunc(e) {
+	if (e.target.className == "modi_input") {
         $("#modify_input").data("id", e.target.id);
         $("#modify_input").css("top", e.pageY).css("left", e.pageX).css("display", "flex");
         $(".reg").css("top", "-22px").css("left", "100px");
@@ -66,7 +97,7 @@ $(document).on("contextmenu", function (e) {
             $("#reg_spe").css("background-color", "#ebebeb");
         }
     }
-})
+}
 
 $("#sign_img").on("click", function (e) {
     $("#sign_element").css("left", e.pageX).css("top", e.pageY).toggle();
@@ -290,6 +321,10 @@ $("#sign_submit").on("click", function (e) {
 })
 
  $("#dup_check").on("click", function () {
+	 if($(".id").css("color") != "rgb(0, 0, 255)"){
+		 alert("사용가능한 아이디로 작성하세요.");
+		 return false;
+	 }
      $.getJSON("/dupcheck", { id: $("#id").val() }, function () {
          alert("중복된 id 입니다.");
          $("#id").attr("data-able", "f");
@@ -361,4 +396,86 @@ function createRegExp(e) {
             $(e.target).attr("data-able", "f");
         }
     }
+}
+
+function loadFunc() {
+
+	
+	$(".modi_input").off("keyup").on("keyup",function(e){
+		createRegExp(e);
+	})
+
+	$("#sign_img").off("click").on("click", function(e) {
+		$("#sign_element").css("left",e.pageX).css("top",e.pageY).toggle();
+	})
+
+	$(".tr_remove").off("click").on("click", function() {
+		$(this).parent().parent().remove();
+		$(`#${$(this).data("id")}`).toggle();
+	})
+
+
+	$(".modi_span").off("click").on("click", function(e) {
+		$("#modify_span").css("left",e.pageX).css("top",e.pageY).toggle();
+		console.log($(this).prop("id"));
+		$("#ss_modify").data("id",$(this).prop("id"));
+	})
+
+	$("#ss_modify").off("click").on("click",function(){
+		const prom = prompt("변경할 내용을 적으세요.");
+		$(`#${$(this).data("id")}`).html(prom);
+	})
+
+	$("#sign_submit").off("click").on("click", function(e) {
+		e.preventDefault();
+		let unable = false;
+		$("input[data-able]").each(function(i,a) {
+			if($(a).attr("data-able") == "f"){
+				alert("필수 입력정보를 입력하세요.");
+				unable = true;
+				return false;
+			}
+		})
+
+		if(unable){
+			return false;
+		}
+		const id = $("#id").val();
+		const password = $("#pw").val();
+		const name = $("#name").val();
+		const email = $("#mail").val();
+		const phone = $("#phone").val();
+		const birth = $("#birth").val();
+
+		const sData = {
+				id,password,name,email,phone,birth
+		};
+
+		$.ajax({
+			type:"post",
+			url:"/signup",
+			data:JSON.stringify(sData),
+			contentType: "application/json; charset=utf-8",
+			success:function(){
+				alert("가입되었습니다.");
+				location.href = `/${tv}/home`;
+			},
+			error:function(){
+				alert("가입 실패");
+			}
+		})
+	})
+
+	$("#dup_check").off("click").on("click", function() {
+		$.getJSON("/dupcheck",{id:$("#id").val()},function(){
+			alert("중복된 id 입니다.");
+			$("#id").attr("data-able","f");
+			$(".id").html("중복된 id 입니다.").css("color","red");
+		})
+		.fail(function() {
+			alert("사용가능한 id 입니다.");
+			$("#id").attr("data-able","t");
+			$(".id").html("사용가능한 id 입니다.").css("color","green");
+		})
+	})
 }

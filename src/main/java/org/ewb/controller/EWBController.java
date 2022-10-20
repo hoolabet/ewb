@@ -3,11 +3,13 @@ package org.ewb.controller;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
 import org.ewb.model.ContentVO;
 import org.ewb.model.MemberVO;
+import org.ewb.model.ProductVO;
 import org.ewb.service.EWBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -114,6 +116,7 @@ public class EWBController {
 						"        <div class=\"controllers\" id=\"create_element\">요소 추가</div>\r\n" + 
 						"        <div class=\"controllers\" id=\"direction\">방향 정렬</div>\r\n" + 
 						"        <div class=\"controllers\" id=\"inner_margin\">내부 공백</div>\r\n" + 
+						"        <div class=\"controllers\" id=\"position\">포지션 설정</div>\r\n" + 
 						"        <div class=\"close_btn\">✖</div>\r\n" + 
 						"    </div>\r\n" + 
 						"    <div id=\"color_picker\" class=\"menus\">\r\n" + 
@@ -207,6 +210,17 @@ public class EWBController {
 						"        <div id=\"inner_margin_apply\" class=\"change_btn\">적용</div>\r\n" + 
 						"        <div class=\"close_btn\">✖</div>\r\n" + 
 						"    </div>\r\n" + 
+						"    <div id=\"position_menu\" class=\"menus\">\r\n" + 
+						"        <div class='position' data-position='default'>\r\n" + 
+						"            Default\r\n" + 
+						"        </div>\r\n" + 
+						"        <div class='position' data-position='fixed'>\r\n" + 
+						"            Fixed\r\n" + 
+						"        </div>\r\n" + 
+						"        <div class='position' data-position='sticky'>\r\n" + 
+						"            Sticky\r\n" + 
+						"        </div>\r\n" + 
+						"    </div>\r\n" + 
 						"    <div id=\"body_controller_btn\"></div>\r\n" + 
 						"    <div id=\"body_controller\">\r\n" + 
 						"        <div id=\"margin_controller_btn\" class=\"controllers\">전체 영역 공백</div>\r\n" + 
@@ -268,7 +282,7 @@ public class EWBController {
 						"        <div id=\"entry_input_apply\" class=\"change_btn\">적용</div>\r\n" + 
 						"        <div class=\"close_btn\">✖</div>\r\n" + 
 						"    </div>\r\n" + 
-						"    \r\n" + 
+						"    <input type='file' id='upload_input' style='display:none'>\r\n" + 
 						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 						"    <script src=\"../resources/js/url_home.js\"></script>\r\n" + 
@@ -379,13 +393,60 @@ public class EWBController {
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
 							"    <title>"+url+" product</title>\r\n" + 
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_signup.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_product.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
 							"</head>\r\n" + 
 							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
+							"<input type='hidden' value='${url}' id='url'>"+
+							"	<div id='product_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='product_content'>\r\n"+
+							"			<div>\r\n"+
+							"				<select id=\"dataPerPage\">\r\n" + 
+							"	                 <option value=\"10\">10개씩보기</option>\r\n" + 
+							"		   	         <option value=\"15\">15개씩보기</option>\r\n" + 
+							"       		     <option value=\"20\">20개씩보기</option>\r\n" + 
+							"        		</select>\r\n" + 
+							"   	     	<table id=\"dataTableBody\">\r\n" + 
+							"    			\r\n" + 
+							"        		</table>\r\n" + 
+							"        		<ul id=\"pagingul\">\r\n" + 
+							"        		</ul>\r\n"+
+							"			</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_product.js\"></script>"+
 							"</body>"+
 							"</html>");
 					bw.close();
+					String create_product_table = "create table product_"+url+" ("
+						+ "pno int primary key, "
+						+ "pname varchar(100) not null,"
+						+ "price int not null,"
+						+ "content longtext,"
+						+ "quantity int default 1,"
+						+ "s_quantity int default 0,"
+						+ "reg_date datetime default now(),"
+						+ "type int"
+						+ ")";
+					es.createTable(create_product_table);
+					
+					String create_product_type_table = "create table product_type_"+url+" ("
+						+ "type int primary key,"
+						+ "tname varchar(100) not null"
+						+ ")";
+					es.createTable(create_product_type_table);
+					
+					String create_product_img_table = "create table product_img_"+url+" ("
+							+ "pno int,"
+							+ "fullpath varchar(300)"
+							+ ")";
+						es.createTable(create_product_img_table);
 				}else {
 					System.out.println("product File already exists");
 				}
@@ -404,27 +465,53 @@ public class EWBController {
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
 							"    <title>"+url+" board</title>\r\n" + 
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_signup.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_board.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
 							"</head>\r\n" + 
 							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
+							"<input type='hidden' value='${url}' id='url'>"+
+							"	<div id='board_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='board_content'></div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_board.js\"></script>"+
 							"</body>"+
 							"</html>");
 					bw.close();
+					String create_board_table = "create table board_"+url+" ("
+						+ "bno int primary key, "
+						+ "bname varchar(100) not null,"
+						+ "content longtext,"
+						+ "reg_date datetime default now(),"
+						+ "type int"
+						+ ")";
+					es.createTable(create_board_table);
+						
+					String create_board_type_table = "create table board_type_"+url+" ("
+						+ "type int primary key,"
+						+ "tname varchar(100) not null"
+						+ ")";
+					es.createTable(create_board_type_table);
 				}else {
 					System.out.println("board File already exists");
 				}
 			}
-			String create_table = "create table member_"+url+" ("
+			String create_member_table = "create table member_"+url+" ("
 					+ "id varchar(100) primary key, "
 					+ "pw varchar(100) not null,"
 					+ "name varchar(100),"
 					+ "email varchar(100),"
 					+ "phone varchar(100),"
 					+ "birth varchar(100),"
-					+ "sign_date datetime default now()"
+					+ "sign_date datetime default now(),"
+					+ "admin boolean default false"
 					+ ")";
-			es.createMemTable(create_table);
+			es.createTable(create_member_table);
 			MemberVO mvo = new MemberVO();
 			mvo.setId(url);
 			mvo.setPw(url);
@@ -512,9 +599,18 @@ public class EWBController {
 		try {
 			String target = "member_"+cvo.getUrl();
 			es.dropTable(target);
+			String target1 = "product_"+cvo.getUrl();
+			String target2 = "product_type_"+cvo.getUrl();
+			String target3 = "board_"+cvo.getUrl();
+			String target4 = "board_type_"+cvo.getUrl();
+			es.dropTable(target1);
+			es.dropTable(target2);
+			es.dropTable(target3);
+			es.dropTable(target4);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		
 		int result = es.deleteContent(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -529,7 +625,7 @@ public class EWBController {
 	@RequestMapping(value = "/dupcheck", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> dupCheck(MemberVO mvo, HttpSession session) {
 		String url = (String)session.getAttribute("url");
-		mvo.setSign_date(url);
+		mvo.setUrl(url);
 		return new ResponseEntity<>(es.dupCheck(mvo),HttpStatus.OK);
 	}
 
@@ -539,5 +635,18 @@ public class EWBController {
 		int result = es.signUp(mvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ResponseEntity<MemberVO> login(MemberVO mvo, HttpSession session) {
+		String url = (String)session.getAttribute("url");
+		mvo.setSign_date(url);
+		session.setAttribute("userInfo", es.login(mvo));
+		return new ResponseEntity<>(es.login(mvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/productlist", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<ProductVO>> productList(ProductVO pvo) {
+		return new ResponseEntity<>(es.productList(pvo),HttpStatus.OK);
 	}
 }

@@ -43,6 +43,7 @@ input[type="button"], input[type="text"], input[type="password"]{
     position: relative;
     top: 0px;
     margin: auto;
+    z-index:1;
 }
 
 #footer{
@@ -52,6 +53,7 @@ input[type="button"], input[type="text"], input[type="password"]{
     position: relative;
     bottom: 0px;
     margin: auto;
+    z-index:1;
 }
 
 #body_controller_btn{
@@ -64,6 +66,7 @@ input[type="button"], input[type="text"], input[type="password"]{
     cursor: pointer;
     bottom: 50px;
     right: 50px;
+    z-index: 999;
 }
 
 #controller{
@@ -80,6 +83,7 @@ input[type="button"], input[type="text"], input[type="password"]{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    z-index:99;
 }
 
 #target_name{
@@ -157,7 +161,7 @@ input[type="button"], input[type="text"], input[type="password"]{
 }
 
 .menus{
-    z-index: 99;
+    z-index: 999;
 }
 
 #color_picker{
@@ -262,7 +266,7 @@ input[type="button"], input[type="text"], input[type="password"]{
     color: white;
 }
 
-#create_element_menu, #direction_menu{
+#create_element_menu, #direction_menu, #position_menu{
     display: none;
     position: fixed;
     width: 100px;
@@ -273,7 +277,7 @@ input[type="button"], input[type="text"], input[type="password"]{
     background-color: rgb(212, 200, 184);;
 }
 
-.elements{
+.elements, .position{
     height: 20px;
     width: 100px;
     border: 1px solid black;
@@ -282,7 +286,7 @@ input[type="button"], input[type="text"], input[type="password"]{
     cursor: pointer;
 }
 
-.elements:hover{
+.elements:hover, .position:hover{
     background-color: rgb(145, 145, 233);
 }
 
@@ -373,6 +377,13 @@ input[type="button"], input[type="text"], input[type="password"]{
     justify-content: center;
     background-color: rgb(201, 201, 201);
     z-index: 1;
+}
+
+.file_upload_btn{
+	position: absolute;
+	top: 8px;
+	right: 30px;
+	cursor: pointer;
 }
 
 .remo_element{

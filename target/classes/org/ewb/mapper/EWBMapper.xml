@@ -53,13 +53,13 @@
 		SELECT * FROM home_page WHERE id=#{id} ORDER BY create_date desc
 	</select>
 	
-	<insert id="createMemTable" parameterType="java.lang.String">
+	<insert id="createTable" parameterType="java.lang.String">
 		${value}
 	</insert>
 	
 	<insert id="createFirstAccount" >
-		INSERT INTO member_${id} (id,pw)
-		VALUES (#{id},#{pw})
+		INSERT INTO member_${id} (id,pw,admin)
+		VALUES (#{id},#{pw},true)
 	</insert>
 	
 	<update id="dropTable" parameterType="java.lang.String">
@@ -67,11 +67,19 @@
 	</update>
 	
 	<select id="dupCheck" resultType="org.ewb.model.MemberVO">
-		SELECT * FROM member_${sign_date} WHERE id=#{id}
+		SELECT * FROM member_${url} WHERE id=#{id}
 	</select>
 	
 	<insert id="signUp" >
 		INSERT INTO member_${url} (id,pw,name,phone,email,birth)
 		VALUES (#{id},#{pw},#{name},#{phone},#{email},#{birth})
 	</insert>
+	
+	<select id="login" resultType="org.ewb.model.MemberVO">
+		SELECT * FROM member_${url} WHERE id=#{id} and pw=#{pw}
+	</select>
+	
+	<select id="productList" resultType="org.ewb.model.ProductVO">
+		SELECT * FROM product_${url}
+	</select>
 </mapper>

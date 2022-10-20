@@ -28,11 +28,15 @@ $(".new_page_option").on("click", function() {
 	const opt = $(this).prop("id");
 	let url = prompt("url 주소이름을 적어주세요.");
 	url = url.replace(" ","");
+	const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 	if(url == null || url == ""){
 		alert("url 주소를 입력하세요.");
 		return false;
 	}else if(url == "ewb"){
 		alert("해당 url은 사용할 수 없습니다.");
+		return false;
+	}else if(regExp.test(url)){
+		alert("특수 문자는 사용할 수 없습니다.")
 		return false;
 	}
 	$.getJSON("/loadcontent",{url,type:"home_page"},function(){

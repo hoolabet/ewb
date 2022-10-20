@@ -36,6 +36,18 @@
 	position: relative;
 }
 
+#url_label{
+	position: absolute;
+	top: 30px;
+	border: 1px solid black;
+	width: 100px;
+	height: 60px;
+	border-radius: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .status{
 	border: 1px solid black;
 	width: 100px;

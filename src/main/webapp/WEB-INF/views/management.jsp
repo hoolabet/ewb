@@ -14,6 +14,7 @@
 	<div id="to_main">main</div>
 	<div id="management_entry">
 		<div id="status">
+			<div id="url_label">${url}</div>
 			<div class="status" data-href="home">메인	</div>
 			<div class="status" data-href="signup">회원가입</div>
 			<c:choose>

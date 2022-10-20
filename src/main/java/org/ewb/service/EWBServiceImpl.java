@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.ewb.mapper.EWBMapper;
 import org.ewb.model.ContentVO;
 import org.ewb.model.MemberVO;
+import org.ewb.model.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,8 +42,8 @@ public class EWBServiceImpl implements EWBService{
 		return em.getPage(id);
 	}
 	
-	public void createMemTable(String create_table) {
-		em.createMemTable(create_table);
+	public void createTable(String create_table) {
+		em.createTable(create_table);
 	}
 	
 	public void createFirstAccount(MemberVO mvo) {
@@ -59,5 +60,13 @@ public class EWBServiceImpl implements EWBService{
 	
 	public int signUp(MemberVO mvo) {
 		return em.signUp(mvo);
+	}
+	
+	public MemberVO login(MemberVO mvo) {
+		return em.login(mvo);
+	}
+	
+	public ArrayList<ProductVO> productList(ProductVO pvo){
+		return em.productList(pvo);
 	}
 }

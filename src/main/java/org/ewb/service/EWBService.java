@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.ewb.model.ContentVO;
 import org.ewb.model.MemberVO;
+import org.ewb.model.ProductVO;
 
 public interface EWBService {
 
@@ -21,7 +22,7 @@ public interface EWBService {
 
 	public ArrayList<ContentVO> getPage(String id);
 
-	public void createMemTable(String create_table);
+	public void createTable(String create_table);
 
 	public void createFirstAccount(MemberVO mvo);
 
@@ -30,5 +31,9 @@ public interface EWBService {
 	public MemberVO dupCheck(MemberVO mvo);
 
 	public int signUp(MemberVO mvo);
+
+	public MemberVO login(MemberVO mvo);
+
+	public ArrayList<ProductVO> productList(ProductVO pvo);
 
 }
