@@ -10,7 +10,7 @@
 	create ${url} ...
 	<input type="hidden" value="${url}" id="url">
 	<input type="hidden" value="${opt}" id="opt">
-	<input type="hidden" value="${ewbUser.id}" id="id">
+	<input type="hidden" value="${ewbUser.id}" id="ewb_id">
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="../resources/js/newpage.js"></script>

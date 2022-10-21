@@ -53,6 +53,11 @@ body{
 
 #sign_div {
 	position: absolute;
+	padding: 50px;
+	border: 1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #sign_table tr, #sign_table td {

@@ -1,18 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>      
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>abc home</title>
+    <title>aaa home</title>
     <link rel="stylesheet" href="../resources/css/url_home.css">
     <link rel="stylesheet" href="../resources/color_picker/jquery.minicolors.css">
 </head>
 <body>
-		<input type='hidden' value='${url}' id='url'>    <div id="btns">
+		<input type='hidden' value='${userId}' id='user_id'>		<input type='hidden' value='${url}' id='url'>		<input type='hidden' value='${opt}' id='opt'>		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>    <div id="btns">
         <input type="button" value="저장" id="save">
         <input type="button" value="불러오기" id="load">
     </div>

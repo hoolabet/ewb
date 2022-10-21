@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+#login_content{
+    height: 700px;
+    width: 100%;
+    background-color: rgb(236, 228, 228);
+    margin: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login_box{
+	padding: 60px;
+	border: 1px solid black;
+}

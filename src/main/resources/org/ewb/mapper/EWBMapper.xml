@@ -80,6 +80,70 @@
 	</select>
 	
 	<select id="productList" resultType="org.ewb.model.ProductVO">
-		SELECT * FROM product_${url}
+  		SELECT
+			*
+		FROM(
+			SELECT 
+				*, 
+				ROW_NUMBER() OVER(ORDER BY pno DESC) as num
+			FROM 
+				product_${array}
+				<if test = "search != ''.toString">
+				<choose>
+					<when test="type == 't'.toString()">
+					WHERE
+						title LIKE CONCAT('%', #{search}, '%')
+					</when>
+					<when test="type == 'c'.toString()">
+					WHERE
+						content LIKE CONCAT('%', #{search}, '%')
+					</when>
+					<when test="type == 'tc'.toString()">
+					WHERE
+						title LIKE CONCAT('%', #{search}, '%')
+					OR
+						content LIKE CONCAT('%', #{search}, '%')
+					</when>
+				</choose>
+			</if>
+    		ORDER BY
+				pno DESC
+		) add_rn_board
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
+  	</select>
+  	
+  	<select id="productMaxNumSearch" resultType="int">
+		SELECT
+			ifnull(MAX(num),1)
+		FROM(
+			SELECT 
+				*, 
+				ROW_NUMBER() OVER(ORDER BY pno DESC) as num
+			FROM 
+				product_${array}
+			<if test = "search != ''.toString">
+				<choose>
+					<when test="type == 't'.toString()">
+					WHERE
+						title LIKE CONCAT('%', #{search}, '%')
+					</when>
+					<when test="type == 'c'.toString()">
+					WHERE
+						content LIKE CONCAT('%', #{search}, '%')
+					</when>
+					<when test="type == 'tc'.toString()">
+					WHERE
+						title LIKE CONCAT('%', #{search}, '%')
+					OR
+						content LIKE CONCAT('%', #{search}, '%')
+					</when>
+				</choose>
+			</if>
+    		ORDER BY
+				pno DESC
+		) add_rn_board
 	</select>
 </mapper>

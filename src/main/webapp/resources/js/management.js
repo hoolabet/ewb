@@ -1,6 +1,12 @@
 /**
  * 
  */
+const ewbId = $("#ewb_id").val();
+if(ewbId == ""){
+	alert("로그인이 필요합니다.");
+	location.href = "/";
+}
+
 const url = $("#url").val();
 
 $("#to_main").on("click", function() {

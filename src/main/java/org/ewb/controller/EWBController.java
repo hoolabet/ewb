@@ -8,13 +8,16 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 
 import org.ewb.model.ContentVO;
+import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.ProductVO;
 import org.ewb.service.EWBService;
+import org.ewb.model.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,6 +67,7 @@ public class EWBController {
 		}
 		File home = new File(uploadFolder+"\\"+url+"\\home.jsp");
 		File signup = new File(uploadFolder+"\\"+url+"\\signup.jsp");
+		File login = new File(uploadFolder+"\\"+url+"\\login.jsp");
 		File product = new File(uploadFolder+"\\"+url+"\\product.jsp");
 		File board = new File(uploadFolder+"\\"+url+"\\board.jsp");
 		try {
@@ -73,7 +77,8 @@ public class EWBController {
 				BufferedWriter bw = new BufferedWriter(fw);
 				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
 						"    pageEncoding=\"UTF-8\"%>\r\n" + 
-						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
 						"<!DOCTYPE html>\r\n" + 
 						"<html>\r\n" + 
 						"<head>\r\n" + 
@@ -85,7 +90,10 @@ public class EWBController {
 						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
 						"</head>\r\n" + 
 						"<body>\r\n" + 
+						"		<input type='hidden' value='${userId}' id='user_id'>"+
 						"		<input type='hidden' value='${url}' id='url'>"+
+						"		<input type='hidden' value='${opt}' id='opt'>"+
+						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 						"    <div id=\"btns\">\r\n" + 
 						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
 						"        <input type=\"button\" value=\"불러오기\" id=\"load\">\r\n" +
@@ -299,6 +307,7 @@ public class EWBController {
 				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
 						"    pageEncoding=\"UTF-8\"%>\r\n" + 
 						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
 						"<!DOCTYPE html>\r\n" + 
 						"<html>\r\n" + 
 						"<head>\r\n" + 
@@ -318,24 +327,25 @@ public class EWBController {
 						"    </div>\r\n" + 
 						"    <div id=\"signup_entry\">\r\n" + 
 						"        <div id=\"header\"></div>\r\n" + 
-						"        <div id='signup_content'>\r\n" + 
+						"        <div id='signup_content'>\r\n" +
+						"			<input type='hidden' id='signup_style'>\r\n"+
 						"            <div id='sign_div'>\r\n" + 
 						"                <form id='sign_form'>\r\n" + 
 						"                    <table id='sign_table'>\r\n" + 
 						"                        <tr>\r\n" + 
 						"                            <td style='width:150px;'><span class='modi_span' id='id_span'>ID</span></td>\r\n" + 
-						"                            <td style='width:650px;'><input class='modi_input' type='text' name='id' id='id' required\r\n" + 
+						"                            <td style='width:650px;'><input class='modi_input input' type='text' name='id' id='id' required\r\n" + 
 						"                                    data-able='f'><input type='button' value='중복확인' id='dup_check'><span\r\n" + 
 						"                                    class='id check_span'></span></td>\r\n" + 
 						"                        </tr>\r\n" + 
 						"                        <tr>\r\n" + 
 						"                            <td><span class='modi_span' id='pw_span'>PASSWORD</span></td>\r\n" + 
-						"                            <td><input class='modi_input' type='password' name='password' id='pw' required\r\n" + 
+						"                            <td><input class='modi_input input' type='password' name='password' id='pw' required\r\n" + 
 						"                                    data-able='f'><span class='pw check_span'></span></td>\r\n" + 
 						"                        </tr>\r\n" + 
 						"                        <tr>\r\n" + 
 						"                            <td><span class='modi_span' id='pwc_span'>PASSWORD CHECK</span></td>\r\n" + 
-						"                            <td><input class='modi_input' type='password' id='pw_check' required><span\r\n" + 
+						"                            <td><input class='modi_input input' type='password' id='pw_check' required><span\r\n" + 
 						"                                    class='pw_check check_span'></span></td>\r\n" + 
 						"                        </tr>\r\n" + 
 						"                        <tr id='before'>\r\n" + 
@@ -368,6 +378,53 @@ public class EWBController {
 						"        </div>\r\n" + 
 						"        <div class='modify_input' id='len'>글자 수 설정</div>\r\n" + 
 						"    </div>\r\n" + 
+						"	<div id=\"controller\">\r\n" + 
+						"        <div id=\"target_name\"></div>\r\n" + 
+						"        <div class=\"controllers bgcolors colors\" id=\"background-color\">배경 색</div>\r\n" + 
+						"        <div class=\"controllers ftcolors colors\" id=\"color\">글자 색</div>\r\n" + 
+						"        <div class=\"controllers\" id=\"font_size\">글자 크기</div>\r\n" + 
+						"        <div class=\"controllers\" id=\"border\">테두리 설정</div>\r\n" + 
+						"        <div class=\"controllers\" id=\"size\">크기 조절</div>\r\n" + 
+						"        <div class=\"close_btn\">✖</div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div id=\"color_picker\" class=\"menus\">\r\n" + 
+						"        <input type=\"text\" id=\"cp\" class=\"cp\">\r\n" + 
+						"        <div id=\"color_change\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\" style=\"top: 0px; right: 0px\">✖</div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div id=\"font_size_menu\" class=\"menus\">\r\n" + 
+						"        <div>글자 크기 : <input type=\"text\" id=\"font_size_input\" size=\"5\">px</div>\r\n" + 
+						"        <div id=\"font_size_apply\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\">✖</div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div id=\"border_menu\" class=\"menus\">\r\n" + 
+						"        <div>\r\n" + 
+						"            위 테두리 : <input type=\"text\" id=\"border_top\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            아래 테두리 : <input type=\"text\" id=\"border_bottom\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            왼 테두리 : <input type=\"text\" id=\"border_left\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            오른 테두리 : <input type=\"text\" id=\"border_right\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            테두리 색 : <input type=\"text\" id=\"border_color\" class=\"cp\">\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            모서리 곡률 : <input type=\"text\" id=\"border_radius\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div id=\"border_apply\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\">✖</div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div id=\"size_menu\" class=\"menus\">\r\n" + 
+						"        <div id=\"size_width_div\">가로 : <input type=\"text\" id=\"size_width\" size=\"5\">px</div>\r\n" + 
+						"        <div id=\"size_height_div\">세로 : <input type=\"text\" id=\"size_height\" size=\"5\">px</div>\r\n" + 
+						"        <div id=\"size_change\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\" style=\"top: 0px; right: 0px\">✖</div>\r\n" + 
+						"    </div>"+
 						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 						"    <script src=\"../resources/js/url_signup.js\"></script>"+
@@ -377,15 +434,140 @@ public class EWBController {
 			}else {
 				System.out.println("signup File already exists");
 			}
+			if(login.createNewFile()) {
+				System.out.println("login File created");
+				FileWriter fw = new FileWriter(login);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+						"    pageEncoding=\"UTF-8\"%>\r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+						"<!DOCTYPE html>\r\n" + 
+						"<html>\r\n" + 
+						"<head>\r\n" + 
+						"    <meta charset=\"UTF-8\">\r\n" + 
+						"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+						"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+						"    <title>"+url+" login</title>\r\n" + 
+						"    <link rel=\"stylesheet\" href=\"../resources/css/url_login.css\">\r\n" + 
+						"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+						"</head>\r\n" + 
+						"<body>\r\n" + 
+						"		<input type='hidden' value='${userId}' id='user_id'>"+
+						"		<input type='hidden' value='${url}' id='url'>"+
+						"		<input type='hidden' value='${opt}' id='opt'>"+
+						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+						"    <div id=\"btns\">\r\n" + 
+						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
+						"        <input type=\"button\" value=\"불러오기\" id=\"load\">\r\n" +
+						"    </div>\r\n" + 
+						"    <div id=\"login_entry\">\r\n" + 
+						"        <div id=\"header\">\r\n" + 
+						"            <div>\r\n" + 
+						"                <input type=\"hidden\" id=\"header_style\">\r\n" + 
+						"                <input type=\"hidden\" id=\"save_margin\">\r\n" + 
+						"                <input type=\"hidden\" id=\"save_button\">\r\n" + 
+						"                <input type=\"hidden\" id=\"save_text\">\r\n" + 
+						"            </div>\r\n" + 
+						"        </div>\r\n" + 
+						"        <div id=\"login_content\">\r\n"+
+						"			<input type='hidden' id='login_style'>\r\n"+
+						"            <div id=\"login_box\">\r\n" + 
+						"                <table id=\"login_table\">\r\n" + 
+						"                    <tr>\r\n" + 
+						"                        <td>\r\n" + 
+						"                            <span class=\"modi_span\" data-target=\"id\">ID</span>\r\n" + 
+						"                        </td>\r\n" + 
+						"                        <td>\r\n" + 
+						"                            <input type=\"text\" id=\"input_id\" class=\"input\">\r\n" + 
+						"                        </td>\r\n" + 
+						"                    </tr>\r\n" + 
+						"                    <tr>\r\n" + 
+						"                        <td>\r\n" + 
+						"                            <span class=\"modi_span\" data-target=\"pw\">PASSWORD</span>\r\n" + 
+						"                        </td>\r\n" + 
+						"                        <td>\r\n" + 
+						"                            <input type=\"password\" id=\"input_pw\" class=\"input\">\r\n" + 
+						"                        </td>\r\n" + 
+						"                    </tr>\r\n" + 
+						"                    <tr>\r\n" + 
+						"                        <td colspan=\"2\" style=\"text-align:center\">\r\n" + 
+						"                            <input type=\"button\" value=\"Log In\" id=\"login_btn\"><br>\r\n" +
+						"                            <input type=\"button\" value=\"Sign Up\" id=\"signup_btn\">\r\n" +
+						"                        </td>\r\n" + 
+						"                    </tr>\r\n" + 
+						"                </table>\r\n" + 
+						"            </div>\r\n" + 
+						"        </div>"+
+						"        <div id=\"footer\"><input type=\"hidden\" id=\"footer_style\"></div>\r\n" + 
+						"        \r\n" + 
+						"    </div>\r\n" +
+						"	<div id=\"controller\">\r\n" + 
+						"        <div id=\"target_name\"></div>\r\n" + 
+						"        <div class=\"controllers bgcolors colors\" id=\"background-color\">배경 색</div>\r\n" + 
+						"        <div class=\"controllers ftcolors colors\" id=\"color\">글자 색</div>\r\n" + 
+						"        <div class=\"controllers\" id=\"font_size\">글자 크기</div>\r\n" + 
+						"        <div class=\"controllers\" id=\"border\">테두리 설정</div>\r\n" + 
+						"        <div class=\"controllers\" id=\"size\">크기 조절</div>\r\n" + 
+						"        <div class=\"close_btn\">✖</div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div id=\"color_picker\" class=\"menus\">\r\n" + 
+						"        <input type=\"text\" id=\"cp\" class=\"cp\">\r\n" + 
+						"        <div id=\"color_change\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\" style=\"top: 0px; right: 0px\">✖</div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div id=\"font_size_menu\" class=\"menus\">\r\n" + 
+						"        <div>글자 크기 : <input type=\"text\" id=\"font_size_input\" size=\"5\">px</div>\r\n" + 
+						"        <div id=\"font_size_apply\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\">✖</div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div id=\"border_menu\" class=\"menus\">\r\n" + 
+						"        <div>\r\n" + 
+						"            위 테두리 : <input type=\"text\" id=\"border_top\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            아래 테두리 : <input type=\"text\" id=\"border_bottom\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            왼 테두리 : <input type=\"text\" id=\"border_left\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            오른 테두리 : <input type=\"text\" id=\"border_right\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            테두리 색 : <input type=\"text\" id=\"border_color\" class=\"cp\">\r\n" + 
+						"        </div>\r\n" + 
+						"        <div>\r\n" + 
+						"            모서리 곡률 : <input type=\"text\" id=\"border_radius\" size=\"5\">px\r\n" + 
+						"        </div>\r\n" + 
+						"        <div id=\"border_apply\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\">✖</div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div id=\"size_menu\" class=\"menus\">\r\n" + 
+						"        <div id=\"size_width_div\">가로 : <input type=\"text\" id=\"size_width\" size=\"5\">px</div>\r\n" + 
+						"        <div id=\"size_height_div\">세로 : <input type=\"text\" id=\"size_height\" size=\"5\">px</div>\r\n" + 
+						"        <div id=\"size_change\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\" style=\"top: 0px; right: 0px\">✖</div>\r\n" + 
+						"    </div>"+
+						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+						"    <script src=\"../resources/js/url_login.js\"></script>\r\n" + 
+						"</body>"+
+						"</html>");
+				bw.close();
+			}else {
+				System.out.println("login File already exists");
+			}
 			if(opt.equals("shopping")) {
-				System.out.println("hahaha");
 				if(product.createNewFile()) {
 					System.out.println("product File created");
 					FileWriter fw = new FileWriter(product);
 					BufferedWriter bw = new BufferedWriter(fw);
 					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
 							"    pageEncoding=\"UTF-8\"%>\r\n" + 
-							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
 							"<!DOCTYPE html>\r\n" + 
 							"<html>\r\n" + 
 							"<head>\r\n" + 
@@ -400,6 +582,8 @@ public class EWBController {
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
 							"<input type='hidden' value='${url}' id='url'>"+
+							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='${userId}' id='user_id'>"+
 							"	<div id='product_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_content'>\r\n"+
@@ -412,11 +596,62 @@ public class EWBController {
 							"		   	         <option value=\"15\">15개씩보기</option>\r\n" + 
 							"       		     <option value=\"20\">20개씩보기</option>\r\n" + 
 							"        		</select>\r\n" + 
-							"   	     	<table id=\"dataTableBody\">\r\n" + 
-							"    			\r\n" + 
-							"        		</table>\r\n" + 
-							"        		<ul id=\"pagingul\">\r\n" + 
-							"        		</ul>\r\n"+
+//							"   	     	<table id=\"dataTableBody\">\r\n" + 
+//							"    			<c:forEach items=\"${product}\" var=\"p\">\r\n" +
+//							"    				<tr>\r\n" +
+//							"    					<td>\r\n" +
+//							"    						${p.pname}\r\n" +
+//							"    					</td>\r\n" +
+//							"    					<td>\r\n" +
+//							"    						${p.price}\r\n" +
+//							"    					</td>\r\n" +
+//							"    				</tr>\r\n" +
+//							"    			</c:forEach>\r\n" +
+//							"        		</table>\r\n" + 
+//							"        		<ul id=\"pagingul\">\r\n" + 
+//							"        		</ul>\r\n"+
+							"				<table id=\\\"dataTableBody\\\">\r\n" + 
+							"				<tr>\r\n" + 
+							"					<td id=\"td_1\">no</td>\r\n" + 
+							"					<td id=\"td_2\">title</td>\r\n" + 
+							"					<td id=\"td_3\">regdate</td>\r\n" + 
+							"				</tr>\r\n" + 
+							"				<c:forEach var=\"list\" items=\"${product}\">\r\n" + 
+							"					<tr>\r\n" + 
+							"						<td>${list.pno}</td>\r\n" + 
+							"						<td><a href=\"/"+url+"/product/detail?pno=${list.pno}\">${list.pname}</a></td>\r\n" + 
+							"						<td>${list.reg_date}</td>\r\n" + 
+							"					</tr>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"			</table>\r\n" + 
+							"			<br>\r\n" + 
+							"			<form action=\"/"+url+"/product\" id=\"search_form\">\r\n" + 
+							"				<input type=\"hidden\" name=\"pageNum\" value=\"1\"> <input\r\n" + 
+							"					type=\"hidden\" name=\"amount\" value=\"${paging.cri.amount}\"> <select\r\n" + 
+							"					name=\"type\">\r\n" + 
+							"					<option value=\"t\">제목</option>\r\n" + 
+							"					<option value=\"c\">내용</option>\r\n" + 
+							"					<option value=\"tc\">제목+내용</option>\r\n" + 
+							"				</select> <input type=\"text\" name=\"search\"> <input type=\"submit\"\r\n" + 
+							"					value=\"찾기\">\r\n" + 
+							"			</form>\r\n" + 
+							"			<br> <br> <a\r\n" + 
+							"				href=\"/"+url+"/product?pageNum=1&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">처음으로</a>\r\n" + 
+							"			<c:if test=\"${paging.prev}\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/"+url+"/product?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">이전</a>\r\n" + 
+							"			</c:if>\r\n" + 
+							"			<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
+							"				var=\"num\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/"+url+"/product?pageNum=${num}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">${num}</a>\r\n" + 
+							"			</c:forEach>\r\n" + 
+							"			<c:if test=\"${paging.next}\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/"+url+"/product?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">다음</a>\r\n" + 
+							"			</c:if>\r\n" + 
+							"			<a\r\n" + 
+							"				href=\"/"+url+"/product?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a>"+
 							"			</div>\r\n"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
@@ -460,7 +695,8 @@ public class EWBController {
 					BufferedWriter bw = new BufferedWriter(fw);
 					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
 							"    pageEncoding=\"UTF-8\"%>\r\n" + 
-							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
 							"<!DOCTYPE html>\r\n" + 
 							"<html>\r\n" + 
 							"<head>\r\n" + 
@@ -475,6 +711,8 @@ public class EWBController {
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
 							"<input type='hidden' value='${url}' id='url'>"+
+							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='${userId}' id='user_id'>"+
 							"	<div id='board_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='board_content'></div>\r\n"+
@@ -546,9 +784,23 @@ public class EWBController {
 
 	}
 	
-	@RequestMapping(value = "/{url}/product", method = RequestMethod.GET)
-	public void urlProduct() {
+	@RequestMapping(value = "/{url}/login", method = RequestMethod.GET)
+	public void urlLogin() {
 
+	}
+	
+	@RequestMapping(value = "/{url}/product", method = RequestMethod.GET)
+	public void urlProduct(HttpSession session, Model model, CriteriaVO cri) {
+		cri.setArray((String)session.getAttribute("url"));
+		
+		try {
+			model.addAttribute("product",es.productList(cri));
+			model.addAttribute("paging", new PageVO(cri, es.productMaxNumSearch(cri)));
+			session.setAttribute("criValue", new PageVO(cri, es.productMaxNumSearch(cri)));
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
 	@RequestMapping(value = "/{url}/board", method = RequestMethod.GET)
@@ -606,10 +858,12 @@ public class EWBController {
 			String target2 = "product_type_"+cvo.getUrl();
 			String target3 = "board_"+cvo.getUrl();
 			String target4 = "board_type_"+cvo.getUrl();
+			String target5 = "product_img_"+cvo.getUrl();
 			es.dropTable(target1);
 			es.dropTable(target2);
 			es.dropTable(target3);
 			es.dropTable(target4);
+			es.dropTable(target5);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -642,17 +896,20 @@ public class EWBController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> login(MemberVO mvo, HttpSession session) {
+		session.setAttribute("userId", es.login(mvo).getId());
 		session.setAttribute("userInfo", es.login(mvo));
 		return new ResponseEntity<>(es.login(mvo),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public void logout(HttpSession session) {
-		session.setAttribute("userInfo", "");
+	public ResponseEntity<String> logout(HttpSession session) {
+		session.removeAttribute("userId");
+		session.removeAttribute("userInfo");
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/productlist", method = RequestMethod.GET)
-	public ResponseEntity<ArrayList<ProductVO>> productList(ProductVO pvo) {
-		return new ResponseEntity<>(es.productList(pvo),HttpStatus.OK);
-	}
+//	@RequestMapping(value = "/productlist", method = RequestMethod.GET)
+//	public ResponseEntity<ArrayList<ProductVO>> productList(ProductVO pvo, HttpSession session) {
+//		return new ResponseEntity<>(es.productList(pvo),HttpStatus.OK);
+//	}
 }

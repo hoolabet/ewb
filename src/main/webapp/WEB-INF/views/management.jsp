@@ -11,12 +11,14 @@
 <body>
 	<input type="hidden" value="${url}" id="url">
 	<input type="hidden" value="${opt}" id="opt">
+	<input type="hidden" value="${ewbUser.id}" id="ewb_id">
 	<div id="to_main">main</div>
 	<div id="management_entry">
 		<div id="status">
 			<div id="url_label">${url}</div>
 			<div class="status" data-href="home">메인	</div>
 			<div class="status" data-href="signup">회원가입</div>
+			<div class="status" data-href="login">로그인</div>
 			<c:choose>
 				<c:when test="${opt eq 'shopping'}">
 					<div class="status" data-href="product">상품 게시판</div>

@@ -3,6 +3,7 @@ package org.ewb.mapper;
 import java.util.ArrayList;
 
 import org.ewb.model.ContentVO;
+import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.ProductVO;
 
@@ -33,5 +34,7 @@ public interface EWBMapper {
 
 	public MemberVO login(MemberVO mvo);
 
-	public ArrayList<ProductVO> productList(ProductVO pvo);
+	public ArrayList<ProductVO> productList(CriteriaVO cri);
+
+	public int productMaxNumSearch(CriteriaVO cri);
 }

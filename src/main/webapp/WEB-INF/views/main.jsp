@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="../resources/css/main.css">
 </head>
 <body>
-	<input type="hidden" value="${ewbUser.id}" id="id">
+	<input type="hidden" value="${ewbUser.id}" id="ewb_id">
 	<div id="logout">Log Out</div>
 	<div id="management">
 		<div id="create_new_page" class="management_btn">create new page</div>

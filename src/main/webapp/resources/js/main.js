@@ -1,8 +1,8 @@
 /**
  * 
  */
-const id = $("#id").val();
-if(id == ""){
+const ewbId = $("#ewb_id").val();
+if(ewbId == ""){
 	alert("로그인이 필요합니다.");
 	location.href = "/";
 }
@@ -43,7 +43,7 @@ $(".new_page_option").on("click", function() {
 		alert("이미 존재하는 url 입니다.");
 	})
 	.fail(function() {
-		location.href = `/newpage?id=${id}&url=${url}&opt=${opt}`;
+		location.href = `/newpage?id=${ewbId}&url=${url}&opt=${opt}`;
 	})
 })
 

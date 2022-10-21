@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.ewb.mapper.EWBMapper;
 import org.ewb.model.ContentVO;
+import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,12 @@ public class EWBServiceImpl implements EWBService{
 		return em.login(mvo);
 	}
 	
-	public ArrayList<ProductVO> productList(ProductVO pvo){
-		return em.productList(pvo);
+	public ArrayList<ProductVO> productList(CriteriaVO cri){
+		return em.productList(cri);
+	}
+	
+	public int productMaxNumSearch(CriteriaVO cri) {
+		return em.productMaxNumSearch(cri);
 	}
 	
 }
