@@ -92,7 +92,7 @@
 				<choose>
 					<when test="type == 't'.toString()">
 					WHERE
-						title LIKE CONCAT('%', #{search}, '%')
+						pname LIKE CONCAT('%', #{search}, '%')
 					</when>
 					<when test="type == 'c'.toString()">
 					WHERE
@@ -100,7 +100,7 @@
 					</when>
 					<when test="type == 'tc'.toString()">
 					WHERE
-						title LIKE CONCAT('%', #{search}, '%')
+						pname LIKE CONCAT('%', #{search}, '%')
 					OR
 						content LIKE CONCAT('%', #{search}, '%')
 					</when>
@@ -128,7 +128,7 @@
 				<choose>
 					<when test="type == 't'.toString()">
 					WHERE
-						title LIKE CONCAT('%', #{search}, '%')
+						pname LIKE CONCAT('%', #{search}, '%')
 					</when>
 					<when test="type == 'c'.toString()">
 					WHERE
@@ -136,7 +136,7 @@
 					</when>
 					<when test="type == 'tc'.toString()">
 					WHERE
-						title LIKE CONCAT('%', #{search}, '%')
+						pname LIKE CONCAT('%', #{search}, '%')
 					OR
 						content LIKE CONCAT('%', #{search}, '%')
 					</when>
