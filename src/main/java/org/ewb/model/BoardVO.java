@@ -1,7 +1,7 @@
 package org.ewb.model;
 
 public class BoardVO {
-	private String bno;
+	private int bno;
 	private String bname;
 	private String content;
 	private String reg_date;
@@ -14,10 +14,11 @@ public class BoardVO {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getBno() {
+	
+	public int getBno() {
 		return bno;
 	}
-	public void setBno(String bno) {
+	public void setBno(int bno) {
 		this.bno = bno;
 	}
 	public String getBname() {

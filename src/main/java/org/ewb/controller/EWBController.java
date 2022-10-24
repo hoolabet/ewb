@@ -69,6 +69,8 @@ public class EWBController {
 		File signup = new File(uploadFolder+"\\"+url+"\\signup.jsp");
 		File login = new File(uploadFolder+"\\"+url+"\\login.jsp");
 		File product = new File(uploadFolder+"\\"+url+"\\product.jsp");
+		File productWrite = new File(uploadFolder+"\\"+url+"\\productwrite.jsp");
+		File productDetail = new File(uploadFolder+"\\"+url+"\\productdetail.jsp");
 		File board = new File(uploadFolder+"\\"+url+"\\board.jsp");
 		try {
 			if(home.createNewFile()) {
@@ -619,7 +621,7 @@ public class EWBController {
 							"				<c:forEach var=\"list\" items=\"${product}\">\r\n" + 
 							"					<tr>\r\n" + 
 							"						<td>${list.pno}</td>\r\n" + 
-							"						<td><a href=\"/"+url+"/product/detail?pno=${list.pno}\">${list.pname}</a></td>\r\n" + 
+							"						<td><a href=\"/"+url+"/productdetail?pno=${list.pno}\">${list.pname}</a></td>\r\n" + 
 							"						<td>${list.reg_date}</td>\r\n" + 
 							"					</tr>\r\n" + 
 							"				</c:forEach>\r\n" + 
@@ -687,6 +689,104 @@ public class EWBController {
 						es.createTable(create_product_img_table);
 				}else {
 					System.out.println("product File already exists");
+				}
+				if(productWrite.createNewFile()) {
+					System.out.println("product write File created");
+					FileWriter fw = new FileWriter(productWrite);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" product write</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_product_write.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
+							"<input type='hidden' value='${url}' id='url'>"+
+							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='${userId}' id='user_id'>"+
+							"	<div id='product_write_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='product_write_content'>\r\n"+
+							"			<div id=\"container\">\r\n" + 
+							"				<label>상품명</label><input type='text' id='pname'>\r\n"+
+							"				<label>가격</label><input type='text' id='price'>\r\n"+
+							"				<label>수량</label><input type='text' id='quantity'>\r\n"+
+							"        		<label>상세내용</label><div contenteditable='true' id=\"content\"></div>\r\n" +
+							"				<input type='file' id='insert_img' multiple>\r\n"+
+							"				<div id='insert_btn'>img</div>\r\n"+
+							"        		<input type=\"button\" value=\"작성하기\" id=\"write_btn\">\r\n" + 
+							"    		</div>"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" +
+							"    <script src=\"../resources/js/url_product_write.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+					
+				}else {
+					System.out.println("product write File already exists");
+				}
+				if(productDetail.createNewFile()) {
+					System.out.println("product detail File created");
+					FileWriter fw = new FileWriter(productDetail);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" product detail</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_product_detail.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
+							"<input type='hidden' value='${url}' id='url'>"+
+							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='${userId}' id='user_id'>"+
+							"	<div id='product_detail_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='product_detail_content'>\r\n"+
+							"			${detail.pname}\r\n"+
+							"			${detail.price}\r\n"+
+							"			${detail.quantity}\r\n"+
+							"			${detail.content}\r\n"+
+							"			${detail.reg_date}\r\n"+
+							"			<div id='mr'>\r\n"+
+							"				<div id='modify'>수정</div>\r\n"+
+							"				<div id='remove'>삭제</div>\r\n"+
+							"			</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_product_detail.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+					
+				}else {
+					System.out.println("product detail File already exists");
 				}
 			}else if(opt.equals("community")) {
 				if(board.createNewFile()) {
@@ -791,7 +891,7 @@ public class EWBController {
 	
 	@RequestMapping(value = "/{url}/product", method = RequestMethod.GET)
 	public void urlProduct(HttpSession session, Model model, CriteriaVO cri) {
-		cri.setArray((String)session.getAttribute("url"));
+		session.setAttribute("url",cri.getUrl());
 		
 		try {
 			model.addAttribute("product",es.productList(cri));
@@ -801,6 +901,16 @@ public class EWBController {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping(value = "/{url}/productwrite", method = RequestMethod.GET)
+	public void urlProductWrite() {
+		
+	}
+	
+	@RequestMapping(value = "/{url}/productdetail", method = RequestMethod.GET)
+	public void urlProductDetail(ProductVO pvo, Model model) {
+		model.addAttribute("detail", es.loadProductDetail(pvo));
 	}
 	
 	@RequestMapping(value = "/{url}/board", method = RequestMethod.GET)
@@ -912,4 +1022,12 @@ public class EWBController {
 //	public ResponseEntity<ArrayList<ProductVO>> productList(ProductVO pvo, HttpSession session) {
 //		return new ResponseEntity<>(es.productList(pvo),HttpStatus.OK);
 //	}
+	
+	@RequestMapping(value = "/writeproduct", method = RequestMethod.POST)
+	public ResponseEntity<String> writeProduct(@RequestBody ProductVO pvo) {
+		System.out.println(pvo);
+		int result = es.writeProduct(pvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

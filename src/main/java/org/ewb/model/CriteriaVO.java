@@ -6,7 +6,14 @@ public class CriteriaVO {
 	private String search;
 	private String type;
 	private String array;
+	private String url;
 	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public CriteriaVO() {
 		pageNum = 1;
 		amount = 10;
@@ -54,6 +61,6 @@ public class CriteriaVO {
 	@Override
 	public String toString() {
 		return "CriteriaVO [pageNum=" + pageNum + ", amount=" + amount + ", search=" + search + ", type=" + type
-				+ ", array=" + array + "]";
+				+ ", array=" + array + ", url=" + url + "]";
 	}
 }

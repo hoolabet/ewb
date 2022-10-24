@@ -191,5 +191,5 @@ getHF();
 //});
 
 $("#add_product").on("click", function() {
-	
+	location.href = `/${url}/productwrite`;
 })

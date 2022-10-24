@@ -1,7 +1,7 @@
 package org.ewb.model;
 
 public class ProductVO {
-	private String pno;
+	private int pno;
 	private String pname;
 	private int price;
 	private String content;
@@ -17,10 +17,11 @@ public class ProductVO {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getPno() {
+	
+	public int getPno() {
 		return pno;
 	}
-	public void setPno(String pno) {
+	public void setPno(int pno) {
 		this.pno = pno;
 	}
 	public String getPname() {

@@ -75,4 +75,11 @@ public class EWBServiceImpl implements EWBService{
 		return em.productMaxNumSearch(cri);
 	}
 	
+	public int writeProduct(ProductVO pvo) {
+		return em.writeProduct(pvo);
+	}
+	
+	public ProductVO loadProductDetail(ProductVO pvo) {
+		return em.loadProductDetail(pvo);
+	}
 }

@@ -39,5 +39,9 @@ public interface EWBService {
 
 	public int productMaxNumSearch(CriteriaVO cri);
 
+	public int writeProduct(ProductVO pvo);
+
+	public ProductVO loadProductDetail(ProductVO pvo);
+
 
 }

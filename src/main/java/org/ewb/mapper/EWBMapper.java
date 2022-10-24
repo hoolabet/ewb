@@ -37,4 +37,8 @@ public interface EWBMapper {
 	public ArrayList<ProductVO> productList(CriteriaVO cri);
 
 	public int productMaxNumSearch(CriteriaVO cri);
+
+	public int writeProduct(ProductVO pvo);
+
+	public ProductVO loadProductDetail(ProductVO pvo);
 }

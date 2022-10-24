@@ -87,7 +87,7 @@
 				*, 
 				ROW_NUMBER() OVER(ORDER BY pno DESC) as num
 			FROM 
-				product_${array}
+				product_${url}
 				<if test = "search != ''.toString">
 				<choose>
 					<when test="type == 't'.toString()">
@@ -123,7 +123,7 @@
 				*, 
 				ROW_NUMBER() OVER(ORDER BY pno DESC) as num
 			FROM 
-				product_${array}
+				product_${url}
 			<if test = "search != ''.toString">
 				<choose>
 					<when test="type == 't'.toString()">
@@ -145,5 +145,19 @@
     		ORDER BY
 				pno DESC
 		) add_rn_board
+	</select>
+	
+	<insert id="writeProduct">
+		<selectKey keyProperty="pno" order="BEFORE" resultType="int">
+			select 
+				ifnull(MAX(pno)+1,1)
+			from product_${url}
+		</selectKey>
+		INSERT INTO product_${url} (pno,pname,price,quantity,content)
+		VALUES (#{pno},#{pname},#{price},#{quantity},#{content})
+	</insert>
+	
+	<select id="loadProductDetail" resultType="org.ewb.model.ProductVO">
+		SELECT * FROM product_${url} WHERE pno=#{pno}
 	</select>
 </mapper>
