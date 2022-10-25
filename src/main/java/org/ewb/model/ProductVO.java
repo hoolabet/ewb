@@ -10,7 +10,16 @@ public class ProductVO {
 	private String reg_date;
 	private int type;
 	private String url;
+	private ThumbnailVO tvo;
 	
+	
+	
+	public ThumbnailVO getTvo() {
+		return tvo;
+	}
+	public void setTvo(ThumbnailVO tvo) {
+		this.tvo = tvo;
+	}
 	public String getUrl() {
 		return url;
 	}
@@ -70,7 +79,7 @@ public class ProductVO {
 	public String toString() {
 		return "ProductVO [pno=" + pno + ", pname=" + pname + ", price=" + price + ", content=" + content
 				+ ", quantity=" + quantity + ", s_quantity=" + s_quantity + ", reg_date=" + reg_date + ", type=" + type
-				+ ", url=" + url + "]";
+				+ ", url=" + url + ", tvo=" + tvo + "]";
 	}
 	
 	

@@ -7,6 +7,7 @@ import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ThumbnailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,5 +82,9 @@ public class EWBServiceImpl implements EWBService{
 	
 	public ProductVO loadProductDetail(ProductVO pvo) {
 		return em.loadProductDetail(pvo);
+	}
+	
+	public int saveThumbnail(ThumbnailVO tvo) {
+		return em.saveThumbnail(tvo);
 	}
 }

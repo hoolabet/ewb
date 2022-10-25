@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ewb.mapper.CartMapper">
+	<select id="searchCart" resultType="org.ewb.model.CartVO">
+		SELECT * FROM cart_${url} WHERE id=#{id} and pno=#{pno}
+	</select>
+	
+	<insert id="insertCart">
+		INSERT INTO cart_${url} (id, pno, b_quantity)
+		VALUES (#{id},#{pno},#{b_quantity})
+	</insert>
+	
+	<update id="updateCart">
+		UPDATE cart_${url}
+		SET b_quantity = b_quantity + #{b_quantity}
+		WHERE id=#{id} and pno=#{pno}
+	</update>
+</mapper>

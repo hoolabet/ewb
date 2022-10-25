@@ -4,7 +4,8 @@
 
 const url = $("#url").val();
 const userId = $("#user_id").val();
-
+const pno = $("#product_pno").val();
+const id = $("#user_id").val();
 
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
@@ -74,3 +75,59 @@ function getHF() {
 }
 
 getHF();
+
+$("#multi_price").html($("#quan").val()*$("#quan").data("price"));
+
+$(".quan").on("click", function() {
+	if($(this).prop("id") == "quan_down"){
+		if($("#quan").val() == "1"){
+			return false;
+		}else{
+			$("#quan").val($("#quan").val() - 1);
+		}
+	}else if($(this).prop("id") == "quan_up"){
+		if($("#product_quantity").val() == $("#quan").val()){
+			return false;
+		}else{
+			$("#quan").val(Number($("#quan").val()) + 1);
+		}
+	}
+	$("#multi_price").html($("#quan").val()*$("#quan").data("price"));
+})
+
+$("#cart_btn").on("click", function() {
+	if(id == ""){
+		alert("로그인이 필요합니다.");
+		return false;
+	}
+	const b_quantity = $("#quan").val();
+	const cData = {id,pno,b_quantity,url}
+	$.getJSON("/searchcart",cData,function(){
+		if(confirm("이미 장바구니에 담긴 상품입니다. 수량을 추가하시겠습니까?")){
+			$.ajax({
+				type:"put",
+				url:"/updatecart",
+				data:JSON.stringify(cData),
+				contentType: "application/json; charset=utf-8",
+				success: function() {
+					if(confirm("추가되었습니다. 장바구니로 이동하시겠습니까?")){
+						location.href="/";
+					}
+				}
+			})
+		}
+	})
+	.fail(function() {
+		$.ajax({
+			type:"post",
+			url:"/insertcart",
+			data:JSON.stringify(cData),
+			contentType: "application/json; charset=utf-8",
+			success: function() {
+				if(confirm("추가되었습니다. 장바구니로 이동하시겠습니까?")){
+					location.href="/";
+				}
+			}
+		})
+	})
+})

@@ -49,17 +49,17 @@ function getHF() {
 		.css("color", $("#save_text").data("ftcolor"))
 		.css("border-width", $("#save_text").data("bdwidth"))
 		.css("border-color", $("#save_text").data("bdcolor"));
-		
+
 		if(userId != ""){
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
-				
+
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/logout`);
 				$(`#li_span_${target}_${ndnow}`).html("로그아웃");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그아웃");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/logout`);
-				
+
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
 					e.preventDefault();
 					$.getJSON("/logout",0,function(){
@@ -70,14 +70,14 @@ function getHF() {
 						$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 					})
 					return location.reload();
-						
+
 				})
 			})
 		}else{
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
-				
+
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
 				$(`#li_span_${target}_${ndnow}`).html("로그인");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
@@ -113,16 +113,24 @@ $("#write_btn").on("click", function(){
 			price,
 			quantity,
 			content
-			}
-    $.ajax({
-    	type:"post",
-    	url:"/writeproduct",
-    	data:JSON.stringify(pData),
-    	contentType: "application/json; charset=utf-8",
-    	success: function() {
-			location.href = `/${url}/product`;
+	}
+	$.ajax({
+		type:"post",
+		url:"/writeproduct",
+		data:JSON.stringify(pData),
+		contentType: "application/json; charset=utf-8",
+		success: function() {
+			$.ajax({
+				type:"post",
+				url:"/savethumbnail",
+				data:JSON.stringify({fullpath:thumbPath, url}),
+				contentType: "application/json; charset=utf-8",
+				success: function() {
+					location.href = `/${url}/product`;
+				}
+			})
 		}
-    })
+	})
 })
 
 $("#insert_btn").on("click", function() {
@@ -168,6 +176,45 @@ $("#insert_img").on("change",function(){
 				}
 			})
 			$("#content").append(files);
+		}
+	})
+})
+
+$("#thumb_btn").on("click", function() {
+	$("#thumb_file").click();
+})
+let thumbPath = "";
+$("#thumb_file").on("change", function() {
+	const formData = new FormData();
+	const inputFile = $(`#thumb_file`);
+	const files = inputFile[0].files;
+
+	for(j = 0; j < files.length; j++){
+		console.log(files[j]);
+		if(!checkExtension(files[j].fileName, files[j].size)){
+			return false;
+		} 
+		formData.append("uploadFile", files[j]);
+	}
+	$.ajax({
+		type: "post",
+		url: "/uploadAjaxAction",
+		data: formData,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+		success: function(r){
+			let files = "";
+			r.forEach((u)=>{
+				const fullPath = encodeURIComponent(`${u.path}/${u.uuid}_${u.fileName}`);
+				thumbPath = fullPath;
+				if(u.checkI){
+						files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;"><br>`;
+				}else{
+					files += `<a href="/download?fileName=${fullPath}">${u.fileName}</a><br>`;
+				}
+			})
+			$("#thumbnail").html(files);
 		}
 	})
 })

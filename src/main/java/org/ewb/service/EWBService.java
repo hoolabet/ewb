@@ -6,6 +6,7 @@ import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ThumbnailVO;
 
 public interface EWBService {
 
@@ -42,6 +43,8 @@ public interface EWBService {
 	public int writeProduct(ProductVO pvo);
 
 	public ProductVO loadProductDetail(ProductVO pvo);
+
+	public int saveThumbnail(ThumbnailVO tvo);
 
 
 }

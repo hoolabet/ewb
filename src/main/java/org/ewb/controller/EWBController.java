@@ -11,6 +11,7 @@ import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ThumbnailVO;
 import org.ewb.service.EWBService;
 import org.ewb.model.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -620,7 +621,8 @@ public class EWBController {
 							"				</tr>\r\n" + 
 							"				<c:forEach var=\"list\" items=\"${product}\">\r\n" + 
 							"					<tr>\r\n" + 
-							"						<td>${list.pno}</td>\r\n" + 
+							"						<td>${list.pno}</td>\r\n" +
+							"						<td><img src='/display?fileName=${list.tvo.fullpath}'></td>\r\n" +
 							"						<td><a href=\"/"+url+"/productdetail?pno=${list.pno}\">${list.pname}</a></td>\r\n" + 
 							"						<td>${list.reg_date}</td>\r\n" + 
 							"					</tr>\r\n" + 
@@ -686,7 +688,38 @@ public class EWBController {
 							+ "pno int,"
 							+ "fullpath varchar(300)"
 							+ ")";
-						es.createTable(create_product_img_table);
+					es.createTable(create_product_img_table);
+					
+					String create_cart_table = "create table cart_"+url+" ("
+							+ "id varchar(100),"
+							+ "pno int,"
+							+ "b_quantity int,"
+							+ "add_date datetime default now(),"
+							+ "doOrder boolean default false"
+							+ ")";
+					es.createTable(create_cart_table);
+					
+					String create_payment_table = "create table payment_"+url+" ("
+							+ "id varchar(100),"
+							+ "payno int,"
+							+ "price int,"
+							+ "name varchar(100),"
+							+ "address varchar(100),"
+							+ "phone varchar(100),"
+							+ "memo varchar(100),"
+							+ "payment_date datetime default now()"
+							+ ")";
+					es.createTable(create_payment_table);
+					
+					String create_order_table = "create table order_"+url+" ("
+							+ "id varchar(100),"
+							+ "ono int,"
+							+ "pno int,"
+							+ "payno int,"
+							+ "b_quantity int,"
+							+ "order_date datetime default now()"
+							+ ")";
+					es.createTable(create_order_table);
 				}else {
 					System.out.println("product File already exists");
 				}
@@ -721,9 +754,10 @@ public class EWBController {
 							"				<label>상품명</label><input type='text' id='pname'>\r\n"+
 							"				<label>가격</label><input type='text' id='price'>\r\n"+
 							"				<label>수량</label><input type='text' id='quantity'>\r\n"+
+							"				<label>섬네일</label><div contenteditable='true' id='thumbnail'></div><div id='thumb_btn'>섬네일 넣기</div><input type='file' id='thumb_file'>\r\n"+
 							"        		<label>상세내용</label><div contenteditable='true' id=\"content\"></div>\r\n" +
 							"				<input type='file' id='insert_img' multiple>\r\n"+
-							"				<div id='insert_btn'>img</div>\r\n"+
+							"				<div id='insert_btn'>이미지 넣기</div>\r\n"+
 							"        		<input type=\"button\" value=\"작성하기\" id=\"write_btn\">\r\n" + 
 							"    		</div>"+
 							"		</div>\r\n"+
@@ -759,18 +793,44 @@ public class EWBController {
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
 							"</head>\r\n" + 
 							"<body>\r\n" + 
-							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='${url}' id='url'>"+
-							"<input type='hidden' value='${opt}' id='opt'>"+
-							"<input type='hidden' value='${userId}' id='user_id'>"+
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='${url}' id='url'>\r\n"+
+							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${detail.quantity}' id='product_quantity'>\r\n"+
+							"<input type='hidden' value='${detail.pno}' id='product_pno'>\r\n"+
 							"	<div id='product_detail_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_detail_content'>\r\n"+
-							"			${detail.pname}\r\n"+
-							"			${detail.price}\r\n"+
-							"			${detail.quantity}\r\n"+
-							"			${detail.content}\r\n"+
-							"			${detail.reg_date}\r\n"+
+							"			<div id='product_img'><img src='/display?fileName=${detail.tvo.fullpath}'></div>\r\n"+
+							"			<table id='product_table'>\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						${detail.pname}\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						가격 : ${detail.price}\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						수량 : <input type='button' value='🔻' id='quan_down' class='quan'><input type='text' id='quan' size='2' readonly value='1' data-price='${detail.price}'><input type='button' value='🔺' id='quan_up' class='quan'>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						합계 : <span id='multi_price'></span>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						<input type='button' value='주문하기' id='order_btn'><input type='button' value='장바구니' id='cart_btn'>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"			</table>\r\n"+
+							"			<div id='product_content'>${detail.content}</div>\r\n"+
 							"			<div id='mr'>\r\n"+
 							"				<div id='modify'>수정</div>\r\n"+
 							"				<div id='remove'>삭제</div>\r\n"+
@@ -969,11 +1029,18 @@ public class EWBController {
 			String target3 = "board_"+cvo.getUrl();
 			String target4 = "board_type_"+cvo.getUrl();
 			String target5 = "product_img_"+cvo.getUrl();
+			String target6 = "cart_"+cvo.getUrl();
+			String target7 = "payment_"+cvo.getUrl();
+			String target8 = "order_"+cvo.getUrl();
+			
 			es.dropTable(target1);
 			es.dropTable(target2);
 			es.dropTable(target3);
 			es.dropTable(target4);
 			es.dropTable(target5);
+			es.dropTable(target6);
+			es.dropTable(target7);
+			es.dropTable(target8);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -1027,6 +1094,13 @@ public class EWBController {
 	public ResponseEntity<String> writeProduct(@RequestBody ProductVO pvo) {
 		System.out.println(pvo);
 		int result = es.writeProduct(pvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/savethumbnail", method = RequestMethod.POST)
+	public ResponseEntity<String> saveThumbnail(@RequestBody ThumbnailVO tvo) {
+		int result = es.saveThumbnail(tvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
