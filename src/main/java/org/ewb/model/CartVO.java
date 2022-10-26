@@ -7,6 +7,14 @@ public class CartVO {
 	private String add_date;
 	private boolean doOrder;
 	private String url;
+	private ProductVO pvo;
+	
+	public ProductVO getPvo() {
+		return pvo;
+	}
+	public void setPvo(ProductVO pvo) {
+		this.pvo = pvo;
+	}
 	public String getId() {
 		return id;
 	}
@@ -46,7 +54,7 @@ public class CartVO {
 	@Override
 	public String toString() {
 		return "CartVO [id=" + id + ", pno=" + pno + ", b_quantity=" + b_quantity + ", add_date=" + add_date
-				+ ", doOrder=" + doOrder + ", url=" + url + "]";
+				+ ", doOrder=" + doOrder + ", url=" + url + ", pvo=" + pvo + "]";
 	}
 	
 	

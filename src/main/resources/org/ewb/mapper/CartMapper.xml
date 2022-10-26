@@ -18,4 +18,22 @@
 		SET b_quantity = b_quantity + #{b_quantity}
 		WHERE id=#{id} and pno=#{pno}
 	</update>
+	
+	<update id="orderSelected">
+		UPDATE cart_${url}
+		SET doOrder = #{doOrder}
+		<if test="b_quantity != 0">
+		, b_quantity = #{b_quantity}
+		</if>
+		WHERE id=#{id}
+		<if test="doOrder == true">
+		and pno=#{pno}
+		</if>
+	</update>
+	
+	<delete id="deleteCart">
+		DELETE FROM cart_${url}
+		WHERE id=#{id} and pno=#{pno}
+	</delete>
+	
 </mapper>

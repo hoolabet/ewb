@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+#cart_content{
+    height: 1000px;
+    width: 100%;
+    background-color: rgb(236, 228, 228);
+    margin: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}

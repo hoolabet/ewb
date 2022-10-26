@@ -2,6 +2,7 @@ package org.ewb.service;
 
 import java.util.ArrayList;
 
+import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
@@ -45,6 +46,9 @@ public interface EWBService {
 	public ProductVO loadProductDetail(ProductVO pvo);
 
 	public int saveThumbnail(ThumbnailVO tvo);
+
+	public ArrayList<CartVO> loadCart(CartVO cvo);
+
 
 
 }

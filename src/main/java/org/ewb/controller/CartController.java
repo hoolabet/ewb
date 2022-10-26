@@ -37,4 +37,17 @@ public class CartController {
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@RequestMapping(value = "/orderselected", method = RequestMethod.PUT)
+	public ResponseEntity<String> orderSelected(@RequestBody CartVO cvo) {
+		int result = cs.orderSelected(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/deletecart", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteCart(@RequestBody CartVO cvo) {
+		int result = cs.deleteCart(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

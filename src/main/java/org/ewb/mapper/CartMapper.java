@@ -10,4 +10,8 @@ public interface CartMapper {
 
 	public int updateCart(CartVO cvo);
 
+	public int orderSelected(CartVO cvo);
+
+	public int deleteCart(CartVO cvo);
+
 }

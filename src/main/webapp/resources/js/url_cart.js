@@ -3,7 +3,6 @@
  */
 
 const url = $("#url").val();
-const pno = $("#product_pno").val();
 const id = $("#user_id").val();
 
 function getHF() {
@@ -32,17 +31,17 @@ function getHF() {
 		.css("color", $("#save_text").data("ftcolor"))
 		.css("border-width", $("#save_text").data("bdwidth"))
 		.css("border-color", $("#save_text").data("bdcolor"));
-
+		
 		if(id != ""){
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
-
+				
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/logout`);
 				$(`#li_span_${target}_${ndnow}`).html("로그아웃");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그아웃");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/logout`);
-
+				
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
 					e.preventDefault();
 					$.getJSON("/logout",0,function(){
@@ -53,14 +52,14 @@ function getHF() {
 						$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 					})
 					return location.reload();
-
+						
 				})
 			})
 		}else{
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
-
+				
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
 				$(`#li_span_${target}_${ndnow}`).html("로그인");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
@@ -75,67 +74,75 @@ function getHF() {
 
 getHF();
 
-$("#multi_price").html($("#quan").val()*$("#quan").data("price"));
-
 $(".quan").on("click", function() {
-	if($(this).prop("id") == "quan_down"){
-		if($("#quan").val() == "1"){
+	const pno = $(this).data("pno");
+	const val = $(this).data("val");
+	const pri = $(`#quan_${pno}`).data("price");
+	const qua = $(`#quan_${pno}`).data("quantity");
+	if(val == "down"){
+		if($(`#quan_${pno}`).val() == "1"){
 			return false;
 		}else{
-			$("#quan").val($("#quan").val() - 1);
+			$(`#quan_${pno}`).val($(`#quan_${pno}`).val() - 1)
 		}
-	}else if($(this).prop("id") == "quan_up"){
-		if($("#product_quantity").val() == $("#quan").val()){
+	}else if(val == "up"){
+		if($(`#quan_${pno}`).val() == qua){
 			return false;
 		}else{
-			$("#quan").val(Number($("#quan").val()) + 1);
+			$(`#quan_${pno}`).val(Number($(`#quan_${pno}`).val()) + 1)
 		}
 	}
-	$("#multi_price").html($("#quan").val()*$("#quan").data("price"));
+	$(`#price_${pno}`).html(pri * $(`#quan_${pno}`).val());
+	let fPrice = 0;
+	$(".prices").each(function(i,p) {
+		fPrice += Number($(p).html());
+		$("#f_price").html(fPrice)
+	})
+})
+let fPrice = 0;
+$(".prices").each(function(i,p) {
+	fPrice += Number($(p).html());
+	$("#f_price").html(fPrice)
 })
 
-$("#cart_btn").on("click", function() {
-	if(id == ""){
-		alert("로그인이 필요합니다.");
-		return false;
-	}
-	const b_quantity = $("#quan").val();
-	const cData = {id,pno,b_quantity,url}
-	$.getJSON("/searchcart",cData,function(resC){
-		const quantity = resC.b_quantity;
-		$.getJSON("/productdetail",{url,pno},function(resP){
-			const entryQ = resP.quantity;
-			if(confirm("이미 장바구니에 담긴 상품입니다. 수량을 추가하시겠습니까?")){
-				if(entryQ >= ( Number(b_quantity) + Number(quantity) )){
-					$.ajax({
-						type:"put",
-						url:"/updatecart",
-						data:JSON.stringify(cData),
-						contentType: "application/json; charset=utf-8",
-						success: function() {
-							if(confirm("추가되었습니다. 장바구니로 이동하시겠습니까?")){
-								location.href= `/${url}/cart`;
-							}
-						}
-					})
-				}else{
-					alert("재고가 모자랍니다.");
+$("#order_selected_btn").on("click", function() {
+	$(".cart_check").each(function(i,c) {
+		if($(c).prop("checked")){
+			const pno = $(c).data("pno");
+			const b_quantity = $(`#quan_${pno}`).val();
+			const oData = {id,url,pno,doOrder:true, b_quantity}
+			$.ajax({
+				type:"put",
+				url:"/orderselected",
+				data:JSON.stringify(oData),
+				contentType: "application/json; charset=utf-8",
+				success: function() {
+					
 				}
-			}
-		})
-
+			})
+		}
 	})
-	.fail(function() {
-		$.ajax({
-			type:"post",
-			url:"/insertcart",
-			data:JSON.stringify(cData),
-			contentType: "application/json; charset=utf-8",
-			success: function() {
-				if(confirm("추가되었습니다. 장바구니로 이동하시겠습니까?")){
-					location.href= `/${url}/cart`;
-				}
-			}
-		})
+	setTimeout(() => {
+		location.href= `/${url}/order`
+	}, 500);
+})
+
+$("#order_all_btn").on("click", function() {
+	$(".cart_check").prop("checked", true);
+	$("#order_selected_btn").click();
+})
+
+$(".remove_btn").on("click", function() {
+	const pno = $(this).data("pno");
+	const rData = {url, id, pno}
+	
+	$.ajax({
+		type:"delete",
+		url:"/deletecart",
+		data:JSON.stringify(rData),
+		contentType: "application/json; charset=utf-8",
+		success: function() {
+			location.reload();
+		}
 	})
 })

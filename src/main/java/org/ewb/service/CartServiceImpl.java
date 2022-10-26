@@ -22,4 +22,13 @@ public class CartServiceImpl implements CartService{
 	public int updateCart(CartVO cvo) {
 		return cm.updateCart(cvo);
 	}
+	
+	public int orderSelected(CartVO cvo) {
+		return cm.orderSelected(cvo);
+	}
+	
+	public int deleteCart(CartVO cvo) {
+		return cm.deleteCart(cvo);
+	}
+	
 }

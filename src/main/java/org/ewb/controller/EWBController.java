@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
@@ -72,9 +73,26 @@ public class EWBController {
 		File product = new File(uploadFolder+"\\"+url+"\\product.jsp");
 		File productWrite = new File(uploadFolder+"\\"+url+"\\productwrite.jsp");
 		File productDetail = new File(uploadFolder+"\\"+url+"\\productdetail.jsp");
+		File cart = new File(uploadFolder+"\\"+url+"\\cart.jsp");
+		File order = new File(uploadFolder+"\\"+url+"\\order.jsp");
 		File board = new File(uploadFolder+"\\"+url+"\\board.jsp");
 		try {
 			if(home.createNewFile()) {
+				String create_member_table = "create table member_"+url+" ("
+						+ "id varchar(100) primary key, "
+						+ "pw varchar(100) not null,"
+						+ "name varchar(100),"
+						+ "email varchar(100),"
+						+ "phone varchar(100),"
+						+ "birth varchar(100),"
+						+ "sign_date datetime default now(),"
+						+ "admin boolean default false"
+						+ ")";
+				es.createTable(create_member_table);
+				MemberVO mvo = new MemberVO();
+				mvo.setId(url);
+				mvo.setPw(url);
+				es.createFirstAccount(mvo);
 				System.out.println("home File created");
 				FileWriter fw = new FileWriter(home);
 				BufferedWriter bw = new BufferedWriter(fw);
@@ -599,20 +617,20 @@ public class EWBController {
 							"		   	         <option value=\"15\">15개씩보기</option>\r\n" + 
 							"       		     <option value=\"20\">20개씩보기</option>\r\n" + 
 							"        		</select>\r\n" + 
-//							"   	     	<table id=\"dataTableBody\">\r\n" + 
-//							"    			<c:forEach items=\"${product}\" var=\"p\">\r\n" +
-//							"    				<tr>\r\n" +
-//							"    					<td>\r\n" +
-//							"    						${p.pname}\r\n" +
-//							"    					</td>\r\n" +
-//							"    					<td>\r\n" +
-//							"    						${p.price}\r\n" +
-//							"    					</td>\r\n" +
-//							"    				</tr>\r\n" +
-//							"    			</c:forEach>\r\n" +
-//							"        		</table>\r\n" + 
-//							"        		<ul id=\"pagingul\">\r\n" + 
-//							"        		</ul>\r\n"+
+							//							"   	     	<table id=\"dataTableBody\">\r\n" + 
+							//							"    			<c:forEach items=\"${product}\" var=\"p\">\r\n" +
+							//							"    				<tr>\r\n" +
+							//							"    					<td>\r\n" +
+							//							"    						${p.pname}\r\n" +
+							//							"    					</td>\r\n" +
+							//							"    					<td>\r\n" +
+							//							"    						${p.price}\r\n" +
+							//							"    					</td>\r\n" +
+							//							"    				</tr>\r\n" +
+							//							"    			</c:forEach>\r\n" +
+							//							"        		</table>\r\n" + 
+							//							"        		<ul id=\"pagingul\">\r\n" + 
+							//							"        		</ul>\r\n"+
 							"				<table id=\\\"dataTableBody\\\">\r\n" + 
 							"				<tr>\r\n" + 
 							"					<td id=\"td_1\">no</td>\r\n" + 
@@ -622,7 +640,16 @@ public class EWBController {
 							"				<c:forEach var=\"list\" items=\"${product}\">\r\n" + 
 							"					<tr>\r\n" + 
 							"						<td>${list.pno}</td>\r\n" +
-							"						<td><img src='/display?fileName=${list.tvo.fullpath}'></td>\r\n" +
+							"						<td>"
+							+ "<c:choose>"
+							+ "<c:when test=\"${fn:length(list.tvo.fullpath) ne 0}\">"
+							+ "<img src='/display?fileName=${list.tvo.fullpath}' class='p_imgs'>"
+							+ "</c:when>"
+							+ "<c:otherwise>"
+							+ "<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>"
+							+ "</c:otherwise>"
+							+ "</c:choose>"
+							+ "</td>\r\n" +
 							"						<td><a href=\"/"+url+"/productdetail?pno=${list.pno}\">${list.pname}</a></td>\r\n" + 
 							"						<td>${list.reg_date}</td>\r\n" + 
 							"					</tr>\r\n" + 
@@ -667,57 +694,69 @@ public class EWBController {
 							"</html>");
 					bw.close();
 					String create_product_table = "create table product_"+url+" ("
-						+ "pno int primary key, "
-						+ "pname varchar(100) not null,"
-						+ "price int not null,"
-						+ "content longtext,"
-						+ "quantity int default 1,"
-						+ "s_quantity int default 0,"
-						+ "reg_date datetime default now(),"
-						+ "type int"
-						+ ")";
+							+ "pno int primary key, "
+							+ "pname varchar(100) not null,"
+							+ "price int not null,"
+							+ "content longtext,"
+							+ "quantity int default 1,"
+							+ "s_quantity int default 0,"
+							+ "reg_date datetime default now(),"
+							+ "type int"
+							+ ")";
 					es.createTable(create_product_table);
-					
+
 					String create_product_type_table = "create table product_type_"+url+" ("
-						+ "type int primary key,"
-						+ "tname varchar(100) not null"
-						+ ")";
+							+ "type int primary key,"
+							+ "tname varchar(100) not null"
+							+ ")";
 					es.createTable(create_product_type_table);
-					
+
 					String create_product_img_table = "create table product_img_"+url+" ("
 							+ "pno int,"
-							+ "fullpath varchar(300)"
+							+ "fullpath varchar(300),"
+							+ "foreign key(pno)"
+							+ "references product_"+url+"(pno) on update cascade on delete cascade"
 							+ ")";
 					es.createTable(create_product_img_table);
-					
+
 					String create_cart_table = "create table cart_"+url+" ("
 							+ "id varchar(100),"
 							+ "pno int,"
 							+ "b_quantity int,"
 							+ "add_date datetime default now(),"
-							+ "doOrder boolean default false"
+							+ "doOrder boolean default false,"
+							+ "foreign key(pno)"
+							+ "references product_"+url+"(pno) on update cascade on delete cascade,"
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade"
 							+ ")";
 					es.createTable(create_cart_table);
-					
+
 					String create_payment_table = "create table payment_"+url+" ("
 							+ "id varchar(100),"
-							+ "payno int,"
+							+ "payno int primary key,"
 							+ "price int,"
 							+ "name varchar(100),"
 							+ "address varchar(100),"
 							+ "phone varchar(100),"
 							+ "memo varchar(100),"
-							+ "payment_date datetime default now()"
+							+ "payment_date datetime default now(),"
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade"
 							+ ")";
 					es.createTable(create_payment_table);
-					
+
 					String create_order_table = "create table order_"+url+" ("
 							+ "id varchar(100),"
-							+ "ono int,"
+							+ "ono int primary key,"
 							+ "pno int,"
 							+ "payno int,"
 							+ "b_quantity int,"
-							+ "order_date datetime default now()"
+							+ "order_date datetime default now(),"
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade,"
+							+ "foreign key(payno)"
+							+ "references payment_"+url+"(payno) on update cascade on delete cascade"
 							+ ")";
 					es.createTable(create_order_table);
 				}else {
@@ -769,7 +808,7 @@ public class EWBController {
 							"</body>"+
 							"</html>");
 					bw.close();
-					
+
 				}else {
 					System.out.println("product write File already exists");
 				}
@@ -844,9 +883,158 @@ public class EWBController {
 							"</body>"+
 							"</html>");
 					bw.close();
-					
+
 				}else {
 					System.out.println("product detail File already exists");
+				}
+				if(cart.createNewFile()) {
+					System.out.println("cart File created");
+					FileWriter fw = new FileWriter(cart);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" cart</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_cart.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='${url}' id='url'>\r\n"+
+							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='cart_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='cart_content'>\r\n"+
+							"			<table id='cart_table'>\r\n"+
+							"			<c:forEach var=\"cart\" items=\"${cart}\">\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						<input type='checkbox' class='cart_check' data-pno='${cart.pno}' checked>\r\n"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"<c:choose>"
+							+ "<c:when test=\"${fn:length(cart.pvo.tvo.fullpath) ne 0}\">"
+							+ "<img src='/display?fileName=${cart.pvo.tvo.fullpath}' class='p_imgs'>"
+							+ "</c:when>"
+							+ "<c:otherwise>"
+							+ "<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>"
+							+ "</c:otherwise>"
+							+ "</c:choose>"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<p>${cart.pvo.pname}</p>\r\n"+
+							"						<p>수량 : <input type='button' value='🔻'  class='quan' data-pno='${cart.pno}' data-val='down'><input type='text' value='${cart.b_quantity}' id='quan_${cart.pno}' data-price='${cart.pvo.price}' data-quantity='${cart.pvo.quantity}'><input type='button' value='🔺'  class='quan' data-pno='${cart.pno}' data-val='up'></p>\r\n"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<p>가격 : <span id='price_${cart.pno}' class='prices'>${cart.pvo.price*cart.b_quantity}</span> 원</p>\r\n"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<input type='button' class='remove_btn' data-pno='${cart.pno}' value='❌'>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"			</c:forEach>\r\n"+
+							"				<tr>\r\n"+
+							"					<td colspan='4'>\r\n"+
+							"						<p><span id='f_price'></span> 원</p>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"			</table>\r\n"+
+							"			<div id='order_all_btn'>전체 주문하기</div>\r\n"+
+							"			<div id='order_selected_btn'>선택 주문하기</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_cart.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("cart File already exists");
+				}
+
+				if(order.createNewFile()) {
+					System.out.println("order File created");
+					FileWriter fw = new FileWriter(order);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" order</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_order.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='${url}' id='url'>\r\n"+
+							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='order_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='order_content'>\r\n"+
+							"			<table id='order_table'>\r\n"+
+							"			<c:forEach var=\"order\" items=\"${order}\">\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						<input type='checkbox' class='order_check' data-pno='${order.pno}' checked>\r\n"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"<c:choose>"
+							+ "<c:when test=\"${fn:length(order.pvo.tvo.fullpath) ne 0}\">"
+							+ "<img src='/display?fileName=${order.pvo.tvo.fullpath}' class='p_imgs'>"
+							+ "</c:when>"
+							+ "<c:otherwise>"
+							+ "<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>"
+							+ "</c:otherwise>"
+							+ "</c:choose>"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<p>${order.pvo.pname}</p>\r\n"+
+							"						<p>수량 : <input type='text' value='${order.b_quantity}' id='quan_${order.pno}' data-price='${order.pvo.price}'></p>\r\n"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<p>가격 : <span id='price_${order.pno}' class='prices'>${order.pvo.price*order.b_quantity}</span> 원</p>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"			</c:forEach>\r\n"+
+							"				<tr>\r\n"+
+							"					<td colspan='4'>\r\n"+
+							"						<p><span id='f_price'></span> 원</p>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"			</table>\r\n"+
+							"			<div id='pay_btn'>결제하기</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_order.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("order File already exists");
 				}
 			}else if(opt.equals("community")) {
 				if(board.createNewFile()) {
@@ -885,38 +1073,24 @@ public class EWBController {
 							"</html>");
 					bw.close();
 					String create_board_table = "create table board_"+url+" ("
-						+ "bno int primary key, "
-						+ "bname varchar(100) not null,"
-						+ "content longtext,"
-						+ "reg_date datetime default now(),"
-						+ "type int"
-						+ ")";
+							+ "bno int primary key, "
+							+ "bname varchar(100) not null,"
+							+ "content longtext,"
+							+ "reg_date datetime default now(),"
+							+ "type int"
+							+ ")";
 					es.createTable(create_board_table);
-						
+
 					String create_board_type_table = "create table board_type_"+url+" ("
-						+ "type int primary key,"
-						+ "tname varchar(100) not null"
-						+ ")";
+							+ "type int primary key,"
+							+ "tname varchar(100) not null"
+							+ ")";
 					es.createTable(create_board_type_table);
 				}else {
 					System.out.println("board File already exists");
 				}
 			}
-			String create_member_table = "create table member_"+url+" ("
-					+ "id varchar(100) primary key, "
-					+ "pw varchar(100) not null,"
-					+ "name varchar(100),"
-					+ "email varchar(100),"
-					+ "phone varchar(100),"
-					+ "birth varchar(100),"
-					+ "sign_date datetime default now(),"
-					+ "admin boolean default false"
-					+ ")";
-			es.createTable(create_member_table);
-			MemberVO mvo = new MemberVO();
-			mvo.setId(url);
-			mvo.setPw(url);
-			es.createFirstAccount(mvo);
+
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -943,16 +1117,16 @@ public class EWBController {
 	public void urlSignUp() {
 
 	}
-	
+
 	@RequestMapping(value = "/{url}/login", method = RequestMethod.GET)
 	public void urlLogin() {
 
 	}
-	
+
 	@RequestMapping(value = "/{url}/product", method = RequestMethod.GET)
 	public void urlProduct(HttpSession session, Model model, CriteriaVO cri) {
 		session.setAttribute("url",cri.getUrl());
-		
+
 		try {
 			model.addAttribute("product",es.productList(cri));
 			model.addAttribute("paging", new PageVO(cri, es.productMaxNumSearch(cri)));
@@ -962,17 +1136,35 @@ public class EWBController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@RequestMapping(value = "/{url}/productwrite", method = RequestMethod.GET)
 	public void urlProductWrite() {
-		
+
 	}
-	
+
 	@RequestMapping(value = "/{url}/productdetail", method = RequestMethod.GET)
 	public void urlProductDetail(ProductVO pvo, Model model) {
 		model.addAttribute("detail", es.loadProductDetail(pvo));
 	}
 	
+	@RequestMapping(value = "/productdetail", method = RequestMethod.GET)
+	public ResponseEntity<ProductVO> productDetail(ProductVO pvo) {
+		return new ResponseEntity<>(es.loadProductDetail(pvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{url}/cart", method = RequestMethod.GET)
+	public void urlCart(CartVO cvo, Model model, HttpSession session) {
+		cvo.setId((String)session.getAttribute("userId"));
+		model.addAttribute("cart", es.loadCart(cvo));
+	}
+
+	@RequestMapping(value = "/{url}/order", method = RequestMethod.GET)
+	public void urlOrder(CartVO cvo, Model model, HttpSession session) {
+		cvo.setId((String)session.getAttribute("userId"));
+		cvo.setDoOrder(true);
+		model.addAttribute("order", es.loadCart(cvo));
+	}
+
 	@RequestMapping(value = "/{url}/board", method = RequestMethod.GET)
 	public void urlBoard() {
 
@@ -1023,7 +1215,6 @@ public class EWBController {
 		}
 		try {
 			String target = "member_"+cvo.getUrl();
-			es.dropTable(target);
 			String target1 = "product_"+cvo.getUrl();
 			String target2 = "product_type_"+cvo.getUrl();
 			String target3 = "board_"+cvo.getUrl();
@@ -1032,19 +1223,20 @@ public class EWBController {
 			String target6 = "cart_"+cvo.getUrl();
 			String target7 = "payment_"+cvo.getUrl();
 			String target8 = "order_"+cvo.getUrl();
-			
-			es.dropTable(target1);
-			es.dropTable(target2);
-			es.dropTable(target3);
-			es.dropTable(target4);
-			es.dropTable(target5);
-			es.dropTable(target6);
-			es.dropTable(target7);
+
 			es.dropTable(target8);
+			es.dropTable(target7);
+			es.dropTable(target6);
+			es.dropTable(target5);
+			es.dropTable(target4);
+			es.dropTable(target3);
+			es.dropTable(target2);
+			es.dropTable(target1);
+			es.dropTable(target);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
+
 		int result = es.deleteContent(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -1055,7 +1247,7 @@ public class EWBController {
 
 		return new ResponseEntity<>(es.loadContent(cvo),HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/dupcheck", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> dupCheck(MemberVO mvo, HttpSession session) {
 		String url = (String)session.getAttribute("url");
@@ -1065,31 +1257,31 @@ public class EWBController {
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ResponseEntity<String> signUp(@RequestBody MemberVO mvo) {
-		
+
 		int result = es.signUp(mvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> login(MemberVO mvo, HttpSession session) {
 		session.setAttribute("userId", es.login(mvo).getId());
 		session.setAttribute("userInfo", es.login(mvo));
 		return new ResponseEntity<>(es.login(mvo),HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ResponseEntity<String> logout(HttpSession session) {
 		session.removeAttribute("userId");
 		session.removeAttribute("userInfo");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-//	@RequestMapping(value = "/productlist", method = RequestMethod.GET)
-//	public ResponseEntity<ArrayList<ProductVO>> productList(ProductVO pvo, HttpSession session) {
-//		return new ResponseEntity<>(es.productList(pvo),HttpStatus.OK);
-//	}
-	
+
+	//	@RequestMapping(value = "/productlist", method = RequestMethod.GET)
+	//	public ResponseEntity<ArrayList<ProductVO>> productList(ProductVO pvo, HttpSession session) {
+	//		return new ResponseEntity<>(es.productList(pvo),HttpStatus.OK);
+	//	}
+
 	@RequestMapping(value = "/writeproduct", method = RequestMethod.POST)
 	public ResponseEntity<String> writeProduct(@RequestBody ProductVO pvo) {
 		System.out.println(pvo);
@@ -1097,7 +1289,7 @@ public class EWBController {
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@RequestMapping(value = "/savethumbnail", method = RequestMethod.POST)
 	public ResponseEntity<String> saveThumbnail(@RequestBody ThumbnailVO tvo) {
 		int result = es.saveThumbnail(tvo);

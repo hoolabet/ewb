@@ -3,6 +3,7 @@ package org.ewb.service;
 import java.util.ArrayList;
 
 import org.ewb.mapper.EWBMapper;
+import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
@@ -87,4 +88,9 @@ public class EWBServiceImpl implements EWBService{
 	public int saveThumbnail(ThumbnailVO tvo) {
 		return em.saveThumbnail(tvo);
 	}
+	
+	public ArrayList<CartVO> loadCart(CartVO cvo){
+		return em.loadCart(cvo);
+	}
+	
 }

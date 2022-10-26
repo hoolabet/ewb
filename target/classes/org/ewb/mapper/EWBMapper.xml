@@ -64,7 +64,8 @@
 	<insert id="createFirstAccount">
 		INSERT INTO member_${id}
 		(id,pw,admin)
-		VALUES (#{id},#{pw},true)
+		VALUES
+		(#{id},#{pw},true)
 	</insert>
 
 	<update id="dropTable" parameterType="java.lang.String">
@@ -103,14 +104,15 @@
 		<result column="type" property="type" />
 		<collection property="tvo" resultMap="ThumbnailVO" />
 	</resultMap>
-	
+
 	<select id="productList" resultMap="ProductVO">
 		SELECT
 		*
 		FROM(
 		SELECT
 		p.*,fullpath,
-		ROW_NUMBER() OVER(ORDER BY p.pno DESC) as num
+		ROW_NUMBER() OVER(ORDER BY p.pno DESC)
+		as num
 		FROM
 		product_${url} p
 		LEFT JOIN
@@ -150,7 +152,8 @@
 		FROM(
 		SELECT
 		*,
-		ROW_NUMBER() OVER(ORDER BY pno DESC) as num
+		ROW_NUMBER() OVER(ORDER BY pno
+		DESC) as num
 		FROM
 		product_${url}
 		<if test="search != ''.toString">
@@ -209,4 +212,35 @@
 		VALUES
 		(#{pno},#{fullpath})
 	</insert>
+
+	<resultMap type="org.ewb.model.CartVO" id="CartVO">
+		<result column="pno" property="pno" />
+		<result column="b_quantity" property="b_quantity" />
+		<collection property="pvo" resultMap="ProductVO" />
+	</resultMap>
+	<select id="loadCart" resultMap="CartVO">
+		select *
+		from
+		cart_${url} c
+		join
+		(
+		select p.*, fullpath
+		from
+		product_${url} p
+		left join
+		product_img_${url} i
+		on
+		p.pno = i.pno
+		) joined
+		on
+		c.pno = joined.pno
+		where
+		id=#{id}
+		<if test="doOrder == true">
+		and
+		doOrder = #{doOrder}
+		</if>
+	</select>
+	
+	
 </mapper>
