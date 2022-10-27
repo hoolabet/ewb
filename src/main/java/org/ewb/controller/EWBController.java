@@ -75,6 +75,7 @@ public class EWBController {
 		File productDetail = new File(uploadFolder+"\\"+url+"\\productdetail.jsp");
 		File cart = new File(uploadFolder+"\\"+url+"\\cart.jsp");
 		File order = new File(uploadFolder+"\\"+url+"\\order.jsp");
+		File mypage = new File(uploadFolder+"\\"+url+"\\mypage.jsp");
 		File board = new File(uploadFolder+"\\"+url+"\\board.jsp");
 		try {
 			if(home.createNewFile()) {
@@ -608,65 +609,55 @@ public class EWBController {
 							"	<div id='product_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_content'>\r\n"+
-							"			<div>\r\n"+
+							"			<div id='product_div'>\r\n"+
 							"				<c:if test='${userInfo.admin eq true}'>\r\n"+
 							"				<div id='add_product'>상품 추가</div>\r\n"+
 							"				</c:if>\r\n"+
-							"				<select id=\"dataPerPage\">\r\n" + 
-							"	                 <option value=\"10\">10개씩보기</option>\r\n" + 
-							"		   	         <option value=\"15\">15개씩보기</option>\r\n" + 
-							"       		     <option value=\"20\">20개씩보기</option>\r\n" + 
+							"				<select id=\"dataPerPage\" value=\"${paging.cri.amount}\">\r\n" + 
+							"	                 <option value=\"15\">15개씩보기</option>\r\n" + 
+							"		   	         <option value=\"30\">30개씩보기</option>\r\n" + 
+							"       		     <option value=\"45\">45개씩보기</option>\r\n" +
+							"       		     <option value=\"60\">60개씩보기</option>\r\n" +
 							"        		</select>\r\n" + 
-							//							"   	     	<table id=\"dataTableBody\">\r\n" + 
-							//							"    			<c:forEach items=\"${product}\" var=\"p\">\r\n" +
-							//							"    				<tr>\r\n" +
-							//							"    					<td>\r\n" +
-							//							"    						${p.pname}\r\n" +
-							//							"    					</td>\r\n" +
-							//							"    					<td>\r\n" +
-							//							"    						${p.price}\r\n" +
-							//							"    					</td>\r\n" +
-							//							"    				</tr>\r\n" +
-							//							"    			</c:forEach>\r\n" +
-							//							"        		</table>\r\n" + 
-							//							"        		<ul id=\"pagingul\">\r\n" + 
-							//							"        		</ul>\r\n"+
-							"				<table id=\\\"dataTableBody\\\">\r\n" + 
-							"				<tr>\r\n" + 
-							"					<td id=\"td_1\">no</td>\r\n" + 
-							"					<td id=\"td_2\">title</td>\r\n" + 
-							"					<td id=\"td_3\">regdate</td>\r\n" + 
-							"				</tr>\r\n" + 
+							"				<div id='table_div'>\r\n"+
 							"				<c:forEach var=\"list\" items=\"${product}\">\r\n" + 
+							"				<table class='product_table'>\r\n" + 
 							"					<tr>\r\n" + 
-							"						<td>${list.pno}</td>\r\n" +
-							"						<td>"
-							+ "<c:choose>"
-							+ "<c:when test=\"${fn:length(list.tvo.fullpath) ne 0}\">"
-							+ "<img src='/display?fileName=${list.tvo.fullpath}' class='p_imgs'>"
-							+ "</c:when>"
-							+ "<c:otherwise>"
-							+ "<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>"
-							+ "</c:otherwise>"
-							+ "</c:choose>"
-							+ "</td>\r\n" +
-							"						<td><a href=\"/"+url+"/productdetail?pno=${list.pno}\">${list.pname}</a></td>\r\n" + 
-							"						<td>${list.reg_date}</td>\r\n" + 
+							"						<td style='position:relative'><a href=\"/"+url+"/productdetail?pno=${list.pno}\">"+
+							"						<c:choose>\r\n"+
+							"						<c:when test=\"${fn:length(list.tvo.fullpath) ne 0}\">\r\n"+
+							"							<img src='/display?fileName=${list.tvo.fullpath}' class='p_imgs'>\r\n"+
+							"						</c:when>\r\n"+
+							"						<c:otherwise>\r\n"+
+							"							<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>\r\n"+
+							"						</c:otherwise>\r\n"+
+							"						</c:choose>\r\n"+
+							"						<c:if test=\"${list.quantity eq 0}\">\r\n"+
+							"						<div class='sold_out' id='so_${list.pno}'>sold out</div>\r\n"+
+							"						</c:if>\r\n"+
+							"						</a></td>\r\n" +
+							"					</tr>\r\n"+
+							"					<tr>\r\n"+
+							"						<td><a href=\"/"+url+"/productdetail?pno=${list.pno}\">${list.pname}</a></td>\r\n" +
+							"					</tr>\r\n"+
+							"					<tr>\r\n"+
+							"						<td>${list.price}원</td>\r\n" + 
 							"					</tr>\r\n" + 
+							"				</table>\r\n" + 
 							"				</c:forEach>\r\n" + 
-							"			</table>\r\n" + 
+							"				</div>\r\n"+
 							"			<br>\r\n" + 
 							"			<form action=\"/"+url+"/product\" id=\"search_form\">\r\n" + 
-							"				<input type=\"hidden\" name=\"pageNum\" value=\"1\"> <input\r\n" + 
+							"				<input type=\"hidden\" name=\"pageNum\" value=\"${paging.cri.pageNum}\"> <input\r\n" + 
 							"					type=\"hidden\" name=\"amount\" value=\"${paging.cri.amount}\"> <select\r\n" + 
 							"					name=\"type\">\r\n" + 
 							"					<option value=\"t\">제목</option>\r\n" + 
 							"					<option value=\"c\">내용</option>\r\n" + 
 							"					<option value=\"tc\">제목+내용</option>\r\n" + 
-							"				</select> <input type=\"text\" name=\"search\"> <input type=\"submit\"\r\n" + 
+							"				</select> <input type=\"text\" name=\"search\" value=\"${paging.cri.search}\"> <input type=\"submit\"\r\n" + 
 							"					value=\"찾기\">\r\n" + 
 							"			</form>\r\n" + 
-							"			<br> <br> <a\r\n" + 
+							"			<br> <br> <div id='paging'><a\r\n" + 
 							"				href=\"/"+url+"/product?pageNum=1&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">처음으로</a>\r\n" + 
 							"			<c:if test=\"${paging.prev}\">\r\n" + 
 							"				<a\r\n" + 
@@ -682,7 +673,7 @@ public class EWBController {
 							"					href=\"/"+url+"/product?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">다음</a>\r\n" + 
 							"			</c:if>\r\n" + 
 							"			<a\r\n" + 
-							"				href=\"/"+url+"/product?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a>"+
+							"				href=\"/"+url+"/product?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a></div>"+
 							"			</div>\r\n"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
@@ -694,7 +685,7 @@ public class EWBController {
 							"</html>");
 					bw.close();
 					String create_product_table = "create table product_"+url+" ("
-							+ "pno int primary key, "
+							+ "pno int auto_increment primary key, "
 							+ "pname varchar(100) not null,"
 							+ "price int not null,"
 							+ "content longtext,"
@@ -734,7 +725,7 @@ public class EWBController {
 
 					String create_payment_table = "create table payment_"+url+" ("
 							+ "id varchar(100),"
-							+ "payno int primary key,"
+							+ "payno int auto_increment primary key,"
 							+ "price int,"
 							+ "name varchar(100),"
 							+ "address varchar(100),"
@@ -748,7 +739,7 @@ public class EWBController {
 
 					String create_order_table = "create table order_"+url+" ("
 							+ "id varchar(100),"
-							+ "ono int primary key,"
+							+ "ono int auto_increment primary key,"
 							+ "pno int,"
 							+ "payno int,"
 							+ "b_quantity int,"
@@ -841,7 +832,16 @@ public class EWBController {
 							"	<div id='product_detail_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_detail_content'>\r\n"+
-							"			<div id='product_img'><img src='/display?fileName=${detail.tvo.fullpath}'></div>\r\n"+
+							"			<div id='product_img'>\r\n"+
+							"			<c:choose>\r\n"+
+							"			<c:when test=\"${fn:length(detail.tvo.fullpath) ne 0}\">\r\n"+
+							"				<img src='/display?fileName=${detail.tvo.fullpath}' class='p_imgs'>\r\n"+
+							"			</c:when>\r\n"+
+							"			<c:otherwise>\r\n"+
+							"				<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>\r\n"+
+							"			</c:otherwise>\r\n"+
+							"			</c:choose>\r\n"+
+							"			</div>\r\n"+
 							"			<table id='product_table'>\r\n"+
 							"				<tr>\r\n"+
 							"					<td>\r\n"+
@@ -870,10 +870,12 @@ public class EWBController {
 							"				</tr>\r\n"+
 							"			</table>\r\n"+
 							"			<div id='product_content'>${detail.content}</div>\r\n"+
+							"			<c:if test=\"${fn:length(userInfo.admin) ne 0}\">\r\n"+
 							"			<div id='mr'>\r\n"+
 							"				<div id='modify'>수정</div>\r\n"+
 							"				<div id='remove'>삭제</div>\r\n"+
 							"			</div>\r\n"+
+							"			</c:if>\r\n"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
@@ -995,9 +997,6 @@ public class EWBController {
 							"			<c:forEach var=\"order\" items=\"${order}\">\r\n"+
 							"				<tr>\r\n"+
 							"					<td>\r\n"+
-							"						<input type='checkbox' class='order_check' data-pno='${order.pno}' checked>\r\n"+
-							"					</td>\r\n"+
-							"					<td>\r\n"+
 							"<c:choose>"
 							+ "<c:when test=\"${fn:length(order.pvo.tvo.fullpath) ne 0}\">"
 							+ "<img src='/display?fileName=${order.pvo.tvo.fullpath}' class='p_imgs'>"
@@ -1036,6 +1035,48 @@ public class EWBController {
 				}else {
 					System.out.println("order File already exists");
 				}
+				
+				if(mypage.createNewFile()) {
+					System.out.println("mypage File created");
+					FileWriter fw = new FileWriter(mypage);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" mypage</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='${url}' id='url'>\r\n"+
+							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='mypage_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='mypage_content'>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_mypage.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("mypage File already exists");
+				}
+				
 			}else if(opt.equals("community")) {
 				if(board.createNewFile()) {
 					System.out.println("board File created");
@@ -1165,6 +1206,11 @@ public class EWBController {
 		model.addAttribute("order", es.loadCart(cvo));
 	}
 
+	@RequestMapping(value = "/{url}/mypage", method = RequestMethod.GET)
+	public void urlMyPage() {
+		
+	}
+	
 	@RequestMapping(value = "/{url}/board", method = RequestMethod.GET)
 	public void urlBoard() {
 
@@ -1295,5 +1341,17 @@ public class EWBController {
 		int result = es.saveThumbnail(tvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/deleteproduct", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteProduct(@RequestBody ProductVO pvo) {
+		System.out.println(pvo);
+		if(pvo.getReg_date().equals("true")) {
+			int result = es.deleteProduct(pvo);
+			return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+					: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}else {
+			return null;
+		}
 	}
 }

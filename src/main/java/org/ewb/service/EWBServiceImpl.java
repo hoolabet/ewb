@@ -93,4 +93,8 @@ public class EWBServiceImpl implements EWBService{
 		return em.loadCart(cvo);
 	}
 	
+	public int deleteProduct(ProductVO pvo) {
+		return em.deleteProduct(pvo);
+	}
+	
 }

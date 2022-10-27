@@ -242,5 +242,10 @@
 		</if>
 	</select>
 	
+	<delete id="deleteProduct">
+		DELETE FROM product_${url}
+		WHERE pno=#{pno}
+	</delete>
+	
 	
 </mapper>

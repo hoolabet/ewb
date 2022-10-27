@@ -16,7 +16,7 @@ public class CriteriaVO {
 	}
 	public CriteriaVO() {
 		pageNum = 1;
-		amount = 10;
+		amount = 15;
 		search = "";
 		array = "last";
 	}

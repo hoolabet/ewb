@@ -1,9 +1,7 @@
 package org.ewb.controller;
 
-import javax.servlet.http.HttpSession;
 
 import org.ewb.model.CartVO;
-import org.ewb.model.ThumbnailVO;
 import org.ewb.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,4 +48,6 @@ public class CartController {
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	
 }

@@ -73,9 +73,57 @@ function getHF() {
 }
 
 getHF();
+let pri = 0;
+$(".prices").each(function(i,p) {
+	pri += Number($(p).html())
+	$("#f_price").html(pri)
+})
 
 $("#pay_btn").on("click", function() {
-	
+	const pData = {id,url,price:$("#f_price").html()}
+	$.ajax({
+		type:"post",
+		url:"/payment",
+		data:JSON.stringify(pData),
+		contentType: "application/json; charset=utf-8",
+		success: function() {
+			$.getJSON("/searchordered",{url,id,doOrder:true},function(res){
+				res.forEach(function(r) {
+					$.ajax({
+						type:"post",
+						url:"/insertorder",
+						data:JSON.stringify({id,pno:r.pno,b_quantity:r.b_quantity,url}),
+						contentType: "application/json; charset=utf-8",
+						success: function() {
+							$.ajax({
+								type:"delete",
+								url:"/deletecart",
+								data:JSON.stringify({id,url,pno:r.pno}),
+								contentType: "application/json; charset=utf-8",
+								success: function() {
+									$.ajax({
+										type:"put",
+										url:"/updatequan",
+										data:JSON.stringify({url,pno:r.pno,quantity:r.b_quantity}),
+										contentType: "application/json; charset=utf-8",
+										success: function() {
+											
+										}
+									})
+								}
+							})
+						}
+					})
+				})
+			})
+		}
+	})
+	.done(function() {
+		alert("결제 완료");
+		setTimeout(() => {
+			location.href=`/${url}/product`;
+		}, 100);
+	})
 })
 
 $(window).on("beforeunload",function() {

@@ -4,7 +4,7 @@ body{
 }
 
 #product_content{
-    height: 700px;
+    /* height: 700px; */
     width: 100%;
     background-color: rgb(236, 228, 228);
     margin: auto;
@@ -13,6 +13,10 @@ body{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+}
+
+#product_div{
+	margin: 50px;
 }
 
 #dataTableBody{
@@ -53,4 +57,54 @@ body{
 
 #pagingul li.on a {
     color: #fff;
+}
+
+.p_imgs {
+	width: 250px;
+	height: 200px;
+	box-shadow: 2px 2px 2px 2px #cbcbcb;
+}
+
+.sold_out {
+	width: 250px;
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: gray;
+	opacity: 0.6;
+	position: absolute;
+	top: 0px;
+	font-size: 40px;
+}
+
+#table_div {
+	display: flex;
+	width: 1000px;
+	flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.product_table {
+	margin-left: 38px;
+	margin-right: 38px;
+	text-align: center;
+}
+
+
+
+#search_form{
+	display: flex;
+    justify-content: center;
+}
+
+#paging {
+	display: flex;
+    justify-content: center;
+}
+
+#paging a {
+	padding: 13px;
+	border: 1px solid black;
 }

@@ -190,6 +190,13 @@ getHF();
 //    displayData(globalCurrentPage, dataPerPage);
 //});
 
+$("#dataPerPage").on("change", function() {
+	$("input[name='amount']").val($(this).val());
+	$("input[value='찾기']").click();
+})
+
+$("#dataPerPage").val($("input[name='amount']").val());
+
 $("#add_product").on("click", function() {
 	location.href = `/${url}/productwrite`;
 })

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 #order_content{
-    height: 700px;
+    /* height: 1000px; */
     width: 100%;
     background-color: rgb(236, 228, 228);
     margin: auto;

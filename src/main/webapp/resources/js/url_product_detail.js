@@ -5,6 +5,7 @@
 const url = $("#url").val();
 const pno = $("#product_pno").val();
 const id = $("#user_id").val();
+const admin = $("#admin").val();
 
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
@@ -137,5 +138,17 @@ $("#cart_btn").on("click", function() {
 				}
 			}
 		})
+	})
+})
+
+$("#remove").on("click", function() {
+	$.ajax({
+		type:"delete",
+		url:"/deleteproduct",
+		data:JSON.stringify({url,pno,reg_date:admin}),
+		contentType: "application/json; charset=utf-8",
+		success: function() {
+			location.href = `/${url}/product`;
+		}
 	})
 })

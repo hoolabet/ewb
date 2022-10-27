@@ -49,6 +49,9 @@ public interface EWBService {
 
 	public ArrayList<CartVO> loadCart(CartVO cvo);
 
+	public int deleteProduct(ProductVO pvo);
+
+
 
 
 }
