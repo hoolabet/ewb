@@ -152,3 +152,7 @@ $("#remove").on("click", function() {
 		}
 	})
 })
+
+$("#modify").on("click", function() {
+	location.href = `/${url}/modifyproduct?pno=${pno}`;
+})

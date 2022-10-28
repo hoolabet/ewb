@@ -7,6 +7,7 @@ import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
+import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
 import org.ewb.model.ThumbnailVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,4 +98,19 @@ public class EWBServiceImpl implements EWBService{
 		return em.deleteProduct(pvo);
 	}
 	
+	public int modifyThumbnail(ThumbnailVO tvo) {
+		return em.modifyThumbnail(tvo);
+	}
+	
+	public int modifyProduct(ProductVO pvo) {
+		return em.modifyProduct(pvo);
+	}
+	
+	public int saveThumbnail2(ThumbnailVO tvo) {
+		return em.saveThumbnail2(tvo);
+	}
+	
+	public ArrayList<PaymentVO> orderlist(PaymentVO pvo){
+		return em.orderlist(pvo);
+	}
 }

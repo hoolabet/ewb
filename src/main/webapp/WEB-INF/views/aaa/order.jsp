@@ -21,6 +21,12 @@
 	<div id='order_entry'>
 		<div id='header'></div>
 		<div id='order_content'>
+			<div id='order_des'>
+				<input type='text' id='name' placeholder='이름'><br>
+				<input type='text' id='address' placeholder='주소'><br>
+				<input type='text' id='phone' placeholder='연락처'><br>
+				<input type='text' id='memo' placeholder='메모'><br>
+			</div>
 			<table id='order_table'>
 			<c:forEach var="order" items="${order}">
 				<tr>

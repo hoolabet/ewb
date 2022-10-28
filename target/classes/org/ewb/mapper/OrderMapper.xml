@@ -5,8 +5,8 @@
 
 <mapper namespace="org.ewb.mapper.OrderMapper">
 	<insert id="payment">
-		INSERT INTO payment_${url} (id, price)
-		VALUES (#{id},#{price})
+		INSERT INTO payment_${url} (id, price, name, address, phone, memo)
+		VALUES (#{id},#{price},#{name},#{address},#{phone},#{memo})
 	</insert>
 	<insert id="insertOrder">
 		<selectKey keyProperty="payno" order="BEFORE" resultType="int">

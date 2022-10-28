@@ -11,10 +11,12 @@ import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
+import org.ewb.model.OrderVO;
 import org.ewb.model.ProductVO;
 import org.ewb.model.ThumbnailVO;
 import org.ewb.service.EWBService;
 import org.ewb.model.PageVO;
+import org.ewb.model.PaymentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,9 +75,12 @@ public class EWBController {
 		File product = new File(uploadFolder+"\\"+url+"\\product.jsp");
 		File productWrite = new File(uploadFolder+"\\"+url+"\\productwrite.jsp");
 		File productDetail = new File(uploadFolder+"\\"+url+"\\productdetail.jsp");
+		File modifyproduct = new File(uploadFolder+"\\"+url+"\\modifyproduct.jsp");
 		File cart = new File(uploadFolder+"\\"+url+"\\cart.jsp");
 		File order = new File(uploadFolder+"\\"+url+"\\order.jsp");
+		File orderlist = new File(uploadFolder+"\\"+url+"\\orderlist.jsp");
 		File mypage = new File(uploadFolder+"\\"+url+"\\mypage.jsp");
+		File modifyprofile = new File(uploadFolder+"\\"+url+"\\modifyprofile.jsp");
 		File board = new File(uploadFolder+"\\"+url+"\\board.jsp");
 		try {
 			if(home.createNewFile()) {
@@ -870,7 +875,7 @@ public class EWBController {
 							"				</tr>\r\n"+
 							"			</table>\r\n"+
 							"			<div id='product_content'>${detail.content}</div>\r\n"+
-							"			<c:if test=\"${fn:length(userInfo.admin) ne 0}\">\r\n"+
+							"			<c:if test=\"${fn:contains(userInfo.admin,true)}\">\r\n"+
 							"			<div id='mr'>\r\n"+
 							"				<div id='modify'>수정</div>\r\n"+
 							"				<div id='remove'>삭제</div>\r\n"+
@@ -889,6 +894,59 @@ public class EWBController {
 				}else {
 					System.out.println("product detail File already exists");
 				}
+				
+				if(modifyproduct.createNewFile()) {
+					System.out.println("modifyproduct write File created");
+					FileWriter fw = new FileWriter(modifyproduct);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" modify product</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyproduct.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
+							"<input type='hidden' value='${url}' id='url'>"+
+							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='${modify.pno}' id='pno'>"+
+							"<input type='hidden' value='${userId}' id='user_id'>"+
+							"	<div id='modifyproduct_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='modifyproduct_content'>\r\n"+
+							"			<div id=\"container\">\r\n" + 
+							"				<label>상품명</label><input type='text' id='pname' value='${modify.pname}'>\r\n"+
+							"				<label>가격</label><input type='text' id='price' value='${modify.price}'>\r\n"+
+							"				<label>수량</label><input type='text' id='quantity' value='${modify.quantity}'>\r\n"+
+							"				<label>섬네일</label><div contenteditable='true' id='thumbnail'><img src='/display?fileName=${modify.tvo.fullpath}'></div><div id='thumb_btn'>섬네일 넣기</div><input type='file' id='thumb_file'>\r\n"+
+							"        		<label>상세내용</label><div contenteditable='true' id=\"content\">${modify.content}</div>\r\n" +
+							"				<input type='file' id='insert_img' multiple>\r\n"+
+							"				<div id='insert_btn'>이미지 넣기</div>\r\n"+
+							"        		<input type=\"button\" value=\"수정하기\" id=\"modi_btn\">\r\n" + 
+							"    		</div>"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" +
+							"    <script src=\"../resources/js/url_modifyproduct.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("modifyproduct write File already exists");
+				}
+				
 				if(cart.createNewFile()) {
 					System.out.println("cart File created");
 					FileWriter fw = new FileWriter(cart);
@@ -993,6 +1051,12 @@ public class EWBController {
 							"	<div id='order_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='order_content'>\r\n"+
+							"			<div id='order_des'>\r\n"+
+							"				<input type='text' id='name' placeholder='이름'><br>\r\n"+
+							"				<input type='text' id='address' placeholder='주소'><br>\r\n"+
+							"				<input type='text' id='phone' placeholder='연락처'><br>\r\n"+
+							"				<input type='text' id='memo' placeholder='메모'><br>\r\n"+
+							"			</div>\r\n"+
 							"			<table id='order_table'>\r\n"+
 							"			<c:forEach var=\"order\" items=\"${order}\">\r\n"+
 							"				<tr>\r\n"+
@@ -1036,6 +1100,73 @@ public class EWBController {
 					System.out.println("order File already exists");
 				}
 				
+				if(orderlist.createNewFile()) {
+					System.out.println("orderlist File created");
+					FileWriter fw = new FileWriter(orderlist);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" order list</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_orderlist.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='${url}' id='url'>\r\n"+
+							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='orderlist_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='orderlist_content'>\r\n"+
+							"			<div id='orderlist_div'>\r\n"+
+							"				<table id='orderlist_table'>\r\n"+
+							"				<c:forEach items=\"${orderlist}\" var=\"orderlist\">\r\n"+
+							"					<tr>\r\n"+
+							"						<td>\r\n"+
+							"							${orderlist.price}\r\n"+
+							"							<input type='hidden' value='${orderlist.payno}'>\r\n"+
+							"						</td>\r\n"+
+							"						<td>\r\n"+
+							"							${orderlist.name}\r\n"+
+							"						</td>\r\n"+
+							"						<td>\r\n"+
+							"							${orderlist.address}\r\n"+
+							"						</td>\r\n"+
+							"						<td>\r\n"+
+							"							${orderlist.phone}\r\n"+
+							"						</td>\r\n"+
+							"							<c:if test=\"${fn:length(orderlist.phone) ne 0}\">\r\n"+
+							"						<td>\r\n"+
+							"							${orderlist.phone}\r\n"+
+							"						</td>\r\n"+
+							"							</c:if>\r\n"+
+							"					</tr>\r\n"+
+							"				</c:forEach>\r\n"+
+							"				</table>\r\n"+
+							"			</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_orderlist.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("orderlist File already exists");
+				}
+				
 				if(mypage.createNewFile()) {
 					System.out.println("mypage File created");
 					FileWriter fw = new FileWriter(mypage);
@@ -1050,7 +1181,7 @@ public class EWBController {
 							"    <meta charset=\"UTF-8\">\r\n" + 
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" mypage</title>\r\n" + 
+							"    <title>"+url+" ${userInfo.id} mypage</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
@@ -1063,6 +1194,19 @@ public class EWBController {
 							"	<div id='mypage_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='mypage_content'>\r\n"+
+							"			<table id='mypage_table'>\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						<a href='/${url}/modifyprofile'>정보수정</a>\r\n"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<a href='/${url}/cart'>장바구니</a>\r\n"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<a href='/${url}/orderlist'>주문내역</a>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"			</table>\r\n"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
@@ -1075,6 +1219,47 @@ public class EWBController {
 
 				}else {
 					System.out.println("mypage File already exists");
+				}
+				
+				if(modifyprofile.createNewFile()) {
+					System.out.println("modifyprofile File created");
+					FileWriter fw = new FileWriter(modifyprofile);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" ${userInfo.id} modify profile</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='${url}' id='url'>\r\n"+
+							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='modifyprofile_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='modifyprofile_content'>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_modifyprofile.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("modifyprofile File already exists");
 				}
 				
 			}else if(opt.equals("community")) {
@@ -1129,6 +1314,47 @@ public class EWBController {
 					es.createTable(create_board_type_table);
 				}else {
 					System.out.println("board File already exists");
+				}
+				
+				if(mypage.createNewFile()) {
+					System.out.println("mypage File created");
+					FileWriter fw = new FileWriter(mypage);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" mypage</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='${url}' id='url'>\r\n"+
+							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='mypage_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='mypage_content'>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_mypage.js\"></script>"+
+							"</body>"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("mypage File already exists");
 				}
 			}
 
@@ -1193,9 +1419,16 @@ public class EWBController {
 		return new ResponseEntity<>(es.loadProductDetail(pvo),HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/{url}/modifyproduct", method = RequestMethod.GET)
+	public void urlModifyProduct(ProductVO pvo, Model model) {
+		model.addAttribute("modify", es.loadProductDetail(pvo));
+	}
+	
+	
 	@RequestMapping(value = "/{url}/cart", method = RequestMethod.GET)
 	public void urlCart(CartVO cvo, Model model, HttpSession session) {
 		cvo.setId((String)session.getAttribute("userId"));
+		System.out.println(es.loadCart(cvo));
 		model.addAttribute("cart", es.loadCart(cvo));
 	}
 
@@ -1205,9 +1438,20 @@ public class EWBController {
 		cvo.setDoOrder(true);
 		model.addAttribute("order", es.loadCart(cvo));
 	}
+	
+	@RequestMapping(value = "/{url}/orderlist", method = RequestMethod.GET)
+	public void urlOrderList(PaymentVO pvo, Model model, HttpSession session) {
+		pvo.setId((String)session.getAttribute("userId"));
+		model.addAttribute("orderlist",es.orderlist(pvo));
+	}
 
 	@RequestMapping(value = "/{url}/mypage", method = RequestMethod.GET)
 	public void urlMyPage() {
+		
+	}
+	
+	@RequestMapping(value = "/{url}/modifyprofile", method = RequestMethod.GET)
+	public void urlModifyProfile() {
 		
 	}
 	
@@ -1335,10 +1579,32 @@ public class EWBController {
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@RequestMapping(value = "/modifyproduct", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifyProduct(@RequestBody ProductVO pvo) {
+		System.out.println(pvo);
+		int result = es.modifyProduct(pvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 	@RequestMapping(value = "/savethumbnail", method = RequestMethod.POST)
 	public ResponseEntity<String> saveThumbnail(@RequestBody ThumbnailVO tvo) {
 		int result = es.saveThumbnail(tvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/savethumbnail2", method = RequestMethod.POST)
+	public ResponseEntity<String> saveThumbnail2(@RequestBody ThumbnailVO tvo) {
+		int result = es.saveThumbnail2(tvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/modifythumbnail", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifyThumbnail(@RequestBody ThumbnailVO tvo) {
+		int result = es.modifyThumbnail(tvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}

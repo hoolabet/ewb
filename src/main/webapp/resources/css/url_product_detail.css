@@ -15,7 +15,7 @@
 
 #product_table {
 	position: absolute;
-	right: 350px;
+	right: 200px;
 	top: 100px;
 	border: 1px solid black;
 	padding-right: 50px;
@@ -29,7 +29,7 @@
 #product_img {
 	position: absolute;
 	top: 100px;
-	left: 350px;
+	left: 200px;
 }
 
 #product_img img {

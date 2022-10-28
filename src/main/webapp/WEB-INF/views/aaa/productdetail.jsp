@@ -61,7 +61,7 @@
 				</tr>
 			</table>
 			<div id='product_content'>${detail.content}</div>
-			<c:if test="${fn:length(userInfo.admin) ne 0}">
+			<c:if test="${fn:contains(userInfo.admin,true)}">
 			<div id='mr'>
 				<div id='modify'>수정</div>
 				<div id='remove'>삭제</div>

@@ -1,5 +1,6 @@
 package org.ewb.model;
 
+
 public class PaymentVO {
 	private String id;
 	private int payno;
@@ -10,6 +11,15 @@ public class PaymentVO {
 	private String memo;
 	private String payment_date;
 	private String url;
+	private OrderVO ovo;
+	
+	
+	public OrderVO getOvo() {
+		return ovo;
+	}
+	public void setOvo(OrderVO ovo) {
+		this.ovo = ovo;
+	}
 	public String getId() {
 		return id;
 	}
@@ -68,7 +78,7 @@ public class PaymentVO {
 	public String toString() {
 		return "PaymentVO [id=" + id + ", payno=" + payno + ", price=" + price + ", name=" + name + ", address="
 				+ address + ", phone=" + phone + ", memo=" + memo + ", payment_date=" + payment_date + ", url=" + url
-				+ "]";
+				+ ", ovo=" + ovo + "]";
 	}
 	
 	

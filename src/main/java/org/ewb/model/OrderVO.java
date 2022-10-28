@@ -8,6 +8,15 @@ public class OrderVO {
 	private int b_quantity;
 	private String order_date;
 	private String url;
+	private ProductVO pvo;
+	
+	
+	public ProductVO getPvo() {
+		return pvo;
+	}
+	public void setPvo(ProductVO pvo) {
+		this.pvo = pvo;
+	}
 	public String getId() {
 		return id;
 	}
@@ -53,7 +62,7 @@ public class OrderVO {
 	@Override
 	public String toString() {
 		return "OrderVO [id=" + id + ", ono=" + ono + ", pno=" + pno + ", payno=" + payno + ", b_quantity=" + b_quantity
-				+ ", order_date=" + order_date + ", url=" + url + "]";
+				+ ", order_date=" + order_date + ", url=" + url + ", pvo=" + pvo + "]";
 	}
 	
 	

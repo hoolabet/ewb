@@ -8,8 +8,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aaa ${userInfo.id} mypage</title>
-    <link rel="stylesheet" href="../resources/css/url_mypage.css">
+    <title>aaa order list</title>
+    <link rel="stylesheet" href="../resources/css/url_orderlist.css">
     <link rel="stylesheet" href="../resources/css/url_home.css">
     <link rel="stylesheet" href="../resources/color_picker/jquery.minicolors.css">
 </head>
@@ -18,25 +18,38 @@
 <input type='hidden' value='${url}' id='url'>
 <input type='hidden' value='${opt}' id='opt'>
 <input type='hidden' value='${userId}' id='user_id'>
-	<div id='mypage_entry'>
+	<div id='orderlist_entry'>
 		<div id='header'></div>
-		<div id='mypage_content'>
-			<table id='mypage_table'>
-				<tr>
-					<td>
-						<a href='/${url}/modifyprofile'>정보수정</a>
-					</td>
-					<td>
-						<a href='/${url}/cart'>장바구니</a>
-					</td>
-					<td>
-						<a href='/${url}/orderlist'>주문내역</a>
-					</td>
-				</tr>
-			</table>
+		<div id='orderlist_content'>
+			<div id='orderlist_div'>
+				<table id='orderlist_table'>
+				<c:forEach items="${orderlist}" var="orderlist">
+					<tr>
+						<td>
+							${orderlist.price}
+							<input type='hidden' value='${orderlist.payno}'>
+						</td>
+						<td>
+							${orderlist.name}
+						</td>
+						<td>
+							${orderlist.address}
+						</td>
+						<td>
+							${orderlist.phone}
+						</td>
+							<c:if test="${fn:length(orderlist.phone) ne 0}">
+						<td>
+							${orderlist.phone}
+						</td>
+							</c:if>
+					</tr>
+				</c:forEach>
+				</table>
+			</div>
 		</div>
 		<div id='footer'></div>
 	</div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../resources/color_picker/jquery.minicolors.js"></script>
-    <script src="../resources/js/url_mypage.js"></script></body></html>
+    <script src="../resources/js/url_orderlist.js"></script></body></html>

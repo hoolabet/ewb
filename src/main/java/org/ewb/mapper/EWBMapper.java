@@ -6,6 +6,7 @@ import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
+import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
 import org.ewb.model.ThumbnailVO;
 
@@ -49,6 +50,14 @@ public interface EWBMapper {
 	public ArrayList<CartVO> loadCart(CartVO cvo);
 
 	public int deleteProduct(ProductVO pvo);
+
+	public int modifyThumbnail(ThumbnailVO tvo);
+
+	public int modifyProduct(ProductVO pvo);
+
+	public int saveThumbnail2(ThumbnailVO tvo);
+
+	public ArrayList<PaymentVO> orderlist(PaymentVO pvo);
 
 
 }

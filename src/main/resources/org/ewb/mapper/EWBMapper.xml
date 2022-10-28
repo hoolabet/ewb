@@ -190,6 +190,14 @@
 		(#{pno},#{pname},#{price},#{quantity},#{content})
 	</insert>
 
+	<update id="modifyProduct">
+		UPDATE product_${url}
+		SET pname=#{pname},
+		price=#{price}, quantity=#{quantity}, content=#{content}
+		WHERE
+		pno=#{pno}
+	</update>
+
 	<select id="loadProductDetail" resultMap="ProductVO">
 		select *
 		from
@@ -213,6 +221,18 @@
 		(#{pno},#{fullpath})
 	</insert>
 
+	<insert id="saveThumbnail2">
+		INSERT INTO product_img_${url} (pno, fullpath)
+		VALUES
+		(#{pno},#{fullpath})
+	</insert>
+
+	<update id="modifyThumbnail">
+		UPDATE product_img_${url}
+		SET fullpath = #{fullpath}
+		WHERE pno = #{pno}
+	</update>
+
 	<resultMap type="org.ewb.model.CartVO" id="CartVO">
 		<result column="pno" property="pno" />
 		<result column="b_quantity" property="b_quantity" />
@@ -233,19 +253,41 @@
 		p.pno = i.pno
 		) joined
 		on
-		c.pno = joined.pno
+		c.pno =
+		joined.pno
 		where
 		id=#{id}
 		<if test="doOrder == true">
-		and
-		doOrder = #{doOrder}
+			and
+			doOrder = #{doOrder}
 		</if>
 	</select>
-	
+
 	<delete id="deleteProduct">
 		DELETE FROM product_${url}
 		WHERE pno=#{pno}
 	</delete>
-	
-	
+	<resultMap type="org.ewb.model.OrderVO" id="OrderVO">
+		<result column="pno" property="pno" />
+		<result column="b_quantity" property="b_quantity" />
+		<collection property="pvo" resultMap="ProductVO" />
+	</resultMap>
+	<resultMap type="org.ewb.model.PaymentVO" id="PaymentVO">
+		<result column="payno" property="payno" />
+		<result column="price" property="price" />
+		<result column="name" property="name" />
+		<result column="address" property="address" />
+		<result column="phone" property="phone" />
+		<result column="memo" property="memo" />
+		<collection property="ovo" resultMap="OrderVO" />
+	</resultMap>
+	<select id="orderlist" resultMap="PaymentVO">
+		select
+		*
+		from
+		payment_${url} p
+		where
+		id=#{id}
+	</select>
+
 </mapper>
