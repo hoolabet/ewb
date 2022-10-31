@@ -74,3 +74,27 @@ function getHF() {
 }
 
 getHF();
+
+
+$(".orderlist_td").each(function(i,o) {
+	const payno = $(o).data("payno");
+	$.getJSON("/orderlist",{payno,url},function(res){
+		res.forEach(function(r,i) {
+			const td = `
+					<td class="list_td">
+						<div class="td_div"><a href="/${url}/productdetail?pno=${r.pno}">
+						`+
+						(r.pvo.tvo == null ?
+						`<img class="p_imgs" src="https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png">`
+						:`<img class="p_imgs" src="/display?fileName=${r.pvo.tvo.fullpath}">`)
+						+`
+						</a></div>
+						<div class="td_div"><a href="/${url}/productdetail?pno=${r.pno}">${r.pvo.pname}</a></div>
+						<div class="td_div">가격 : ${r.pvo.price}원</div>
+						<div class="td_div">구매수량 : ${r.b_quantity}개</div>
+					</td>
+			`;
+			$(`#payno_${payno}`).append(td);
+		})
+	})
+})

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 #orderlist_content{
-    height: 1000px;
+    height: 1500px;
     width: 100%;
     background-color: rgb(236, 228, 228);
     margin: auto;
@@ -10,4 +10,27 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+}
+
+#orderlist_table{
+	text-align: center;
+	border-collapse: collapse;
+}
+
+#orderlist_table td {
+	border: 1px solid black;
+	padding: 20px;
+}
+
+.list_td {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 600px;
+}
+
+.p_imgs {
+	width: 200px;
+	height: 150px;
+	box-shadow: 2px 2px 2px 2px #cbcbcb;
 }

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 #product_detail_content{
-    height: 2000px;
+    height: 3000px;
     width: 100%;
     background-color: rgb(236, 228, 228);
     margin: auto;
@@ -41,9 +41,30 @@
 	margin: auto;
 	position: relative;
 	top: 800px;
-	height: 500px;
+	height: 800px;
 	width: 70%;
 	border: 1px solid black;
+}
+
+#review_div {
+	margin: auto;
+	position: relative;
+	top: 1000px;
+	height: 800px;
+	width: 70%;
+	border: 1px solid black;
+}
+
+#review_img_file{
+	display:none;
+}
+
+#review_text {
+	margin: 50px;
+	padding: 20px;
+	width: 500px;
+	height: 100px;
+	resize: none;
 }
 
 #mr {

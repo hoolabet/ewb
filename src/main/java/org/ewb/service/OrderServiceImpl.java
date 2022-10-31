@@ -1,5 +1,7 @@
 package org.ewb.service;
 
+import java.util.ArrayList;
+
 import org.ewb.mapper.OrderMapper;
 import org.ewb.model.OrderVO;
 import org.ewb.model.PaymentVO;
@@ -22,5 +24,9 @@ public class OrderServiceImpl implements OrderService{
 	
 	public int updateQuan(ProductVO pvo) {
 		return om.updateQuan(pvo);
+	}
+	
+	public ArrayList<OrderVO> orderlist(OrderVO ovo){
+		return om.orderlist(ovo);
 	}
 }

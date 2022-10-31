@@ -24,29 +24,31 @@
 			<div id='orderlist_div'>
 				<table id='orderlist_table'>
 				<c:forEach items="${orderlist}" var="orderlist">
-					<tr>
-						<td>
-							${orderlist.price}
-							<input type='hidden' value='${orderlist.payno}'>
+					<tr id="payno_${orderlist.payno}">
+						<td class="orderlist_td" data-payno="${orderlist.payno}">
+							${orderlist.price}원<br>
+							${orderlist.payment_date}
 						</td>
-						<td>
-							${orderlist.name}
-						</td>
-						<td>
-							${orderlist.address}
-						</td>
-						<td>
-							${orderlist.phone}
-						</td>
-							<c:if test="${fn:length(orderlist.phone) ne 0}">
-						<td>
-							${orderlist.phone}
-						</td>
-							</c:if>
 					</tr>
 				</c:forEach>
 				</table>
-			</div>
+			<br> <br> <div id='paging'><a
+				href="/aaa/orderlist?pageNum=1&amount=${paging.cri.amount}">처음으로</a>
+			<c:if test="${paging.prev}">
+				<a
+					href="/aaa/orderlist?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}">이전</a>
+			</c:if>
+			<c:forEach begin="${paging.startPage}" end="${paging.endPage}"
+				var="num">
+				<a
+					href="/aaa/orderlist?pageNum=${num}&amount=${paging.cri.amount}">${num}</a>
+			</c:forEach>
+			<c:if test="${paging.next}">
+				<a
+					href="/aaa/orderlist?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}">다음</a>
+			</c:if>
+			<a
+				href="/aaa/orderlist?pageNum=${paging.realEnd}&amount=${paging.cri.amount}">맨끝으로</a></div>			</div>			</div>
 		</div>
 		<div id='footer'></div>
 	</div>

@@ -13,6 +13,7 @@ import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.OrderVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ReviewVO;
 import org.ewb.model.ThumbnailVO;
 import org.ewb.service.EWBService;
 import org.ewb.model.PageVO;
@@ -755,6 +756,31 @@ public class EWBController {
 							+ "references payment_"+url+"(payno) on update cascade on delete cascade"
 							+ ")";
 					es.createTable(create_order_table);
+					
+					String create_review_table = "create table review_"+url+" ("
+							+ "id varchar(100),"
+							+ "rno int auto_increment primary key,"
+							+ "pno int,"
+							+ "content longtext,"
+							+ "review_date datetime default now(),"
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade,"
+							+ "foreign key(pno)"
+							+ "references product_"+url+"(pno) on update cascade on delete cascade"
+							+ ")";
+					es.createTable(create_review_table);
+					
+					String create_review_img_table = "create table review_img_"+url+" ("
+							+ "rno int,"
+							+ "pno int,"
+							+ "fullpath varchar(300),"
+							+ "foreign key(pno)"
+							+ "references product_"+url+"(pno) on update cascade on delete cascade,"
+							+ "foreign key(rno)"
+							+ "references review_"+url+"(rno) on update cascade on delete cascade"
+							+ ")";
+					es.createTable(create_review_img_table);
+					
 				}else {
 					System.out.println("product File already exists");
 				}
@@ -875,6 +901,14 @@ public class EWBController {
 							"				</tr>\r\n"+
 							"			</table>\r\n"+
 							"			<div id='product_content'>${detail.content}</div>\r\n"+
+							"			<div id='review_div'>\r\n" + 
+							"				<textarea placeholder=\"리뷰\" id=\"review_text\"></textarea><br>\r\n" + 
+							"				<textarea placeholder=\"리뷰 사진\" id=\"review_img_area\" readonly></textarea><br>\r\n" + 
+							"				<input type=\"button\" value=\"사진첨부\" id=\"review_img_btn\"><br>\r\n" +
+							"				<input type=\"file\" id=\"review_img_file\">\r\n" + 
+							"				<input type=\"button\" value=\"작성하기\" id=\"review_btn\">\r\n" + 
+							"				<div id=\"reviews\"></div>\r\n" + 
+							"			</div>"+
 							"			<c:if test=\"${fn:contains(userInfo.admin,true)}\">\r\n"+
 							"			<div id='mr'>\r\n"+
 							"				<div id='modify'>수정</div>\r\n"+
@@ -1130,28 +1164,31 @@ public class EWBController {
 							"			<div id='orderlist_div'>\r\n"+
 							"				<table id='orderlist_table'>\r\n"+
 							"				<c:forEach items=\"${orderlist}\" var=\"orderlist\">\r\n"+
-							"					<tr>\r\n"+
-							"						<td>\r\n"+
-							"							${orderlist.price}\r\n"+
-							"							<input type='hidden' value='${orderlist.payno}'>\r\n"+
-							"						</td>\r\n"+
-							"						<td>\r\n"+
-							"							${orderlist.name}\r\n"+
-							"						</td>\r\n"+
-							"						<td>\r\n"+
-							"							${orderlist.address}\r\n"+
-							"						</td>\r\n"+
-							"						<td>\r\n"+
-							"							${orderlist.phone}\r\n"+
-							"						</td>\r\n"+
-							"							<c:if test=\"${fn:length(orderlist.phone) ne 0}\">\r\n"+
-							"						<td>\r\n"+
-							"							${orderlist.phone}\r\n"+
-							"						</td>\r\n"+
-							"							</c:if>\r\n"+
+							"					<tr id=\"payno_${orderlist.payno}\">\r\n" + 
+							"						<td class=\"orderlist_td\" data-payno=\"${orderlist.payno}\">\r\n" + 
+							"							${orderlist.price}원<br>\r\n" + 
+							"							${orderlist.payment_date}\r\n" + 
+							"						</td>\r\n" +
 							"					</tr>\r\n"+
 							"				</c:forEach>\r\n"+
 							"				</table>\r\n"+
+							"			<br> <br> <div id='paging'><a\r\n" + 
+							"				href=\"/aaa/orderlist?pageNum=1&amount=${paging.cri.amount}\">처음으로</a>\r\n" + 
+							"			<c:if test=\"${paging.prev}\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/aaa/orderlist?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}\">이전</a>\r\n" + 
+							"			</c:if>\r\n" + 
+							"			<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
+							"				var=\"num\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/aaa/orderlist?pageNum=${num}&amount=${paging.cri.amount}\">${num}</a>\r\n" + 
+							"			</c:forEach>\r\n" + 
+							"			<c:if test=\"${paging.next}\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/aaa/orderlist?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}\">다음</a>\r\n" + 
+							"			</c:if>\r\n" + 
+							"			<a\r\n" + 
+							"				href=\"/aaa/orderlist?pageNum=${paging.realEnd}&amount=${paging.cri.amount}\">맨끝으로</a></div>			</div>"+
 							"			</div>\r\n"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
@@ -1440,9 +1477,17 @@ public class EWBController {
 	}
 	
 	@RequestMapping(value = "/{url}/orderlist", method = RequestMethod.GET)
-	public void urlOrderList(PaymentVO pvo, Model model, HttpSession session) {
-		pvo.setId((String)session.getAttribute("userId"));
-		model.addAttribute("orderlist",es.orderlist(pvo));
+	public void urlOrderList(CriteriaVO cri, Model model, HttpSession session) {
+		cri.setSearch((String)session.getAttribute("userId"));
+		cri.setAmount(5);
+		try {
+			model.addAttribute("orderlist",es.orderlist(cri));
+			model.addAttribute("paging", new PageVO(cri, es.orderlistMaxNumSearch(cri)));
+			session.setAttribute("criValue", new PageVO(cri, es.orderlistMaxNumSearch(cri)));
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 
 	@RequestMapping(value = "/{url}/mypage", method = RequestMethod.GET)
@@ -1513,7 +1558,11 @@ public class EWBController {
 			String target6 = "cart_"+cvo.getUrl();
 			String target7 = "payment_"+cvo.getUrl();
 			String target8 = "order_"+cvo.getUrl();
+			String target9 = "review_"+cvo.getUrl();
+			String target10 = "review_img_"+cvo.getUrl();
 
+			es.dropTable(target10);
+			es.dropTable(target9);
 			es.dropTable(target8);
 			es.dropTable(target7);
 			es.dropTable(target6);
@@ -1620,4 +1669,19 @@ public class EWBController {
 			return null;
 		}
 	}
+	
+	@RequestMapping(value = "/writereview", method = RequestMethod.POST)
+	public ResponseEntity<String> writeReview(@RequestBody ReviewVO rvo) {
+		int result = es.writeReview(rvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/savereviewimg", method = RequestMethod.POST)
+	public ResponseEntity<String> saveReviewImg(@RequestBody ThumbnailVO tvo) {
+		int result = es.saveReviewImg(tvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 }

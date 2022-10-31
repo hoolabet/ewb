@@ -61,7 +61,14 @@
 				</tr>
 			</table>
 			<div id='product_content'>${detail.content}</div>
-			<c:if test="${fn:contains(userInfo.admin,true)}">
+			<div id='review_div'>
+				<textarea placeholder="리뷰" id="review_text"></textarea><br>
+				<textarea placeholder="리뷰 사진" id="review_img_area" readonly></textarea><br>
+				<input type="button" value="사진첨부" id="review_img_btn"><br>
+				<input type="file" id="review_img_file">
+				<input type="button" value="작성하기" id="review_btn">
+				<div id="reviews"></div>
+			</div>			<c:if test="${fn:contains(userInfo.admin,true)}">
 			<div id='mr'>
 				<div id='modify'>수정</div>
 				<div id='remove'>삭제</div>

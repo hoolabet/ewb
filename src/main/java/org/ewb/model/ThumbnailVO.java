@@ -2,8 +2,16 @@ package org.ewb.model;
 
 public class ThumbnailVO {
 	private int pno;
+	private int rno;
 	private String fullpath;
 	private String url;
+	
+	public int getRno() {
+		return rno;
+	}
+	public void setRno(int rno) {
+		this.rno = rno;
+	}
 	public String getUrl() {
 		return url;
 	}
@@ -24,7 +32,7 @@ public class ThumbnailVO {
 	}
 	@Override
 	public String toString() {
-		return "ThumbnailVO [pno=" + pno + ", fullpath=" + fullpath + ", url=" + url + "]";
+		return "ThumbnailVO [pno=" + pno + ", rno=" + rno + ", fullpath=" + fullpath + ", url=" + url + "]";
 	}
 	
 	

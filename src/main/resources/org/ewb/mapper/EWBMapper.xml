@@ -281,13 +281,55 @@
 		<result column="memo" property="memo" />
 		<collection property="ovo" resultMap="OrderVO" />
 	</resultMap>
-	<select id="orderlist" resultMap="PaymentVO">
-		select
+	
+	<select id="orderlist" resultType="org.ewb.model.PaymentVO">
+		SELECT
 		*
-		from
+		FROM(
+		SELECT
+		p.*,
+		ROW_NUMBER() OVER(ORDER BY p.payno DESC)
+		as num
+		FROM
 		payment_${url} p
 		where
-		id=#{id}
+		id=#{search}
+		ORDER BY
+		p.payno DESC
+		) add_rn_board
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
 	</select>
-
+	
+	<select id="orderlistMaxNumSearch" resultType="int">
+		SELECT
+		ifnull(MAX(num),1)
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY payno
+		DESC) as num
+		FROM
+		payment_${url}
+		ORDER BY
+		payno DESC
+		) add_rn_board
+	</select>
+	
+	<insert id="writeReview">
+		INSERT INTO review_${url}(id,pno,content)
+		VALUES(#{id},#{pno},#{content})
+	</insert>
+	
+	<insert id="saveReviewImg">
+		<selectKey keyProperty="rno" order="BEFORE" resultType="int">
+			select
+			ifnull(MAX(rno),1)
+			from review_${url}
+		</selectKey>
+		INSERT INTO review_img_${url}(rno,pno,fullpath)
+		VALUES(#{rno},#{pno},#{fullpath})
+	</insert>
 </mapper>

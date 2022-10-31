@@ -8,6 +8,7 @@ import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ReviewVO;
 import org.ewb.model.ThumbnailVO;
 
 public interface EWBMapper {
@@ -57,7 +58,13 @@ public interface EWBMapper {
 
 	public int saveThumbnail2(ThumbnailVO tvo);
 
-	public ArrayList<PaymentVO> orderlist(PaymentVO pvo);
+	public ArrayList<PaymentVO> orderlist(CriteriaVO cri);
+
+	public int orderlistMaxNumSearch(CriteriaVO cri);
+
+	public int writeReview(ReviewVO rvo);
+
+	public int saveReviewImg(ThumbnailVO tvo);
 
 
 }

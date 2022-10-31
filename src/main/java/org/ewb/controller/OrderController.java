@@ -50,4 +50,9 @@ public class OrderController {
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@RequestMapping(value = "/orderlist", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<OrderVO>> orderlist(OrderVO ovo) {
+		return new ResponseEntity<>(os.orderlist(ovo),HttpStatus.OK);
+	}
+	
 }

@@ -9,6 +9,7 @@ import org.ewb.model.CriteriaVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ReviewVO;
 import org.ewb.model.ThumbnailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,7 +111,19 @@ public class EWBServiceImpl implements EWBService{
 		return em.saveThumbnail2(tvo);
 	}
 	
-	public ArrayList<PaymentVO> orderlist(PaymentVO pvo){
-		return em.orderlist(pvo);
+	public ArrayList<PaymentVO> orderlist(CriteriaVO cri){
+		return em.orderlist(cri);
+	}
+	
+	public int orderlistMaxNumSearch(CriteriaVO cri) {
+		return em.orderlistMaxNumSearch(cri);
+	}
+	
+	public int writeReview(ReviewVO rvo) {
+		return em.writeReview(rvo);
+	}
+
+	public int saveReviewImg(ThumbnailVO tvo) {
+		return em.saveReviewImg(tvo);
 	}
 }

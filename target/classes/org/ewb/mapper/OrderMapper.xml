@@ -27,4 +27,44 @@
 		pno = #{pno}
 	</update>
 	
+	<resultMap type="org.ewb.model.ThumbnailVO" id="ThumbnailVO">
+		<result column="fullpath" property="fullpath" />
+	</resultMap>
+	<resultMap type="org.ewb.model.ProductVO" id="ProductVO">
+		<result column="pno" property="pno" />
+		<result column="pname" property="pname" />
+		<result column="price" property="price" />
+		<result column="content" property="content" />
+		<result column="quantity" property="quantity" />
+		<result column="s_quantity" property="s_quantity" />
+		<result column="reg_date" property="reg_date" />
+		<result column="type" property="type" />
+		<collection property="tvo" resultMap="ThumbnailVO" />
+	</resultMap>
+	<resultMap type="org.ewb.model.OrderVO" id="OrderVO">
+		<result column="pno" property="pno" />
+		<result column="b_quantity" property="b_quantity" />
+		<collection property="pvo" resultMap="ProductVO" />
+	</resultMap>
+	
+	<select id="orderlist" resultMap="OrderVO">
+		select payno,b_quantity,joined.*
+		from
+			order_${url} o
+		join
+		(
+			select p.*, fullpath
+			from
+				product_${url} p
+			left join
+				product_img_${url} i
+			on
+				p.pno = i.pno
+		) joined
+		on
+			o.pno = joined.pno
+		where
+			payno=#{payno}
+	</select>
+	
 </mapper>
