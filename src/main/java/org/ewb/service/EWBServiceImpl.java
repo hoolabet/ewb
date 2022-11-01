@@ -126,4 +126,20 @@ public class EWBServiceImpl implements EWBService{
 	public int saveReviewImg(ThumbnailVO tvo) {
 		return em.saveReviewImg(tvo);
 	}
+	
+	public ArrayList<ReviewVO> loadReview(ReviewVO rvo){
+		return em.loadReview(rvo);
+	}
+	
+	public int deleteReview(ReviewVO rvo) {
+		return em.deleteReview(rvo);
+	}
+	
+	public MemberVO loadUserInfo(MemberVO mvo) {
+		return em.loadUserInfo(mvo);
+	}
+	
+	public int modifyProfile(MemberVO mvo) {
+		return em.modifyProfile(mvo);
+	}
 }

@@ -281,7 +281,7 @@
 		<result column="memo" property="memo" />
 		<collection property="ovo" resultMap="OrderVO" />
 	</resultMap>
-	
+
 	<select id="orderlist" resultType="org.ewb.model.PaymentVO">
 		SELECT
 		*
@@ -296,13 +296,14 @@
 		id=#{search}
 		ORDER BY
 		p.payno DESC
-		) add_rn_board
+		)
+		add_rn_board
 		<![CDATA[
 		WHERE
 			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
 		]]>
 	</select>
-	
+
 	<select id="orderlistMaxNumSearch" resultType="int">
 		SELECT
 		ifnull(MAX(num),1)
@@ -310,19 +311,20 @@
 		SELECT
 		*,
 		ROW_NUMBER() OVER(ORDER BY payno
-		DESC) as num
+		DESC)
+		as num
 		FROM
 		payment_${url}
 		ORDER BY
 		payno DESC
 		) add_rn_board
 	</select>
-	
+
 	<insert id="writeReview">
 		INSERT INTO review_${url}(id,pno,content)
 		VALUES(#{id},#{pno},#{content})
 	</insert>
-	
+
 	<insert id="saveReviewImg">
 		<selectKey keyProperty="rno" order="BEFORE" resultType="int">
 			select
@@ -332,4 +334,36 @@
 		INSERT INTO review_img_${url}(rno,pno,fullpath)
 		VALUES(#{rno},#{pno},#{fullpath})
 	</insert>
+
+	<resultMap type="org.ewb.model.ReviewVO" id="ReviewVO">
+		<result column="pno" property="pno" />
+		<result column="rno" property="rno" />
+		<result column="id" property="id" />
+		<result column="content" property="content" />
+		<result column="review_date" property="review_date" />
+		<collection property="tvo" resultMap="ThumbnailVO" />
+	</resultMap>
+	
+	<select id="loadReview" resultMap="ReviewVO">
+		select *
+		from review_${url} r
+		join review_img_${url} i
+		on r.rno = i.rno
+		where r.pno=#{pno}
+		order by r.rno desc
+	</select>
+	
+	<delete id="deleteReview">
+		DELETE FROM review_${url} WHERE rno=#{rno}
+	</delete>
+	
+	<select id="loadUserInfo" resultType="org.ewb.model.MemberVO">
+		SELECT * FROM member_${url} WHERE id=#{id}
+	</select>
+	
+	<update id="modifyProfile">
+		UPDATE member_${url}
+		SET ${name}=#{sign_date}
+		WHERE id=#{id}
+	</update>
 </mapper>

@@ -902,12 +902,18 @@ public class EWBController {
 							"			</table>\r\n"+
 							"			<div id='product_content'>${detail.content}</div>\r\n"+
 							"			<div id='review_div'>\r\n" + 
-							"				<textarea placeholder=\"리뷰\" id=\"review_text\"></textarea><br>\r\n" + 
-							"				<textarea placeholder=\"리뷰 사진\" id=\"review_img_area\" readonly></textarea><br>\r\n" + 
-							"				<input type=\"button\" value=\"사진첨부\" id=\"review_img_btn\"><br>\r\n" +
+							"				<textarea placeholder=\"리뷰\" id=\"review_text\" required></textarea><br>\r\n" + 
+							"				<div contenteditable=\"false\" id=\"review_img_area\"></div><br>\r\n" + 
+							"				<input type=\"button\" value=\"사진첨부\" id=\"review_img_btn\"><br>\r\n" + 
 							"				<input type=\"file\" id=\"review_img_file\">\r\n" + 
 							"				<input type=\"button\" value=\"작성하기\" id=\"review_btn\">\r\n" + 
-							"				<div id=\"reviews\"></div>\r\n" + 
+							"				<div id=\"reviews\">\r\n" + 
+							"					<table id=\"review_table\">\r\n" + 
+							"					\r\n" + 
+							"					</table>\r\n" + 
+							"					<ul id=\"pagingul\">\r\n" + 
+							"    				</ul>\r\n" + 
+							"				</div>\r\n"+ 
 							"			</div>"+
 							"			<c:if test=\"${fn:contains(userInfo.admin,true)}\">\r\n"+
 							"			<div id='mr'>\r\n"+
@@ -1273,7 +1279,7 @@ public class EWBController {
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
 							"    <title>"+url+" ${userInfo.id} modify profile</title>\r\n" + 
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyprofile.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
 							"</head>\r\n" + 
@@ -1285,6 +1291,115 @@ public class EWBController {
 							"	<div id='modifyprofile_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='modifyprofile_content'>\r\n"+
+							"			<div id=\"modifyprofile_div\">\r\n" + 
+							"				<div class=\"modifyprofile_div\">\r\n" + 
+							"					<table>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<label>비밀번호 수정</label>\r\n" + 
+							"							</td>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"password\" id=\"pw\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<label>비밀번호 수정 확인</label>\r\n" + 
+							"							</td>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"password\" id=\"pwc\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+							"								<input type=\"button\" value=\"비밀번호 수정\" id=\"pw_btn\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"					</table>\r\n" + 
+							"				</div>\r\n" + 
+							"				<div class=\"modifyprofile_div\">\r\n" + 
+							"					<table>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<label>이름 수정</label>\r\n" + 
+							"							</td>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"text\" id=\"name\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+							"								<input type=\"button\" value=\"이름 수정\" id=\"name_btn\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"					</table>\r\n" + 
+							"				</div>\r\n" + 
+							"				<div class=\"modifyprofile_div\">\r\n" + 
+							"					<table>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<label>전화번호 수정</label>\r\n" + 
+							"							</td>\r\n" + 
+							"							<td>\r\n" + 
+							"								<select id=\"f_phone\">\r\n" + 
+							"									<option value=\"010\">010</option>\r\n" + 
+							"									<option value=\"011\">011</option>\r\n" + 
+							"									<option value=\"016\">016</option>\r\n" + 
+							"									<option value=\"017\">017</option>\r\n" + 
+							"									<option value=\"018\">018</option>\r\n" + 
+							"									<option value=\"019\">019</option>\r\n" + 
+							"								</select>\r\n" + 
+							"								<input type=\"text\" id=\"phone\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+							"								<input type=\"button\" value=\"번호 수정\" id=\"phone_btn\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"					</table>\r\n" + 
+							"				</div>\r\n" + 
+							"				<div class=\"modifyprofile_div\">\r\n" + 
+							"					<table>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<label>이메일 수정</label>\r\n" + 
+							"							</td>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"text\" id=\"email\">@\r\n" + 
+							"								<input type=\"text\" id=\"e_address\" readonly>\r\n" + 
+							"								<select id=\"e_select\">\r\n" + 
+							"									<option value=\"naver.com\">naver.com</option>\r\n" + 
+							"									<option value=\"google.com\">google.com</option>\r\n" + 
+							"									<option value=\"dir\">직접입력</option>\r\n" + 
+							"								</select>\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+							"								<input type=\"button\" value=\"이메일 수정\" id=\"email_btn\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"					</table>\r\n" + 
+							"				</div>\r\n" + 
+							"				<div class=\"modifyprofile_div\">\r\n" + 
+							"					<table>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<label>생년월일 수정</label>\r\n" + 
+							"							</td>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"date\" id=\"birth\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+							"								<input type=\"button\" value=\"생년월일 수정\" id=\"birth_btn\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"					</table>\r\n" + 
+							"				</div>\r\n" + 
+							"			</div>"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
@@ -1680,6 +1795,30 @@ public class EWBController {
 	@RequestMapping(value = "/savereviewimg", method = RequestMethod.POST)
 	public ResponseEntity<String> saveReviewImg(@RequestBody ThumbnailVO tvo) {
 		int result = es.saveReviewImg(tvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/loadreview", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<ReviewVO>> loadReview(ReviewVO rvo) {
+		return new ResponseEntity<>(es.loadReview(rvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/deletereview", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteReview(@RequestBody ReviewVO rvo) {
+		int result = es.deleteReview(rvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/loaduserinfo", method = RequestMethod.GET)
+	public ResponseEntity<MemberVO> loadUserInfo(MemberVO mvo) {
+		return new ResponseEntity<>(es.loadUserInfo(mvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/modifyprofile", method = RequestMethod.PUT)
+	public ResponseEntity<String> modifyProfile(@RequestBody MemberVO mvo) {
+		int result = es.modifyProfile(mvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}

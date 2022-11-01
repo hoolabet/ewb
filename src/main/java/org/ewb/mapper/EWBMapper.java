@@ -66,5 +66,13 @@ public interface EWBMapper {
 
 	public int saveReviewImg(ThumbnailVO tvo);
 
+	public ArrayList<ReviewVO> loadReview(ReviewVO rvo);
+
+	public int deleteReview(ReviewVO rvo);
+
+	public MemberVO loadUserInfo(MemberVO mvo);
+
+	public int modifyProfile(MemberVO mvo);
+
 
 }

@@ -7,6 +7,14 @@ public class ReviewVO {
 	private String review_date;
 	private int rno;
 	private int pno;
+	private ThumbnailVO tvo;
+	
+	public ThumbnailVO getTvo() {
+		return tvo;
+	}
+	public void setTvo(ThumbnailVO tvo) {
+		this.tvo = tvo;
+	}
 	public String getId() {
 		return id;
 	}
@@ -46,7 +54,7 @@ public class ReviewVO {
 	@Override
 	public String toString() {
 		return "ReviewVO [id=" + id + ", url=" + url + ", content=" + content + ", review_date=" + review_date
-				+ ", rno=" + rno + ", pno=" + pno + "]";
+				+ ", rno=" + rno + ", pno=" + pno + ", tvo=" + tvo + "]";
 	}
 	
 	
