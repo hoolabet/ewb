@@ -2,7 +2,10 @@
  * 
  */
 
-const url = $("#url").val();
+let url = $("#url").val();
+if(url == ""){
+	url = location.href.split("/")[3]
+}
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
 		$("#header").html(res.content);

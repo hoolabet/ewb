@@ -16,7 +16,10 @@ function checkExtension(fileName, size){
 	return true;
 }
 
-const url = $("#url").val();
+let url = $("#url").val();
+if(url == ""){
+	url = location.href.split("/")[3]
+}
 const userId = $("#user_id").val();
 const pno = $("#pno").val();
 

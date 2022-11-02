@@ -19,7 +19,10 @@ function checkExtension(fileName, size){
 	return true;
 }
 
-const url = $("#url").val();
+let url = $("#url").val();
+if(url == ""){
+	url = location.href.split("/")[3]
+}
 const pno = $("#product_pno").val();
 const id = $("#user_id").val();
 const admin = $("#admin").val();
@@ -110,6 +113,48 @@ $(".quan").on("click", function() {
 		}
 	}
 	$("#multi_price").html($("#quan").val()*$("#quan").data("price"));
+})
+
+$("#order_btn").on("click", function() {
+	if(id == ""){
+		alert("로그인이 필요합니다.");
+		return false;
+	}
+	const b_quantity = $("#quan").val();
+	const cData = {id,pno,b_quantity,url}
+	$.getJSON("/searchcart",cData, function(resC) {
+		const quantity = resC.b_quantity;
+		$.getJSON("/productdetail",{url,pno},function(resP){
+			const entryQ = resP.quantity;
+			if(confirm("이미 장바구니에 담긴 상품입니다. 바로 주문하시겠습니까?")){
+				if(entryQ >= ( Number(b_quantity) + Number(quantity) )){
+					$.ajax({
+						type:"put",
+						url:"/directorder1",
+						data:JSON.stringify({id,pno,url,b_quantity:Number(b_quantity) + Number(quantity),doOrder:true}),
+						contentType: "application/json; charset=utf-8",
+						success: function() {
+							location.href= `/${url}/order`;
+						}
+					})
+				}else{
+					alert("재고가 모자랍니다.");
+				}
+			}
+		})
+			
+	})
+	.fail(function() {
+		$.ajax({
+			type:"post",
+			url:"/directorder2",
+			data:JSON.stringify({id,pno,url,b_quantity,doOrder:true}),
+			contentType:"application/json; charset=utf-8",
+			success: function() {
+				location.href= `/${url}/order`;
+			}
+		})
+	})
 })
 
 $("#cart_btn").on("click", function() {

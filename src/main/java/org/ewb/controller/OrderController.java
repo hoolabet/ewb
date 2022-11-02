@@ -55,4 +55,18 @@ public class OrderController {
 		return new ResponseEntity<>(os.orderlist(ovo),HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/directorder1", method = RequestMethod.PUT)
+	public ResponseEntity<String> directOrder1(@RequestBody CartVO cvo) {
+		int result = os.directOrder1(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/directorder2", method = RequestMethod.POST)
+	public ResponseEntity<String> directOrder2(@RequestBody CartVO cvo) {
+		int result = os.directOrder2(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 }

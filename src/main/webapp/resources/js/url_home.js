@@ -1,9 +1,12 @@
 /**
  * 
  */
-const url = $("#url").val();
+let url = $("#url").val();
 const opt = $("#opt").val();
 const ewbId = $("#ewb_id").val();
+if(url == ""){
+	url = location.href.split("/")[3]
+}
 loadFunc();
 
 let sc = "";
@@ -705,6 +708,22 @@ $("#create_ul").on("click", function(){
 			<div contenteditable="true" id="li_span_${target}_${ndnow}${sc}_modi" style="display:none;background-color:white;border:1px solid black;">${sc}</div>
 			<div id="img_li_${target}_${ndnow}${sc}" class="img_li" data-target="${target}" data-ndnow="${ndnow}${sc}" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
 			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}${sc}" style="cursor:pointer">🛠</span>
+			<span class="remo_li buttons" style="cursor:pointer">✖</span>
+			</li>
+			<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}mypage" data-target="${target}" data-ndnow="${ndnow}mypage">
+			<a href="/${url}/mypage" id="li_a_${target}_${ndnow}mypage"><span id="li_span_${target}_${ndnow}mypage">mypage</span></a>
+			<input readonly value="/${url}/mypage" size="4" type="text" id="li_a_${target}_${ndnow}mypage_modi" style="display:none;">
+			<div contenteditable="true" id="li_span_${target}_${ndnow}mypage_modi" style="display:none;background-color:white;border:1px solid black;">mypage</div>
+			<div id="img_li_${target}_${ndnow}mypage" class="img_li" data-target="${target}" data-ndnow="${ndnow}mypage" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
+			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}mypage" style="cursor:pointer">🛠</span>
+			<span class="remo_li buttons" style="cursor:pointer">✖</span>
+			</li>
+			<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}cart" data-target="${target}" data-ndnow="${ndnow}cart">
+			<a href="/${url}/cart" id="li_a_${target}_${ndnow}cart"><span id="li_span_${target}_${ndnow}cart">cart</span></a>
+			<input readonly value="/${url}/cart" size="4" type="text" id="li_a_${target}_${ndnow}cart_modi" style="display:none;">
+			<div contenteditable="true" id="li_span_${target}_${ndnow}cart_modi" style="display:none;background-color:white;border:1px solid black;">cart</div>
+			<div id="img_li_${target}_${ndnow}cart" class="img_li" data-target="${target}" data-ndnow="${ndnow}cart" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
+			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}cart" style="cursor:pointer">🛠</span>
 			<span class="remo_li buttons" style="cursor:pointer">✖</span>
 			</li>
 		</ul>

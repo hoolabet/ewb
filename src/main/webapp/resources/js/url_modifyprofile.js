@@ -2,8 +2,15 @@
  * 
  */
 
-const url = $("#url").val();
+let url = $("#url").val();
+if(url == ""){
+	url = location.href.split("/")[3]
+}
 const id = $("#user_id").val();
+if(id == ""){
+	alert("로그인이 필요합니다.");
+	location.href=`/${url}/login`;
+}
 const admin = $("#admin").val();
 
 function getHF() {
@@ -120,7 +127,13 @@ $("#phone_btn").on("click", function() {
 })
 
 $("#e_select").on("change", function() {
-	$("#e_address").val($(this).val());
+	if($(this).val() == "dir"){
+		$("#e_address").val("");
+		$("#e_address").removeAttr("readonly");
+	}else{
+		$("#e_address").val($(this).val());
+		$("#e_address").attr("readonly",true);
+	}
 })
 
 $("#email_btn").on("click", function() {

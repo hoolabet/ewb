@@ -67,4 +67,15 @@
 			payno=#{payno}
 	</select>
 	
+	<update id="directOrder1">
+		UPDATE cart_${url}
+		SET b_quantity = #{b_quantity}, doOrder = #{doOrder}
+		WHERE id=#{id} and pno=#{pno}
+	</update>
+	
+	<insert id="directOrder2">
+		INSERT INTO cart_${url}(id,pno,b_quantity,doOrder)
+		VALUES(#{id},#{pno},#{b_quantity},#{doOrder})
+	</insert>
+	
 </mapper>

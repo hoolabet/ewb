@@ -1528,18 +1528,18 @@ public class EWBController {
 	}
 
 	@RequestMapping(value = "/{url}/home", method = RequestMethod.GET)
-	public void urlHome() {
-
+	public void urlHome(String url,HttpSession session) {
+		session.setAttribute("url",url);
 	}
 
 	@RequestMapping(value = "/{url}/signup", method = RequestMethod.GET)
-	public void urlSignUp() {
-
+	public void urlSignUp(String url,HttpSession session) {
+		session.setAttribute("url",url);
 	}
 
 	@RequestMapping(value = "/{url}/login", method = RequestMethod.GET)
-	public void urlLogin() {
-
+	public void urlLogin(String url,HttpSession session) {
+		session.setAttribute("url",url);
 	}
 
 	@RequestMapping(value = "/{url}/product", method = RequestMethod.GET)
@@ -1557,12 +1557,13 @@ public class EWBController {
 	}
 
 	@RequestMapping(value = "/{url}/productwrite", method = RequestMethod.GET)
-	public void urlProductWrite() {
-
+	public void urlProductWrite(String url,HttpSession session) {
+		session.setAttribute("url",url);
 	}
 
 	@RequestMapping(value = "/{url}/productdetail", method = RequestMethod.GET)
-	public void urlProductDetail(ProductVO pvo, Model model) {
+	public void urlProductDetail(ProductVO pvo, Model model, HttpSession session) {
+		session.setAttribute("url",pvo.getUrl());
 		model.addAttribute("detail", es.loadProductDetail(pvo));
 	}
 	
@@ -1593,6 +1594,7 @@ public class EWBController {
 	
 	@RequestMapping(value = "/{url}/orderlist", method = RequestMethod.GET)
 	public void urlOrderList(CriteriaVO cri, Model model, HttpSession session) {
+		session.setAttribute("url",cri.getUrl());
 		cri.setSearch((String)session.getAttribute("userId"));
 		cri.setAmount(5);
 		try {
@@ -1616,8 +1618,8 @@ public class EWBController {
 	}
 	
 	@RequestMapping(value = "/{url}/board", method = RequestMethod.GET)
-	public void urlBoard() {
-
+	public void urlBoard(String url,HttpSession session) {
+		session.setAttribute("url",url);
 	}
 
 	@RequestMapping(value = "/savecontent", method = RequestMethod.POST)

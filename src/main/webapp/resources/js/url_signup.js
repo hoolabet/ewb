@@ -1,7 +1,10 @@
 /**
  * 
  */
-const url = $("#url").val();
+let url = $("#url").val();
+if(url == ""){
+	url = location.href.split("/")[3]
+}
 
 $('.cp').minicolors();
 function getHF() {
@@ -134,6 +137,9 @@ function contextmenuFunc(e) {
 
 $("#sign_img").on("click", function (e) {
 	$("#sign_element").css("left", e.pageX).css("top", e.pageY).toggle();
+	$(".tr_remove").each(function(i,t) {
+		$(`#${$(t).data("id")}`).css("display","none");
+	})
 })
 
 $(document).on("click", function (e) {
@@ -212,14 +218,16 @@ $(".sign_element").on("click", function () {
 		break;
 	}
 	$("#before").before(tr);
-	$(`#${id}`).toggle();
+	$(`#${id}`).css("display","none");
 	$("#address_select").off("change").on("change", function () {
-		$("#dir_address").val($(this).val());
-		if ($("#dir_address").val() == "dir") {
-			$("#dir_address").prop("readonly", false);
+		if ($(this).val() == "dir") {
+			console.log("hi")
+			$("#dir_address").removeAttr("readonly");
 			$("#dir_address").val("");
 		} else {
-			$("#dir_address").prop("readonly", true);
+			console.log("bye")
+			$("#dir_address").val($(this).val());
+			$("#dir_address").attr("readonly", true);
 		}
 		$("#mail").val($("#fe").val() + "@" + $("#dir_address").val());
 	})
@@ -237,7 +245,7 @@ $(".sign_element").on("click", function () {
 	})
 	$(".tr_remove").off("click").on("click", function () {
 		$(this).parent().parent().remove();
-		$(`#${$(this).data("id")}`).toggle();
+		$(`#${$(this).data("id")}`).css("display","block");
 	})
 //	$(".modi_span").off("click").on("click", function (e) {
 //		$("#modify_span").css("left", e.pageX).css("top", e.pageY).toggle();
@@ -326,6 +334,7 @@ $(".modi_input").off("keyup").on("keyup", function (e) {
 
 $("#sign_submit").on("click", function (e) {
 	e.preventDefault();
+	console.log(url)
 	let unable = false;
 	$("input[data-able]").each(function (i, a) {
 		if ($(a).attr("data-able") == "f") {
@@ -348,7 +357,7 @@ $("#sign_submit").on("click", function (e) {
 	const sData = {
 			id, pw, name, email, phone, birth, url
 	};
-
+	console.log(sData)
 	$.ajax({
 		type: "post",
 		url: "/signup",
@@ -535,13 +544,41 @@ function loadFunc() {
 
 	$("#sign_img").off("click").on("click", function(e) {
 		$("#sign_element").css("left",e.pageX).css("top",e.pageY).toggle();
+		$(".tr_remove").each(function(i,t) {
+			$(`#${$(t).data("id")}`).css("display","none");
+		})
 	})
 
 	$(".tr_remove").off("click").on("click", function() {
 		$(this).parent().parent().remove();
-		$(`#${$(this).data("id")}`).toggle();
+		$(`#${$(this).data("id")}`).css("display","block");
 	})
 
+	$("#address_select").off("change").on("change", function () {
+		if ($(this).val() == "dir") {
+			console.log("hi")
+			$("#dir_address").removeAttr("readonly");
+			$("#dir_address").val("");
+		} else {
+			console.log("bye")
+			$("#dir_address").val($(this).val());
+			$("#dir_address").attr("readonly", true);
+		}
+		$("#mail").val($("#fe").val() + "@" + $("#dir_address").val());
+	})
+	
+	$("#dir_address").on("change", function () {
+		$("#mail").val($("#fe").val() + "@" + $("#dir_address").val());
+	})
+	$("#fe").on("blur", function () {
+		$("#mail").val($("#fe").val() + "@" + $("#dir_address").val());
+	})
+	$("#fp").on("change", function () {
+		$("#phone").val($("#fp").val() + "" + $("#bp").val());
+	})
+	$("#bp").on("blur", function () {
+		$("#phone").val($("#fp").val() + "" + $("#bp").val());
+	})
 
 //	$(".modi_span").off("click").on("click", function(e) {
 //		$("#modify_span").css("left",e.pageX).css("top",e.pageY).toggle();
@@ -576,16 +613,16 @@ function loadFunc() {
 			return false;
 		}
 		const id = $("#id").val();
-		const password = $("#pw").val();
+		const pw = $("#pw").val();
 		const name = $("#name").val();
 		const email = $("#mail").val();
 		const phone = $("#phone").val();
 		const birth = $("#birth").val();
 
 		const sData = {
-				id,password,name,email,phone,birth
+				id,pw,name,email,phone,birth,url
 		};
-
+		console.log(sData)
 		$.ajax({
 			type:"post",
 			url:"/signup",
@@ -593,7 +630,7 @@ function loadFunc() {
 			contentType: "application/json; charset=utf-8",
 			success:function(){
 				alert("가입되었습니다.");
-				location.href = `/${tv}/home`;
+				location.href = `/${url}/home`;
 			},
 			error:function(){
 				alert("가입 실패");

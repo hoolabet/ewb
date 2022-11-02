@@ -2,9 +2,15 @@
  * 
  */
 
-const url = $("#url").val();
+let url = $("#url").val();
+if(url == ""){
+	url = location.href.split("/")[3]
+}
 const userId = $("#user_id").val();
-
+if(id == ""){
+	alert("로그인이 필요합니다.");
+	location.href=`/${url}/login`;
+}
 
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){

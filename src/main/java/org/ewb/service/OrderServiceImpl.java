@@ -3,6 +3,7 @@ package org.ewb.service;
 import java.util.ArrayList;
 
 import org.ewb.mapper.OrderMapper;
+import org.ewb.model.CartVO;
 import org.ewb.model.OrderVO;
 import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
@@ -28,5 +29,13 @@ public class OrderServiceImpl implements OrderService{
 	
 	public ArrayList<OrderVO> orderlist(OrderVO ovo){
 		return om.orderlist(ovo);
+	}
+	
+	public int directOrder1(CartVO cvo) {
+		return om.directOrder1(cvo);
+	}
+
+	public int directOrder2(CartVO cvo) {
+		return om.directOrder2(cvo);
 	}
 }
