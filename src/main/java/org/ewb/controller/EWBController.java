@@ -1584,7 +1584,7 @@ public class EWBController {
 		System.out.println(es.loadCart(cvo));
 		model.addAttribute("cart", es.loadCart(cvo));
 	}
-
+ 
 	@RequestMapping(value = "/{url}/order", method = RequestMethod.GET)
 	public void urlOrder(CartVO cvo, Model model, HttpSession session) {
 		cvo.setId((String)session.getAttribute("userId"));
