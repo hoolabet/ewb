@@ -5,7 +5,8 @@ let url = $("#url").val();
 const opt = $("#opt").val();
 const ewbId = $("#ewb_id").val();
 if(url == ""){
-	url = location.href.split("/")[3]
+	url = location.href.split("/")[3];
+	console.log(url);
 }
 loadFunc();
 
@@ -15,27 +16,6 @@ if(opt == "shopping"){
 }else if(opt == "community"){
 	sc = "board";
 }
-
-
-//							$.ajax({
-//								type:"post",
-//								url:"/savecontent",
-//								data:JSON.stringify({url,content:"",type:"signup_page"}),
-//								contentType: "application/json; charset=utf-8",
-//								success:function(){
-//									$.ajax({
-//										type:"post",
-//										url:"/savecontent",
-//										data:JSON.stringify({url,content:"",type:`${sc}_page`}),
-//										contentType: "application/json; charset=utf-8",
-//										success:function(){
-//											setTimeout(() => {
-//												location.href = "/management";
-//											}, 3000);
-//										}
-//									})
-//								}
-//							})
 
 const userId = $("#user_id").val();
 console.log(userId);

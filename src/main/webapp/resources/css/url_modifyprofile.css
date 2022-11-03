@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 #modifyprofile_content{
-    height: 800px;
     width: 100%;
     background-color: rgb(236, 228, 228);
     margin: auto;
@@ -28,3 +27,4 @@
 .td_btn{
 	text-align: center;
 }
+

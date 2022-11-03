@@ -140,6 +140,33 @@ $("#pay_btn").on("click", function() {
 	})
 })
 
+$.getJSON("/loaddes",{url,id}, function(res) {
+	res.forEach(function(r) {
+		const option = `<option value="${r.label}">${r.label}</option>`;
+		$("#des_select").append(option);
+	})
+})
+$("#des_select").on("change", function() {
+	const label = $(this).val();
+	if(label == "new"){
+		$("#label").val("");
+		$("#name").val("");
+		$("#address").val("");
+		$("#phone").val("");
+		$("#memo").val("");
+		return false;
+	}
+	$.getJSON("/loaddes1",{url,id,label}, function(res) {
+		$("#label").val(res.label);
+		$("#name").val(res.name);
+		$("#address").val(res.address);
+		$("#phone").val(res.phone);
+		$("#memo").val(res.memo);
+	})
+
+})
+
+
 $(window).on("beforeunload",function() {
 	$.ajax({
 		type:"put",

@@ -112,6 +112,10 @@ $(".prices").each(function(i,p) {
 })
 
 $("#order_selected_btn").on("click", function() {
+	if($(".cart_check").length == 0){
+		alert("주문할 상품이 없습니다.");
+		return false;
+	}
 	$(".cart_check").each(function(i,c) {
 		if($(c).prop("checked")){
 			const pno = $(c).data("pno");

@@ -6,6 +6,7 @@ import org.ewb.mapper.EWBMapper;
 import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
+import org.ewb.model.DestinationVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
@@ -141,5 +142,37 @@ public class EWBServiceImpl implements EWBService{
 	
 	public int modifyProfile(MemberVO mvo) {
 		return em.modifyProfile(mvo);
+	}
+	
+	public int insertReg(ContentVO cvo) {
+		return em.insertReg(cvo);
+	}
+
+	public int updateReg(ContentVO cvo) {
+		return em.updateReg(cvo);
+	}
+
+	public ContentVO loadReg(ContentVO cvo) {
+		return em.loadReg(cvo);
+	}
+	
+	public int insertDes(DestinationVO dvo) {
+		return em.insertDes(dvo);
+	}
+
+	public int updateDes(DestinationVO dvo) {
+		return em.updateDes(dvo);
+	}
+
+	public int deleteDes(DestinationVO dvo) {
+		return em.deleteDes(dvo);
+	}
+
+	public ArrayList<DestinationVO> loadDes(DestinationVO dvo){
+		return em.loadDes(dvo);
+	}
+	
+	public DestinationVO loadDes1(DestinationVO dvo) {
+		return em.loadDes1(dvo);
 	}
 }

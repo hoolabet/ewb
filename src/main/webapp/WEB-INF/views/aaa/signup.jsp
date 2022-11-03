@@ -18,6 +18,9 @@
         <input type="button" value="저장" id="save">
         <input type="button" value="불러오기" id="load">
     </div>
+    <div id="reg_info">
+    	<input type="hidden" id="reg_pw">
+    </div>
     <div id="signup_entry">
         <div id="header"></div>
         <div id='signup_content'>

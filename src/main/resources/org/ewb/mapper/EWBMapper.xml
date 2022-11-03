@@ -366,4 +366,44 @@
 		SET ${name}=#{sign_date}
 		WHERE id=#{id}
 	</update>
+	
+	<insert id="insertReg">
+		INSERT INTO signup_reg(url,content)
+		VALUES(#{url},#{content})
+	</insert>
+	
+	<update id="updateReg">
+		UPDATE signup_reg
+		SET content=#{content}
+		WHERE url=#{url}
+	</update>
+	
+	<select id="loadReg" resultType="org.ewb.model.ContentVO">
+		SELECT * FROM signup_reg WHERE url=#{url}
+	</select>
+	
+	<insert id="insertDes">
+		INSERT INTO destination_${url}(id,label,name,address,phone,memo)
+		VALUES(#{id},#{label},#{name},#{address},#{phone},#{memo})
+	</insert>
+	
+	<update id="updateDes">
+		UPDATE destination_${url}
+		SET label=#{label},name=#{name},address=#{address},phone=#{phone},memo=#{memo}
+		WHERE id=#{id}
+	</update>
+	
+	<delete id="deleteDes">
+		DELETE FROM destination_${url} WHERE id=#{id} and label=#{label}
+	</delete>
+	
+	<select id="loadDes" resultType="org.ewb.model.DestinationVO">
+		SELECT * FROM destination_${url} 
+		WHERE id=#{id}
+	</select>
+	
+	<select id="loadDes1" resultType="org.ewb.model.DestinationVO">
+		SELECT * FROM destination_${url} 
+		WHERE id=#{id} and label=#{label}
+	</select>
 </mapper>

@@ -224,7 +224,7 @@ $("#review_btn").on("click", function(){
 		alert("로그인이 필요합니다.");
 		return false;
 	}
-	const content = $("#review_text").val();
+	const content = $("#review_text").val().replace("<","&lt;").replace(">","&gt;");
 	if(content.replace(" ","") == ""){
 		alert("내용을 적어주세요.");
 		return false;

@@ -22,6 +22,10 @@
 		<div id='header'></div>
 		<div id='order_content'>
 			<div id='order_des'>
+				<select id="des_select">
+					<option value="new">새로운 배송지</option>
+				</select><br>
+				<input type='text' id='label' placeholder='배송지 이름'><br>
 				<input type='text' id='name' placeholder='이름'><br>
 				<input type='text' id='address' placeholder='주소'><br>
 				<input type='text' id='phone' placeholder='연락처'><br>

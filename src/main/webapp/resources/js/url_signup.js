@@ -3,9 +3,23 @@
  */
 let url = $("#url").val();
 if(url == ""){
-	url = location.href.split("/")[3]
+	url = location.href.split("/")[3];
+	console.log(url);
 }
-
+$.getJSON("/loadreg",{url}, function(res) {
+	
+})
+.fail(function() {
+	$.ajax({
+		type:"post",
+		url:"/insertreg",
+		data:JSON.stringify({url,content:$("#reg_info").html()}),
+		contentType: "application/json; charset=utf-8",
+		function() {
+			
+		}
+	})
+})
 $('.cp').minicolors();
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
@@ -47,6 +61,7 @@ function pageLoad(){
 		$("#signup_content").attr("style", $("#signup_style").val());
 		$(".check_span").html("");
 		$(".modi_input").val("");
+		$("#dir_address").val("naver.com");
 		$(document).off("contextmenu").on("contextmenu", function (e) {
 			e.preventDefault();
 			contextmenuFunc(e);
@@ -87,7 +102,16 @@ $("#save").on("click", function() {
 		data:JSON.stringify({url,content:$("#signup_content").html(),type:"signup_page"}),
 		contentType: "application/json; charset=utf-8",
 		success: function() {
-			alert("저장되었습니다.");
+			$.ajax({
+				type:"put",
+				url:"/updatereg",
+				data:JSON.stringify({url,content:$("#reg_info").html()}),
+				contentType:"application/json; charset=utf-8",
+				success: function() {
+					alert("저장되었습니다.");
+				}
+			})
+			
 		}
 	})
 
@@ -289,25 +313,34 @@ $(".reg").on("click", function () {
 	if (regWhat == "reg_str") {
 		if ($(`#${target}`).attr("data-str") == "on") {
 			$(`#${target}`).removeAttr("data-str");
+			$(`#reg_${target}`).removeAttr("data-str");
 		} else {
 			$(`#${target}`).attr("data-str", "on");
+			$(`#reg_${target}`).attr("data-str", "on");
 		}
 	} else if (regWhat == "reg_num") {
 		if ($(`#${target}`).attr("data-num") == "on") {
 			$(`#${target}`).removeAttr("data-num");
+			$(`#reg_${target}`).removeAttr("data-num");
 		} else {
 			$(`#${target}`).attr("data-num", "on");
+			$(`#reg_${target}`).attr("data-num", "on");
 		}
 	} else if (regWhat == "reg_spe") {
 		if ($(`#${target}`).attr("data-spe") == "on") {
 			$(`#${target}`).removeAttr("data-spe");
+			$(`#reg_${target}`).removeAttr("data-spe");
 		} else {
 			$(`#${target}`).attr("data-spe", "on");
+			$(`#reg_${target}`).attr("data-spe", "on");
 		}
 	} else if (regWhat == "reg_free") {
 		$(`#${target}`).removeAttr("data-str");
 		$(`#${target}`).removeAttr("data-num");
 		$(`#${target}`).removeAttr("data-spe");
+		$(`#reg_${target}`).removeAttr("data-str");
+		$(`#reg_${target}`).removeAttr("data-num");
+		$(`#reg_${target}`).removeAttr("data-spe");
 	}
 
 })
@@ -326,6 +359,8 @@ $("#len").on("click", function () {
 	}
 	$(`#${target}`).attr("data-lenmin", min);
 	$(`#${target}`).attr("data-lenmax", max);
+	$(`#reg_${target}`).attr("data-lenmin", min);
+	$(`#reg_${target}`).attr("data-lenmax", max);
 })
 
 $(".modi_input").off("keyup").on("keyup", function (e) {
@@ -374,11 +409,15 @@ $("#sign_submit").on("click", function (e) {
 })
 
 $("#dup_check").on("click", function () {
+	if($("#id").val() == ""){
+		alert("id를 입력하세요.")
+		return false;
+	}
 	if($(".id").css("color") != "rgb(0, 0, 255)"){
 		alert("사용가능한 아이디로 작성하세요.");
 		return false;
 	}
-	$.getJSON("/dupcheck", { id: $("#id").val() }, function () {
+	$.getJSON("/dupcheck", { id: $("#id").val(),url }, function () {
 		alert("중복된 id 입니다.");
 		$("#id").attr("data-able", "f");
 		$(".id").html("중복된 id 입니다.").css("color", "red");
@@ -556,11 +595,9 @@ function loadFunc() {
 
 	$("#address_select").off("change").on("change", function () {
 		if ($(this).val() == "dir") {
-			console.log("hi")
 			$("#dir_address").removeAttr("readonly");
 			$("#dir_address").val("");
 		} else {
-			console.log("bye")
 			$("#dir_address").val($(this).val());
 			$("#dir_address").attr("readonly", true);
 		}
@@ -639,7 +676,15 @@ function loadFunc() {
 	})
 
 	$("#dup_check").off("click").on("click", function() {
-		$.getJSON("/dupcheck",{id:$("#id").val()},function(){
+		if($("#id").val() == ""){
+			alert("id를 입력하세요.")
+			return false;
+		}
+		if($(".id").css("color") != "rgb(0, 0, 255)"){
+			alert("사용가능한 아이디로 작성하세요.");
+			return false;
+		}
+		$.getJSON("/dupcheck",{url,id:$("#id").val()},function(){
 			alert("중복된 id 입니다.");
 			$("#id").attr("data-able","f");
 			$(".id").html("중복된 id 입니다.").css("color","red");

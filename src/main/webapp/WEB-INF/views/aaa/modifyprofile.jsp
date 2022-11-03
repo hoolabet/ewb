@@ -19,6 +19,7 @@
 <input type='hidden' value='${opt}' id='opt'>
 <input type='hidden' value='${userId}' id='user_id'>
 	<div id='modifyprofile_entry'>
+		<div id="reg_info"></div>
 		<div id='header'></div>
 		<div id='modifyprofile_content'>
 			<div id="modifyprofile_div">
@@ -29,7 +30,7 @@
 								<label>비밀번호 수정</label>
 							</td>
 							<td>
-								<input type="password" id="pw">
+								<input type="password" id="pw"><span style="position:absolute" class="pw"></span>
 							</td>
 						</tr>
 						<tr>
@@ -125,6 +126,54 @@
 						<tr>
 							<td colspan="2" class="td_btn">
 								<input type="button" value="생년월일 수정" id="birth_btn">
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="modifyprofile_div">
+					<table>
+						<tr>
+							<td>
+								<label>배송지 설정</label>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<select id="des_select">
+									<option value="new">새로운 배송지</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="text" id="des_label" placeholder="배송지 이름" required>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="text" id="des_name" placeholder="이름" required>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="text" id="des_address" placeholder="배송지 주소" required>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="text" id="des_phone" placeholder="연락처" required>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="text" id="des_memo" placeholder="메모">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="button" id="des_add_btn" value="추가">
+								<input type="button" id="des_modify_btn" value="수정">
+								<input type="button" id="des_remove_btn" value="삭제">
 							</td>
 						</tr>
 					</table>

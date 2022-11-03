@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
+import org.ewb.model.DestinationVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.OrderVO;
 import org.ewb.model.ProductVO;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -353,6 +355,9 @@ public class EWBController {
 						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
 						"        <input type=\"button\" value=\"불러오기\" id=\"load\">\r\n" + 
 						"    </div>\r\n" + 
+						"	 <div id=\"reg_info\">\r\n" + 
+						"    	<input type=\"hidden\" id=\"reg_pw\">\r\n" + 
+						"    </div>"+
 						"    <div id=\"signup_entry\">\r\n" + 
 						"        <div id=\"header\"></div>\r\n" + 
 						"        <div id='signup_content'>\r\n" +
@@ -781,6 +786,18 @@ public class EWBController {
 							+ ")";
 					es.createTable(create_review_img_table);
 					
+					String create_destination_table = "create table destination_"+url+" ("
+							+ "id varchar(100),"
+							+ "label varchar(100) unique,"
+							+ "name varchar(100),"
+							+ "address varchar(100),"
+							+ "phone varchar(100),"
+							+ "memo varchar(100),"
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade"
+							+ ")";
+					es.createTable(create_destination_table);
+					
 				}else {
 					System.out.println("product File already exists");
 				}
@@ -1092,9 +1109,13 @@ public class EWBController {
 							"		<div id='header'></div>\r\n"+
 							"		<div id='order_content'>\r\n"+
 							"			<div id='order_des'>\r\n"+
-							"				<input type='text' id='name' placeholder='이름'><br>\r\n"+
-							"				<input type='text' id='address' placeholder='주소'><br>\r\n"+
-							"				<input type='text' id='phone' placeholder='연락처'><br>\r\n"+
+							"				<select id=\"des_select\">\r\n" + 
+							"					<option value=\"new\">새로운 배송지</option>\r\n" + 
+							"				</select><br>\r\n" + 
+							"				<input type='text' id='label' placeholder='배송지 이름'><br>\r\n" + 
+							"				<input type='text' id='name' placeholder='이름'><br>\r\n" + 
+							"				<input type='text' id='address' placeholder='주소'><br>\r\n" + 
+							"				<input type='text' id='phone' placeholder='연락처'><br>\r\n" + 
 							"				<input type='text' id='memo' placeholder='메모'><br>\r\n"+
 							"			</div>\r\n"+
 							"			<table id='order_table'>\r\n"+
@@ -1289,6 +1310,7 @@ public class EWBController {
 							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='modifyprofile_entry'>\r\n"+
+							"		<div id=\"reg_info\"></div>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='modifyprofile_content'>\r\n"+
 							"			<div id=\"modifyprofile_div\">\r\n" + 
@@ -1299,7 +1321,7 @@ public class EWBController {
 							"								<label>비밀번호 수정</label>\r\n" + 
 							"							</td>\r\n" + 
 							"							<td>\r\n" + 
-							"								<input type=\"password\" id=\"pw\">\r\n" + 
+							"								<input type=\"password\" id=\"pw\"><span style=\"position:absolute\" class=\"pw\"></span>\r\n" + 
 							"							</td>\r\n" + 
 							"						</tr>\r\n" + 
 							"						<tr>\r\n" + 
@@ -1399,6 +1421,54 @@ public class EWBController {
 							"						</tr>\r\n" + 
 							"					</table>\r\n" + 
 							"				</div>\r\n" + 
+							"				<div class=\"modifyprofile_div\">\r\n" + 
+							"					<table>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<label>배송지 설정</label>\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<select id=\"des_select\">\r\n" + 
+							"									<option value=\"new\">새로운 배송지</option>\r\n" + 
+							"								</select>\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"text\" id=\"des_label\" placeholder=\"배송지 이름\" required>\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"text\" id=\"des_name\" placeholder=\"이름\" required>\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"text\" id=\"des_address\" placeholder=\"배송지 주소\" required>\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"text\" id=\"des_phone\" placeholder=\"연락처\" required>\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"text\" id=\"des_memo\" placeholder=\"메모\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"						<tr>\r\n" + 
+							"							<td>\r\n" + 
+							"								<input type=\"button\" id=\"des_add_btn\" value=\"추가\">\r\n" + 
+							"								<input type=\"button\" id=\"des_modify_btn\" value=\"수정\">\r\n" + 
+							"								<input type=\"button\" id=\"des_remove_btn\" value=\"삭제\">\r\n" + 
+							"							</td>\r\n" + 
+							"						</tr>\r\n" + 
+							"					</table>\r\n" + 
+							"				</div>"+
 							"			</div>"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
@@ -1523,28 +1593,27 @@ public class EWBController {
 	}
 
 	@RequestMapping(value = "/management", method = RequestMethod.GET)
-	public void management(HttpSession session) {
-		String url = (String)session.getAttribute("url");
+	public void management() {
+		
 	}
 
 	@RequestMapping(value = "/{url}/home", method = RequestMethod.GET)
-	public void urlHome(String url,HttpSession session) {
-		session.setAttribute("url",url);
+	public void urlHome(@PathVariable String url, HttpSession session) {
+		session.setAttribute("url", url);
 	}
 
 	@RequestMapping(value = "/{url}/signup", method = RequestMethod.GET)
-	public void urlSignUp(String url,HttpSession session) {
-		session.setAttribute("url",url);
+	public void urlSignUp(@PathVariable String url, HttpSession session) {
+		
 	}
 
 	@RequestMapping(value = "/{url}/login", method = RequestMethod.GET)
-	public void urlLogin(String url,HttpSession session) {
-		session.setAttribute("url",url);
+	public void urlLogin(@PathVariable String url, HttpSession session) {
+		
 	}
 
 	@RequestMapping(value = "/{url}/product", method = RequestMethod.GET)
 	public void urlProduct(HttpSession session, Model model, CriteriaVO cri) {
-		session.setAttribute("url",cri.getUrl());
 
 		try {
 			model.addAttribute("product",es.productList(cri));
@@ -1557,13 +1626,12 @@ public class EWBController {
 	}
 
 	@RequestMapping(value = "/{url}/productwrite", method = RequestMethod.GET)
-	public void urlProductWrite(String url,HttpSession session) {
-		session.setAttribute("url",url);
+	public void urlProductWrite(@PathVariable String url, HttpSession session) {
+		
 	}
 
 	@RequestMapping(value = "/{url}/productdetail", method = RequestMethod.GET)
-	public void urlProductDetail(ProductVO pvo, Model model, HttpSession session) {
-		session.setAttribute("url",pvo.getUrl());
+	public void urlProductDetail(ProductVO pvo, Model model) {
 		model.addAttribute("detail", es.loadProductDetail(pvo));
 	}
 	
@@ -1581,7 +1649,6 @@ public class EWBController {
 	@RequestMapping(value = "/{url}/cart", method = RequestMethod.GET)
 	public void urlCart(CartVO cvo, Model model, HttpSession session) {
 		cvo.setId((String)session.getAttribute("userId"));
-		System.out.println(es.loadCart(cvo));
 		model.addAttribute("cart", es.loadCart(cvo));
 	}
  
@@ -1594,7 +1661,6 @@ public class EWBController {
 	
 	@RequestMapping(value = "/{url}/orderlist", method = RequestMethod.GET)
 	public void urlOrderList(CriteriaVO cri, Model model, HttpSession session) {
-		session.setAttribute("url",cri.getUrl());
 		cri.setSearch((String)session.getAttribute("userId"));
 		cri.setAmount(5);
 		try {
@@ -1618,8 +1684,8 @@ public class EWBController {
 	}
 	
 	@RequestMapping(value = "/{url}/board", method = RequestMethod.GET)
-	public void urlBoard(String url,HttpSession session) {
-		session.setAttribute("url",url);
+	public void urlBoard() {
+		
 	}
 
 	@RequestMapping(value = "/savecontent", method = RequestMethod.POST)
@@ -1635,7 +1701,27 @@ public class EWBController {
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@RequestMapping(value = "/insertreg", method = RequestMethod.POST)
+	public ResponseEntity<String> insertReg(@RequestBody ContentVO cvo){
+		int result = es.insertReg(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
+	@RequestMapping(value = "/updatereg", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateReg(@RequestBody ContentVO cvo){
+		int result = es.updateReg(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@RequestMapping(value = "/loadreg", method = RequestMethod.GET)
+	public ResponseEntity<ContentVO> loadReg(ContentVO cvo){
+
+		return new ResponseEntity<>(es.loadReg(cvo),HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/deletecontent", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteContent(@RequestBody ContentVO cvo){
 		//String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\test\\src\\main\\webapp\\WEB-INF\\views";
@@ -1677,7 +1763,9 @@ public class EWBController {
 			String target8 = "order_"+cvo.getUrl();
 			String target9 = "review_"+cvo.getUrl();
 			String target10 = "review_img_"+cvo.getUrl();
-
+			String target11 = "destination_"+cvo.getUrl();
+			
+			es.dropTable(target11);
 			es.dropTable(target10);
 			es.dropTable(target9);
 			es.dropTable(target8);
@@ -1706,8 +1794,6 @@ public class EWBController {
 
 	@RequestMapping(value = "/dupcheck", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> dupCheck(MemberVO mvo, HttpSession session) {
-		String url = (String)session.getAttribute("url");
-		mvo.setUrl(url);
 		return new ResponseEntity<>(es.dupCheck(mvo),HttpStatus.OK);
 	}
 
@@ -1740,7 +1826,6 @@ public class EWBController {
 
 	@RequestMapping(value = "/writeproduct", method = RequestMethod.POST)
 	public ResponseEntity<String> writeProduct(@RequestBody ProductVO pvo) {
-		System.out.println(pvo);
 		int result = es.writeProduct(pvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -1748,7 +1833,6 @@ public class EWBController {
 	
 	@RequestMapping(value = "/modifyproduct", method = RequestMethod.PUT)
 	public ResponseEntity<String> modifyProduct(@RequestBody ProductVO pvo) {
-		System.out.println(pvo);
 		int result = es.modifyProduct(pvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -1777,7 +1861,6 @@ public class EWBController {
 	
 	@RequestMapping(value = "/deleteproduct", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteProduct(@RequestBody ProductVO pvo) {
-		System.out.println(pvo);
 		if(pvo.getReg_date().equals("true")) {
 			int result = es.deleteProduct(pvo);
 			return result==1? new ResponseEntity<>("success",HttpStatus.OK)
@@ -1823,6 +1906,37 @@ public class EWBController {
 		int result = es.modifyProfile(mvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/insertdes", method = RequestMethod.POST)
+	public ResponseEntity<String> insertDes(@RequestBody DestinationVO dvo) {
+		int result = es.insertDes(dvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/updatedes", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateDes(@RequestBody DestinationVO dvo) {
+		int result = es.updateDes(dvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/deletedes", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteDes(@RequestBody DestinationVO dvo) {
+		int result = es.deleteDes(dvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/loaddes", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<DestinationVO>> loadDes(DestinationVO dvo) {
+		return new ResponseEntity<>(es.loadDes(dvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/loaddes1", method = RequestMethod.GET)
+	public ResponseEntity<DestinationVO> loadDes1(DestinationVO dvo) {
+		return new ResponseEntity<>(es.loadDes1(dvo),HttpStatus.OK);
 	}
 	
 }
