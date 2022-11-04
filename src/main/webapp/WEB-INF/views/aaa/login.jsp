@@ -12,9 +12,13 @@
     <link rel="stylesheet" href="../resources/css/url_login.css">
     <link rel="stylesheet" href="../resources/css/url_home.css">
     <link rel="stylesheet" href="../resources/color_picker/jquery.minicolors.css">
-</head>
+	 <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap"
+        rel="stylesheet"></head>
 <body>
-		<input type='hidden' value='${userId}' id='user_id'>		<input type='hidden' value='${url}' id='url'>		<input type='hidden' value='${opt}' id='opt'>		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>    <div id="btns">
+		<input type='hidden' value='${userId}' id='user_id'>		<input type='hidden' value='aaa' id='url'>		<input type='hidden' value='shopping' id='opt'>		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>    <div id="btns">
         <input type="button" value="저장" id="save">
         <input type="button" value="불러오기" id="load">
     </div>

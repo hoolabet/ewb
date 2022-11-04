@@ -12,12 +12,16 @@
     <link rel="stylesheet" href="../resources/css/url_modifyprofile.css">
     <link rel="stylesheet" href="../resources/css/url_home.css">
     <link rel="stylesheet" href="../resources/color_picker/jquery.minicolors.css">
-</head>
+	 <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap"
+        rel="stylesheet"></head>
 <body>
 <input type='hidden' value='${userInfo.admin}' id='admin'>
-<input type='hidden' value='${url}' id='url'>
-<input type='hidden' value='${opt}' id='opt'>
-<input type='hidden' value='${userId}' id='user_id'>
+<input type='hidden' value='aaa' id='url'>
+<input type='hidden' value='shopping' id='opt'>
+		<input type='hidden' value='${ewbUser.id}' id='ewb_id'><input type='hidden' value='${userId}' id='user_id'>
 	<div id='modifyprofile_entry'>
 		<div id="reg_info"></div>
 		<div id='header'></div>
@@ -177,9 +181,7 @@
 							</td>
 						</tr>
 					</table>
-				</div>
-			</div>
-		</div>
+				</div>			</div>		</div>
 		<div id='footer'></div>
 	</div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

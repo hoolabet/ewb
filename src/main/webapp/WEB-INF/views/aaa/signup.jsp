@@ -12,16 +12,19 @@
     <link rel="stylesheet" href="../resources/css/url_signup.css">
     <link rel="stylesheet" href="../resources/css/url_home.css">
     <link rel="stylesheet" href="../resources/color_picker/jquery.minicolors.css">
-</head>
+	 <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap"
+        rel="stylesheet"></head>
 <body>
-<input type='hidden' value='${url}' id='url'><div id="btns">
+<input type='hidden' value='aaa' id='url'>		<input type='hidden' value='${ewbUser.id}' id='ewb_id'><div id="btns">
         <input type="button" value="저장" id="save">
         <input type="button" value="불러오기" id="load">
     </div>
-    <div id="reg_info">
+	 <div id="reg_info">
     	<input type="hidden" id="reg_pw">
-    </div>
-    <div id="signup_entry">
+    </div>    <div id="signup_entry">
         <div id="header"></div>
         <div id='signup_content'>
 			<input type='hidden' id='signup_style'>

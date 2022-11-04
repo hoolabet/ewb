@@ -4,6 +4,7 @@
 let url = $("#url").val();
 const opt = $("#opt").val();
 const ewbId = $("#ewb_id").val();
+
 if(url == ""){
 	url = location.href.split("/")[3];
 	console.log(url);
@@ -99,7 +100,10 @@ function loadFunc() {
 		.css("margin-top",$("#save_margin").data("margint")+"px")
 		.css("margin-bottom",$("#save_margin").data("marginb")+"px")
 		.css("margin-left",$("#save_margin").data("marginl")+"px")
-		.css("margin-right",$("#save_margin").data("marginr")+"px");
+		.css("margin-right",$("#save_margin").data("marginr")+"px")
+		.css("font-family",$("#save_font").data("font"))
+		.css("font-size",$("#save_font").data("fontsize")+"px")
+		;
 		$("input[type='button']")
 		.css("font-size", $("#save_button").data("ftsize")+"px")
 		.css("padding", $("#save_button").data("padding")+"px")
@@ -114,17 +118,17 @@ function loadFunc() {
 		.css("color", $("#save_text").data("ftcolor"))
 		.css("border-width",$("#save_text").data("bdwidth"))
 		.css("border-color",$("#save_text").data("bdcolor"));
-		
+
 		if(userId != ""){
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
-				
+
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/logout`);
 				$(`#li_span_${target}_${ndnow}`).html("로그아웃");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그아웃");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/logout`);
-				
+
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
 					e.preventDefault();
 					$.getJSON("/logout",0,function(){
@@ -135,49 +139,55 @@ function loadFunc() {
 						$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 					})
 					return location.reload();
-						
+
 				})
 			})
 		}else{
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
-				
+
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
 				$(`#li_span_${target}_${ndnow}`).html("로그인");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 			})
 		}
+		if(ewbId == ""){
+			$(".buttons").css("display","none");
+			$("#btns").css("display","none");
+			$("#body_controller_btn").css("display","none");
+			$(document).off("contextmenu");
+		}
 	})
 	.fail(function() {
 
-	$.ajax({
-		type:"post",
-		url:"/savecontent",
-		data:JSON.stringify({id:ewbId,url,content:$("#main_entry").html(),type:"home_page",opt}),
-		contentType: "application/json; charset=utf-8",
-		success: function() {
-			$.ajax({
-				type:"post",
-				url:"/savecontent",
-				data:JSON.stringify({url,content:$("#header").html(),type:"header"}),
-				contentType: "application/json; charset=utf-8",
-				success:function(){
-					$.ajax({
-						type:"post",
-						url:"/savecontent",
-						data:JSON.stringify({url,content:$("#footer").html(),type:"footer"}),
-						contentType: "application/json; charset=utf-8",
-						success:function(){
-							location.href="/management";
-						}
-					})
-				}
-			})
-		}
+		$.ajax({
+			type:"post",
+			url:"/savecontent",
+			data:JSON.stringify({id:ewbId,url,content:$("#main_entry").html(),type:"home_page",opt}),
+			contentType: "application/json; charset=utf-8",
+			success: function() {
+				$.ajax({
+					type:"post",
+					url:"/savecontent",
+					data:JSON.stringify({url,content:$("#header").html(),type:"header"}),
+					contentType: "application/json; charset=utf-8",
+					success:function(){
+						$.ajax({
+							type:"post",
+							url:"/savecontent",
+							data:JSON.stringify({url,content:$("#footer").html(),type:"footer"}),
+							contentType: "application/json; charset=utf-8",
+							success:function(){
+								location.href="/management";
+							}
+						})
+					}
+				})
+			}
+		})
 	})
-})
 }
 $("#load").on("click", function(){
 	alert("불러오기를 실행했습니다.");
@@ -371,10 +381,34 @@ $("#entry_input_apply").on("click", function(){
 	.attr("data-bdcolor",$("#input_bdcolor").val());
 })
 
+$("#font_controller_btn").on("click", function(){
+	$("#font_controller").css("display", "flex");
+	$("#font_size_select").val($("body").css("font-size").replace("px",""));
+})
+
+$("#font_select").on("change", function () {
+	if ($(this).val() == "normal") {
+		$("#font_preview").css("font-family", "Arial");
+	}
+	const ff = $(`#${$(this).val()}`).css("font-family");
+	$("#font_preview").css("font-family", ff);
+})
+
+$("#entry_font_apply").on("click", function() {
+	$("#font_controller").css("display", "none");
+	const ff = $("#font_preview").css("font-family");
+	const fs = $("#font_size_select").val();
+	$("body").css("font-family", ff).css("font-size",fs+"px");
+	$("#save_font").attr("data-font",ff);
+	$("#save_font").attr("data-fontsize",fs);
+})
+
 $(".close_btn").on("click", function(){
 	$(this).parent().css("display","none");
 	if($(this).parent().prop("id") == "body_controller"){
 		$("#margin_controller").css("display","none");
+		$("#input_controller").css("display","none");
+		$("#font_controller").css("display","none");
 		$("#main_entry").css("opacity","1");
 	}else if($(this).parent().prop("id") == "controller"){
 		menuClose();
@@ -660,52 +694,52 @@ function afterLoadCreateLi(){
 		const ndnow = $(this).data("ndnow");
 		$("#upload_input").data("target",`li_span_${target}_${ndnow}_modi`).click();
 	})
-	
+
 }
 
 $("#create_ul").on("click", function(){
 	const target = $("#controller").data("target");
 	const dnow = Date.now();
 	const ndnow = Date.now();
-	
+
 	const ul = `
 		<div id="ul_div_${target}_${dnow}" class="ul_div" data-target="${target}" data-dnow="${dnow}">
 		<div class="move_divs_handler buttons" id="ul_div_handler_${target}_${dnow}">✔</div>
 		<ul id="ul_${target}_${dnow}" class="ul_">
-			<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}login" data-target="${target}" data-ndnow="${ndnow}login">
-			
-			<a href="/${url}/login" class="log" id="li_a_${target}_${ndnow}login" data-target="${target}" data-ndnow="${ndnow}login"><span id="li_span_${target}_${ndnow}login">로그인</span></a>
-			
-			<input readonly value="/${url}/login" size="4" type="text" id="li_a_${target}_${ndnow}login_modi" style="display:none;">
-			<div contenteditable="true" id="li_span_${target}_${ndnow}login_modi" style="display:none;background-color:white;border:1px solid black;">로그인</div>
-			<div id="img_li_${target}_${ndnow}login" class="img_li" data-target="${target}" data-ndnow="${ndnow}login" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
-			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}login" style="cursor:pointer">🛠</span>
-			<span class="remo_li buttons" style="cursor:pointer">✖</span>
-			</li>
-			<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}${sc}" data-target="${target}" data-ndnow="${ndnow}${sc}">
-			<a href="/${url}/${sc}" id="li_a_${target}_${ndnow}${sc}"><span id="li_span_${target}_${ndnow}${sc}">${sc}</span></a>
-			<input readonly value="/${url}/${sc}" size="4" type="text" id="li_a_${target}_${ndnow}${sc}_modi" style="display:none;">
-			<div contenteditable="true" id="li_span_${target}_${ndnow}${sc}_modi" style="display:none;background-color:white;border:1px solid black;">${sc}</div>
-			<div id="img_li_${target}_${ndnow}${sc}" class="img_li" data-target="${target}" data-ndnow="${ndnow}${sc}" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
-			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}${sc}" style="cursor:pointer">🛠</span>
-			<span class="remo_li buttons" style="cursor:pointer">✖</span>
-			</li>
-			<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}mypage" data-target="${target}" data-ndnow="${ndnow}mypage">
-			<a href="/${url}/mypage" id="li_a_${target}_${ndnow}mypage"><span id="li_span_${target}_${ndnow}mypage">mypage</span></a>
-			<input readonly value="/${url}/mypage" size="4" type="text" id="li_a_${target}_${ndnow}mypage_modi" style="display:none;">
-			<div contenteditable="true" id="li_span_${target}_${ndnow}mypage_modi" style="display:none;background-color:white;border:1px solid black;">mypage</div>
-			<div id="img_li_${target}_${ndnow}mypage" class="img_li" data-target="${target}" data-ndnow="${ndnow}mypage" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
-			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}mypage" style="cursor:pointer">🛠</span>
-			<span class="remo_li buttons" style="cursor:pointer">✖</span>
-			</li>
-			<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}cart" data-target="${target}" data-ndnow="${ndnow}cart">
-			<a href="/${url}/cart" id="li_a_${target}_${ndnow}cart"><span id="li_span_${target}_${ndnow}cart">cart</span></a>
-			<input readonly value="/${url}/cart" size="4" type="text" id="li_a_${target}_${ndnow}cart_modi" style="display:none;">
-			<div contenteditable="true" id="li_span_${target}_${ndnow}cart_modi" style="display:none;background-color:white;border:1px solid black;">cart</div>
-			<div id="img_li_${target}_${ndnow}cart" class="img_li" data-target="${target}" data-ndnow="${ndnow}cart" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
-			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}cart" style="cursor:pointer">🛠</span>
-			<span class="remo_li buttons" style="cursor:pointer">✖</span>
-			</li>
+		<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}login" data-target="${target}" data-ndnow="${ndnow}login">
+
+		<a href="/${url}/login" class="log" id="li_a_${target}_${ndnow}login" data-target="${target}" data-ndnow="${ndnow}login"><span id="li_span_${target}_${ndnow}login">로그인</span></a>
+
+		<input readonly value="/${url}/login" size="4" type="text" id="li_a_${target}_${ndnow}login_modi" style="display:none;">
+		<div contenteditable="true" id="li_span_${target}_${ndnow}login_modi" style="display:none;background-color:white;border:1px solid black;">로그인</div>
+		<div id="img_li_${target}_${ndnow}login" class="img_li" data-target="${target}" data-ndnow="${ndnow}login" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
+		<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}login" style="cursor:pointer">🛠</span>
+		<span class="remo_li buttons" style="cursor:pointer">✖</span>
+		</li>
+		<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}${sc}" data-target="${target}" data-ndnow="${ndnow}${sc}">
+		<a href="/${url}/${sc}" id="li_a_${target}_${ndnow}${sc}"><span id="li_span_${target}_${ndnow}${sc}">${sc}</span></a>
+		<input readonly value="/${url}/${sc}" size="4" type="text" id="li_a_${target}_${ndnow}${sc}_modi" style="display:none;">
+		<div contenteditable="true" id="li_span_${target}_${ndnow}${sc}_modi" style="display:none;background-color:white;border:1px solid black;">${sc}</div>
+		<div id="img_li_${target}_${ndnow}${sc}" class="img_li" data-target="${target}" data-ndnow="${ndnow}${sc}" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
+		<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}${sc}" style="cursor:pointer">🛠</span>
+		<span class="remo_li buttons" style="cursor:pointer">✖</span>
+		</li>
+		<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}mypage" data-target="${target}" data-ndnow="${ndnow}mypage">
+		<a href="/${url}/mypage" id="li_a_${target}_${ndnow}mypage"><span id="li_span_${target}_${ndnow}mypage">mypage</span></a>
+		<input readonly value="/${url}/mypage" size="4" type="text" id="li_a_${target}_${ndnow}mypage_modi" style="display:none;">
+		<div contenteditable="true" id="li_span_${target}_${ndnow}mypage_modi" style="display:none;background-color:white;border:1px solid black;">mypage</div>
+		<div id="img_li_${target}_${ndnow}mypage" class="img_li" data-target="${target}" data-ndnow="${ndnow}mypage" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
+		<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}mypage" style="cursor:pointer">🛠</span>
+		<span class="remo_li buttons" style="cursor:pointer">✖</span>
+		</li>
+		<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}cart" data-target="${target}" data-ndnow="${ndnow}cart">
+		<a href="/${url}/cart" id="li_a_${target}_${ndnow}cart"><span id="li_span_${target}_${ndnow}cart">cart</span></a>
+		<input readonly value="/${url}/cart" size="4" type="text" id="li_a_${target}_${ndnow}cart_modi" style="display:none;">
+		<div contenteditable="true" id="li_span_${target}_${ndnow}cart_modi" style="display:none;background-color:white;border:1px solid black;">cart</div>
+		<div id="img_li_${target}_${ndnow}cart" class="img_li" data-target="${target}" data-ndnow="${ndnow}cart" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
+		<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}cart" style="cursor:pointer">🛠</span>
+		<span class="remo_li buttons" style="cursor:pointer">✖</span>
+		</li>
 		</ul>
 		<div class="add_li buttons" style="cursor:pointer">➕</div>
 		<div class="remo_element buttons">✖</div>

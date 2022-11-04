@@ -6,6 +6,7 @@ let url = $("#url").val();
 if(url == ""){
 	url = location.href.split("/")[3]
 }
+const ewbId = $("#ewb_id").val();
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
 		$("#header").html(res.content);
@@ -17,7 +18,10 @@ function getHF() {
 		.css("margin-top", $("#save_margin").data("margint") + "px")
 		.css("margin-bottom", $("#save_margin").data("marginb") + "px")
 		.css("margin-left", $("#save_margin").data("marginl") + "px")
-		.css("margin-right", $("#save_margin").data("marginr") + "px");
+		.css("margin-right", $("#save_margin").data("marginr") + "px")
+		.css("font-family",$("#save_font").data("font"))
+		.css("font-size",$("#save_font").data("fontsize")+"px")
+		;
 		$("input[type='button']")
 		.css("font-size", $("#save_button").data("ftsize") + "px")
 		.css("padding", $("#save_button").data("padding") + "px")
@@ -85,6 +89,10 @@ $('.cp').minicolors();
 
 $(document).on("contextmenu", function (e) {
 	e.preventDefault();
+	if(ewbId == ""){
+		return false;
+	}
+	
 	if (e.target.id == "login_box" || e.target.id == "login_content") {
 		$("#controller").data("target", e.target.id);
 		$("#target_name").html(e.target.id);
@@ -189,6 +197,9 @@ $("#size_change").on("click", function(){
 
 function loadFunc() {
 	$(".modi_span").on("dblclick", function () {
+		if(ewbId == ""){
+			return false;
+		}
 		if (!$(this).attr("contenteditable")) {
 			$(this).attr("contenteditable", true);
 		} else {
@@ -209,4 +220,5 @@ function loadFunc() {
 	$("#signup_btn").on("click", function() {
 		location.href = `/${url}/signup`;
 	})
+	
 }

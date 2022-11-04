@@ -35,7 +35,10 @@ function getHF() {
 		.css("margin-top", $("#save_margin").data("margint") + "px")
 		.css("margin-bottom", $("#save_margin").data("marginb") + "px")
 		.css("margin-left", $("#save_margin").data("marginl") + "px")
-		.css("margin-right", $("#save_margin").data("marginr") + "px");
+		.css("margin-right", $("#save_margin").data("marginr") + "px")
+		.css("font-family",$("#save_font").data("font"))
+		.css("font-size",$("#save_font").data("fontsize")+"px")
+		;
 		$("input[type='button']")
 		.css("font-size", $("#save_button").data("ftsize") + "px")
 		.css("padding", $("#save_button").data("padding") + "px")

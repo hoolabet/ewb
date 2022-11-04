@@ -117,12 +117,17 @@ public class EWBController {
 						"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
 						"    <title>"+url+" home</title>\r\n" + 
 						"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" + 
-						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+						"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+						"    <link\r\n" + 
+						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+						"        rel=\"stylesheet\">"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
 						"		<input type='hidden' value='${userId}' id='user_id'>"+
-						"		<input type='hidden' value='${url}' id='url'>"+
-						"		<input type='hidden' value='${opt}' id='opt'>"+
+						"		<input type='hidden' value='"+url+"' id='url'>"+
+						"		<input type='hidden' value='"+opt+"' id='opt'>"+
 						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 						"    <div id=\"btns\">\r\n" + 
 						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
@@ -135,6 +140,7 @@ public class EWBController {
 						"                <input type=\"hidden\" id=\"save_margin\">\r\n" + 
 						"                <input type=\"hidden\" id=\"save_button\">\r\n" + 
 						"                <input type=\"hidden\" id=\"save_text\">\r\n" + 
+						"				 <input type=\"hidden\" id=\"save_font\">\r\n"+
 						"            </div>\r\n" + 
 						"        </div>\r\n" + 
 						"        <div id=\"main_content\"></div>\r\n" + 
@@ -320,6 +326,37 @@ public class EWBController {
 						"        <div id=\"entry_input_apply\" class=\"change_btn\">적용</div>\r\n" + 
 						"        <div class=\"close_btn\">✖</div>\r\n" + 
 						"    </div>\r\n" + 
+						"	 <div id=\"font_controller\">\r\n" + 
+						"        <table>\r\n" + 
+						"            <tr>\r\n" + 
+						"                <td>글꼴 선택</td>\r\n" + 
+						"                <td>\r\n" + 
+						"					<select id=\"font_select\">\r\n" + 
+						"        				<option value=\"normal\">기본</option>\r\n" + 
+						"        				<option id=\"jua\">jua</option>\r\n" + 
+						"        				<option id=\"bs\">bs</option>\r\n" + 
+						"        				<option id=\"go\">go</option>\r\n" + 
+						"        				<option id=\"jo\">jo</option>\r\n" + 
+						"        				<option id=\"pen\">pen</option>\r\n" + 
+						"        				<option id=\"noto\">noto</option>\r\n" + 
+						"        				<option id=\"poor\">poor</option>\r\n" + 
+						"    				</select>\r\n" + 
+						"				</td>\r\n" + 
+						"            </tr>\r\n" + 
+						"			 <tr>\r\n" + 
+						"            	<td>글씨 크기</td>\r\n" + 
+						"            	<td><input type=\"text\" id=\"font_size_select\"></td>\r\n" + 
+						"            </tr>\r\n"+
+						"            <tr>\r\n" + 
+						"                <td>미리보기</td>\r\n" + 
+						"                <td>\r\n" + 
+						"                	<div id=\"font_preview\" contenteditable=\"true\" style=\"width: 60px;height:60px;border:1px solid black;\">hi</div>\r\n" + 
+						"                </td>\r\n" + 
+						"            </tr>\r\n" + 
+						"        </table>\r\n" + 
+						"        <div id=\"entry_font_apply\" class=\"change_btn\">적용</div>\r\n" + 
+						"        <div class=\"close_btn\">✖</div>\r\n" + 
+						"    </div>"+
 						"    <input type='file' id='upload_input' style='display:none'>\r\n" + 
 						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
@@ -347,10 +384,16 @@ public class EWBController {
 						"    <title>"+url+" home</title>\r\n" + 
 						"    <link rel=\"stylesheet\" href=\"../resources/css/url_signup.css\">\r\n" +
 						"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+						"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+						"    <link\r\n" + 
+						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+						"        rel=\"stylesheet\">"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
-						"<input type='hidden' value='${url}' id='url'>"+
+						"<input type='hidden' value='"+url+"' id='url'>"+
+						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 						"<div id=\"btns\">\r\n" + 
 						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
 						"        <input type=\"button\" value=\"불러오기\" id=\"load\">\r\n" + 
@@ -484,12 +527,17 @@ public class EWBController {
 						"    <title>"+url+" login</title>\r\n" + 
 						"    <link rel=\"stylesheet\" href=\"../resources/css/url_login.css\">\r\n" + 
 						"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+						"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+						"    <link\r\n" + 
+						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+						"        rel=\"stylesheet\">"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
 						"		<input type='hidden' value='${userId}' id='user_id'>"+
-						"		<input type='hidden' value='${url}' id='url'>"+
-						"		<input type='hidden' value='${opt}' id='opt'>"+
+						"		<input type='hidden' value='"+url+"' id='url'>"+
+						"		<input type='hidden' value='"+opt+"' id='opt'>"+
 						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 						"    <div id=\"btns\">\r\n" + 
 						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
@@ -610,12 +658,18 @@ public class EWBController {
 							"    <title>"+url+" product</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_product.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='${url}' id='url'>"+
-							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='"+url+"' id='url'>"+
+							"<input type='hidden' value='"+opt+"' id='opt'>"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>"+
 							"	<div id='product_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -818,12 +872,18 @@ public class EWBController {
 							"    <title>"+url+" product write</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_product_write.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							" 	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='${url}' id='url'>"+
-							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='"+url+"' id='url'>"+
+							"<input type='hidden' value='"+opt+"' id='opt'>"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>"+
 							"	<div id='product_write_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -868,13 +928,19 @@ public class EWBController {
 							"    <title>"+url+" product detail</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_product_detail.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							" 	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='${url}' id='url'>\r\n"+
-							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${detail.quantity}' id='product_quantity'>\r\n"+
 							"<input type='hidden' value='${detail.pno}' id='product_pno'>\r\n"+
 							"	<div id='product_detail_entry'>\r\n"+
@@ -969,12 +1035,18 @@ public class EWBController {
 							"    <title>"+url+" modify product</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyproduct.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='${url}' id='url'>"+
-							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='"+url+"' id='url'>"+
+							"<input type='hidden' value='"+opt+"' id='opt'>"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${modify.pno}' id='pno'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>"+
 							"	<div id='modifyproduct_entry'>\r\n"+
@@ -1021,12 +1093,18 @@ public class EWBController {
 							"    <title>"+url+" cart</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_cart.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='${url}' id='url'>\r\n"+
-							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='cart_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1098,12 +1176,18 @@ public class EWBController {
 							"    <title>"+url+" order</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_order.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='${url}' id='url'>\r\n"+
-							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='order_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1178,12 +1262,18 @@ public class EWBController {
 							"    <title>"+url+" order list</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_orderlist.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='${url}' id='url'>\r\n"+
-							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='orderlist_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1248,12 +1338,18 @@ public class EWBController {
 							"    <title>"+url+" ${userInfo.id} mypage</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='${url}' id='url'>\r\n"+
-							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='mypage_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1302,12 +1398,18 @@ public class EWBController {
 							"    <title>"+url+" ${userInfo.id} modify profile</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyprofile.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='${url}' id='url'>\r\n"+
-							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='modifyprofile_entry'>\r\n"+
 							"		<div id=\"reg_info\"></div>\r\n"+
@@ -1502,12 +1604,18 @@ public class EWBController {
 							"    <title>"+url+" board</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_board.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='${url}' id='url'>"+
-							"<input type='hidden' value='${opt}' id='opt'>"+
+							"<input type='hidden' value='"+url+"' id='url'>"+
+							"<input type='hidden' value='"+opt+"' id='opt'>"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>"+
 							"	<div id='board_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1555,12 +1663,18 @@ public class EWBController {
 							"    <title>"+url+" mypage</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='${url}' id='url'>\r\n"+
-							"<input type='hidden' value='${opt}' id='opt'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='mypage_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+

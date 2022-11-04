@@ -6,6 +6,8 @@ if(url == ""){
 	url = location.href.split("/")[3];
 	console.log(url);
 }
+const ewbId = $("#ewb_id").val();
+
 $.getJSON("/loadreg",{url}, function(res) {
 	
 })
@@ -32,7 +34,10 @@ function getHF() {
 		.css("margin-top", $("#save_margin").data("margint") + "px")
 		.css("margin-bottom", $("#save_margin").data("marginb") + "px")
 		.css("margin-left", $("#save_margin").data("marginl") + "px")
-		.css("margin-right", $("#save_margin").data("marginr") + "px");
+		.css("margin-right", $("#save_margin").data("marginr") + "px")
+		.css("font-family",$("#save_font").data("font"))
+		.css("font-size",$("#save_font").data("fontsize")+"px")
+		;
 		$("input[type='button']")
 		.css("font-size", $("#save_button").data("ftsize") + "px")
 		.css("padding", $("#save_button").data("padding") + "px")
@@ -67,6 +72,10 @@ function pageLoad(){
 			contextmenuFunc(e);
 		})
 		loadFunc();
+		if(ewbId == ""){
+			$("#sign_img").css("display","none");
+			$("#btns").css("display","none");
+		}
 	})
 	.fail(function() {
 		$.ajax({
@@ -123,6 +132,9 @@ $(document).off("contextmenu").on("contextmenu", function (e) {
 })
 
 function contextmenuFunc(e) {
+	if(ewbId == ""){
+		return false;
+	}
 	if (e.target.className.includes("modi_input")) {
 		$("#modify_input").data("id", e.target.id);
 		$("#modify_input").css("top", e.pageY).css("left", e.pageX).css("display", "flex");
