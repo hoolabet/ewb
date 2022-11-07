@@ -8,6 +8,7 @@ $("#begin").on("click", function() {
 	}else{
 		$(this).css("display","none");
 		$("#login").css("display","flex");
+		$("#login_id").focus();
 	}
 })
 
@@ -45,4 +46,12 @@ $("#signup_btn").on("click", function() {
 			alert("ID 를 다시 설정하세요.")
 		}
 	})
+})
+
+$(document).on("keyup", function(e) {
+	if($("#login").css("display") == "flex"){
+		if(e.keyCode == 13){
+			$("#login_btn").click()
+		}
+	}
 })

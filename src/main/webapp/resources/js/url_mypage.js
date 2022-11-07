@@ -6,8 +6,8 @@ let url = $("#url").val();
 if(url == ""){
 	url = location.href.split("/")[3]
 }
-const id = $("#user_id").val();
-if(id == ""){
+const userId = $("#user_id").val();
+if(userId == ""){
 	alert("로그인이 필요합니다.");
 	location.href=`/${url}/login`;
 }
@@ -41,17 +41,17 @@ function getHF() {
 		.css("color", $("#save_text").data("ftcolor"))
 		.css("border-width", $("#save_text").data("bdwidth"))
 		.css("border-color", $("#save_text").data("bdcolor"));
-		
-		if(id != ""){
+
+		if(userId != ""){
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
-				
+
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/logout`);
 				$(`#li_span_${target}_${ndnow}`).html("로그아웃");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그아웃");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/logout`);
-				
+
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
 					e.preventDefault();
 					$.getJSON("/logout",0,function(){
@@ -62,18 +62,38 @@ function getHF() {
 						$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 					})
 					return location.reload();
-						
+
 				})
 			})
+			$(".login_table").css("display","none");
+			$(".login_success").css("display","block");
+			const ls = `
+				<div><a href="/${url}/mypage">${userId}</a></div>
+				`;
+			$(".login_success").html(ls);
 		}else{
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
-				
+
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
 				$(`#li_span_${target}_${ndnow}`).html("로그인");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
+			})
+			$(".login_btn").on("click", function() {
+				const target = $(this).data("target");
+				const id = $(`#login_id_${target}`).val();
+				const pw = $(`#login_pw_${target}`).val();
+				$.getJSON("/login",{id,pw,url},function(res){
+					location.reload();
+				})
+				.fail(function() {
+					alert("아이디와 비밀번호를 다시 확인하세요.");
+				})
+			})
+			$(".signup_btn").on("click", function() {
+				location.href = `/${url}/signup`;
 			})
 		}
 	})

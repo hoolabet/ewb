@@ -338,6 +338,10 @@ input[type="button"], input[type="text"], input[type="password"] {
 	z-index: 1;
 }
 
+.login_success{
+	display:none;
+}
+
 .home_div {
 	height: 100px;
 	width: 300px;

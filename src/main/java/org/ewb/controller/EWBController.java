@@ -1049,6 +1049,7 @@ public class EWBController {
 							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
 							"<input type='hidden' value='${modify.pno}' id='pno'>"+
 							"<input type='hidden' value='${userId}' id='user_id'>"+
+							"<input type='hidden' value='${modify.tvo.fullpath}' id='thumbpath'>"+
 							"	<div id='modifyproduct_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='modifyproduct_content'>\r\n"+

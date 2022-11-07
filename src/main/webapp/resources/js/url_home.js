@@ -142,6 +142,12 @@ function loadFunc() {
 
 				})
 			})
+			$(".login_table").css("display","none");
+			$(".login_success").css("display","block");
+			const ls = `
+				<div><a href="/${url}/mypage">${userId}</a></div>
+			`;
+			$(".login_success").html(ls);
 		}else{
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
@@ -609,8 +615,14 @@ function afterLoadCreateLogin(){
 		const id = $(`#login_id_${target}`).val();
 		const pw = $(`#login_pw_${target}`).val();
 		$.getJSON("/login",{id,pw,url},function(res){
-			alert(res.id);
+			location.reload();
 		})
+		.fail(function() {
+			alert("아이디와 비밀번호를 다시 확인하세요.");
+		})
+	})
+	$(".signup_btn").on("click", function() {
+		location.href = `/${url}/signup`;
 	})
 }
 
@@ -637,6 +649,8 @@ $("#create_login").on("click", function(){
 		</tr>
 		</table>
 		</div>
+		<div id="login_success_${target}" class="login_success">
+		</div>
 		<div class="remo_element buttons">✖</div>
 		</div>
 		`;
@@ -646,6 +660,7 @@ $("#create_login").on("click", function(){
 	afterLoadRemoveElement();
 	dragElement($(`#login_div_${target}`)[0]);
 })
+
 
 function afterLoadCreateUl(){
 	$(".add_li").off("click").on("click", function(){

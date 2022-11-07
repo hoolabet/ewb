@@ -6,8 +6,8 @@ let url = $("#url").val();
 if(url == ""){
 	url = location.href.split("/")[3]
 }
-const id = $("#user_id").val();
-if(id == ""){
+const userId = $("#user_id").val();
+if(userId == ""){
 	alert("로그인이 필요합니다.");
 	location.href=`/${url}/login`;
 }
@@ -52,7 +52,7 @@ function getHF() {
 		.css("border-width", $("#save_text").data("bdwidth"))
 		.css("border-color", $("#save_text").data("bdcolor"));
 
-		if(id != ""){
+		if(userId != ""){
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
@@ -75,6 +75,12 @@ function getHF() {
 
 				})
 			})
+			$(".login_table").css("display","none");
+			$(".login_success").css("display","block");
+			const ls = `
+				<div><a href="/${url}/mypage">${userId}</a></div>
+				`;
+			$(".login_success").html(ls);
 		}else{
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
@@ -85,6 +91,20 @@ function getHF() {
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 			})
+			$(".login_btn").on("click", function() {
+				const target = $(this).data("target");
+				const id = $(`#login_id_${target}`).val();
+				const pw = $(`#login_pw_${target}`).val();
+				$.getJSON("/login",{id,pw,url},function(res){
+					location.reload();
+				})
+				.fail(function() {
+					alert("아이디와 비밀번호를 다시 확인하세요.");
+				})
+			})
+			$(".signup_btn").on("click", function() {
+				location.href = `/${url}/signup`;
+			})
 		}
 	})
 	$.getJSON("/loadcontent",{type:"footer",url},function(res){
@@ -94,7 +114,7 @@ function getHF() {
 
 getHF();
 
-$.getJSON("/loaduserinfo",{url,id},function(res){
+$.getJSON("/loaduserinfo",{url,id:userId},function(res){
 	$("#name").val(res.name);
 	const fp = res.phone.slice(0,3);
 	const bp = res.phone.slice(3);
@@ -112,7 +132,7 @@ function modifyProfile(target,value) {
 	$.ajax({
 		type:"put",
 		url:"/modifyprofile",
-		data:JSON.stringify({url,id,name:target,sign_date:value}),
+		data:JSON.stringify({url,id:userId,name:target,sign_date:value}),
 		contentType:"application/json; charset=utf-8",
 		success: function() {
 			alert("수정되었습니다.");
@@ -214,14 +234,14 @@ $("#pwc").on("keyup", function(e) {
 })
 
 $("#des_add_btn").on("click", function() {
-	$.getJSON("/loaddes1",{url,id,label:$("#des_label").val()}, function() {
+	$.getJSON("/loaddes1",{url,id:userId,label:$("#des_label").val()}, function() {
 		alert("이미 존재하는 배송지명 입니다.");
 		return false;
 	})
 	.fail(function() {
 
 		const dData = {
-				id,url,
+				id:userId,url,
 				label:$("#des_label").val(),
 				name: $("#des_name").val(),
 				address: $("#des_address").val(),
@@ -248,7 +268,7 @@ $("#des_modify_btn").on("click", function() {
 		return false;
 	}
 	const dData = {
-			id,url,
+			id:userId,url,
 			label:$("#des_label").val(),
 			name: $("#des_name").val(),
 			address: $("#des_address").val(),
@@ -287,7 +307,7 @@ $("#des_remove_btn").on("click", function() {
 	})
 })
 
-$.getJSON("/loaddes",{url,id}, function(res) {
+$.getJSON("/loaddes",{url,id:userId}, function(res) {
 	res.forEach(function(r) {
 		const option = `<option value="${r.label}">${r.label}</option>`;
 		$("#des_select").append(option);
@@ -304,7 +324,7 @@ $("#des_select").on("change", function() {
 		$("#des_memo").val("");
 		return false;
 	}
-	$.getJSON("/loaddes1",{url,id,label}, function(res) {
+	$.getJSON("/loaddes1",{url,id:userId,label}, function(res) {
 		$("#des_label").val(res.label);
 		$("#des_name").val(res.name);
 		$("#des_address").val(res.address);

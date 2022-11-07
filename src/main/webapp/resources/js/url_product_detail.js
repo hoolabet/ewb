@@ -23,9 +23,17 @@ let url = $("#url").val();
 if(url == ""){
 	url = location.href.split("/")[3]
 }
+
 const pno = $("#product_pno").val();
 const id = $("#user_id").val();
+const userId = id;
 const admin = $("#admin").val();
+
+if($("#product_quantity").val() == 0 && !admin){
+	alert("해당 상품은 품절되었습니다.")
+//	location.href = `/${url}/product`;
+	history.back();
+}
 
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
@@ -80,6 +88,12 @@ function getHF() {
 
 				})
 			})
+			$(".login_table").css("display","none");
+			$(".login_success").css("display","block");
+			const ls = `
+				<div><a href="/${url}/mypage">${userId}</a></div>
+				`;
+			$(".login_success").html(ls);
 		}else{
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
@@ -89,6 +103,20 @@ function getHF() {
 				$(`#li_span_${target}_${ndnow}`).html("로그인");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
+			})
+			$(".login_btn").on("click", function() {
+				const target = $(this).data("target");
+				const id = $(`#login_id_${target}`).val();
+				const pw = $(`#login_pw_${target}`).val();
+				$.getJSON("/login",{id,pw,url},function(res){
+					location.reload();
+				})
+				.fail(function() {
+					alert("아이디와 비밀번호를 다시 확인하세요.");
+				})
+			})
+			$(".signup_btn").on("click", function() {
+				location.href = `/${url}/signup`;
 			})
 		}
 	})
@@ -145,7 +173,7 @@ $("#order_btn").on("click", function() {
 				}
 			}
 		})
-			
+
 	})
 	.fail(function() {
 		$.ajax({
@@ -232,7 +260,7 @@ $("#review_btn").on("click", function(){
 		alert("내용을 적어주세요.");
 		return false;
 	}
-	
+
 	const rData = {
 			url, 
 			id,
@@ -287,7 +315,7 @@ $("#review_img_file").on("change", function() {
 				const fullPath = encodeURIComponent(`${u.path}/${u.uuid}_${u.fileName}`);
 				reviewPath = fullPath;
 				if(u.checkI){
-						files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;width:50px"><br>`;
+					files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;width:50px"><br>`;
 				}else{
 					files += `<a href="/download?fileName=${fullPath}">${u.fileName}</a><br>`;
 				}
@@ -307,116 +335,118 @@ $.getJSON("/loadreview",{pno,url},function(res){
 	console.log(dataList)
 })
 .done(function() {
-	
+
 	displayData(1, dataPerPage);
 	paging(totalData, 10, pageCount, 1);
 })
 
 function paging(totalData, dataPerPage, pageCount, currentPage) {
-    console.log("currentPage : " + currentPage);
+	console.log("currentPage : " + currentPage);
 
-    totalPage = Math.ceil(totalData / dataPerPage); 
+	totalPage = Math.ceil(totalData / dataPerPage); 
 
-    if (totalPage < pageCount) {
-        pageCount = totalPage;
-    }
+	if (totalPage < pageCount) {
+		pageCount = totalPage;
+	}
 
-    let pageGroup = Math.ceil(currentPage / pageCount);
-    let last = pageGroup * pageCount;
+	let pageGroup = Math.ceil(currentPage / pageCount);
+	let last = pageGroup * pageCount;
 
-    if (last > totalPage) {
-        last = totalPage;
-    }
+	if (last > totalPage) {
+		last = totalPage;
+	}
 
-    let first = last - (pageCount - 1);
-    let next = last + 1;
-    let prev = first - 1;
+	let first = last - (pageCount - 1);
+	let next = last + 1;
+	let prev = first - 1;
 
-    let pageHtml = "";
+	let pageHtml = "";
 
-    if (prev > 0) {
-        pageHtml += "<li><a href='#' id='prev'> 이전 </a></li>";
-    }
+	if (prev > 0) {
+		pageHtml += "<li><a href='#' id='prev'> 이전 </a></li>";
+	}
 
-    for (var i = first; i <= last; i++) {
-        if (currentPage == i) {
-            pageHtml +=
-                "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
-        } else {
-            pageHtml += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
-        }
-    }
+	for (var i = first; i <= last; i++) {
+		if (currentPage == i) {
+			pageHtml +=
+				"<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
+		} else {
+			pageHtml += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
+		}
+	}
 
-    if (last < totalPage) {
-        pageHtml += "<li><a href='#' id='next'> 다음 </a></li>";
-    }
+	if (last < totalPage) {
+		pageHtml += "<li><a href='#' id='next'> 다음 </a></li>";
+	}
 
-    $("#pagingul").html(pageHtml);
-    let displayCount = "";
-    displayCount = "현재 1 - " + totalPage + " 페이지 / " + totalData + "건";
-    $("#displayCount").text(displayCount);
+	$("#pagingul").html(pageHtml);
+	let displayCount = "";
+	displayCount = "현재 1 - " + totalPage + " 페이지 / " + totalData + "건";
+	$("#displayCount").text(displayCount);
 
 
-    $("#pagingul li a").click(function () {
-        let $id = $(this).attr("id");
-        selectedPage = $(this).text();
+	$("#pagingul li a").click(function () {
+		console.log($("#review_div").offset().top)
+		$('html').animate({scrollTop : $("#review_div").offset().top-100}, 400);
+		let $id = $(this).attr("id");
+		selectedPage = $(this).text();
 
-        if ($id == "next") selectedPage = next;
-        if ($id == "prev") selectedPage = prev;
+		if ($id == "next") selectedPage = next;
+		if ($id == "prev") selectedPage = prev;
 
-        globalCurrentPage = selectedPage;
-        paging(totalData, dataPerPage, pageCount, selectedPage);
-        displayData(selectedPage, dataPerPage);
-    });
+		globalCurrentPage = selectedPage;
+		paging(totalData, dataPerPage, pageCount, selectedPage);
+		displayData(selectedPage, dataPerPage);
+	});
 }
 
 function displayData(currentPage, dataPerPage) {
 
-    let chartHtml = "";
+	let chartHtml = "";
 
-     
-    currentPage = Number(currentPage);
-    dataPerPage = Number(dataPerPage);
 
-    for (
-        var i = (currentPage - 1) * dataPerPage;
-        i < ((currentPage - 1) * dataPerPage + dataPerPage >  dataList.length ? dataList.length : (currentPage - 1) * dataPerPage + dataPerPage);
-        i++
-    ) {
-        chartHtml += `
-        	<tr>
-        		<td>
-        			${dataList[i].id}
-        		</td>
-        		`+(dataList[i].tvo.fullpath != "" ?
-        		`
-        		<td>
-        			<img src="/display?fileName=${dataList[i].tvo.fullpath}" width="200px">
-        		</td>
-        		`: `<td></td>`
-        		)
-        		+
-        		`
-        		<td>
-        			${dataList[i].content}
-        		</td>
-        		<td>
-        			${dataList[i].review_date}
-        		</td>
-        		<td>
-        			<div class="remove_review" data-id="${dataList[i].id}" data-rno="${dataList[i].rno}" style="cursor:pointer">❌</div>
-        		</td>
-        	</tr>
-        `;
-    }
-    $("#review_table").html(chartHtml);
-    $(".remove_review").on("click", function() {
+	currentPage = Number(currentPage);
+	dataPerPage = Number(dataPerPage);
+
+	for (
+			var i = (currentPage - 1) * dataPerPage;
+			i < ((currentPage - 1) * dataPerPage + dataPerPage >  dataList.length ? dataList.length : (currentPage - 1) * dataPerPage + dataPerPage);
+			i++
+	) {
+		chartHtml += `
+		<tr>
+		<td>
+			${dataList[i].id}
+			</td>
+			`+(dataList[i].tvo.fullpath != "" ?
+					`
+					<td>
+					<img src="/display?fileName=${dataList[i].tvo.fullpath}" width="200px">
+					</td>
+					`: `<td></td>`
+			)
+			+
+			`
+			<td>
+			${dataList[i].content}
+			</td>
+			<td>
+			${dataList[i].review_date}
+			</td>
+			<td>
+			<div class="remove_review" data-id="${dataList[i].id}" data-rno="${dataList[i].rno}" style="cursor:pointer">❌</div>
+			</td>
+			</tr>
+			`;
+	}
+	$("#review_table").html(chartHtml);
+	$(".remove_review").on("click", function() {
 		const thisId = $(this).data("id");
 		if(thisId != id){
 			alert("본인이 작성한 리뷰만 삭제가능합니다.");
 			return false;
 		}
-    	const rno = $(this).data("rno");
+		const rno = $(this).data("rno");
 		$.ajax({
 			type:"delete",
 			url:"/deletereview",

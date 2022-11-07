@@ -79,6 +79,12 @@ function getHF() {
 
 				})
 			})
+			$(".login_table").css("display","none");
+			$(".login_success").css("display","block");
+			const ls = `
+				<div><a href="/${url}/mypage">${userId}</a></div>
+				`;
+			$(".login_success").html(ls);
 		}else{
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
@@ -88,6 +94,20 @@ function getHF() {
 				$(`#li_span_${target}_${ndnow}`).html("로그인");
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
+			})
+			$(".login_btn").on("click", function() {
+				const target = $(this).data("target");
+				const id = $(`#login_id_${target}`).val();
+				const pw = $(`#login_pw_${target}`).val();
+				$.getJSON("/login",{id,pw,url},function(res){
+					location.reload();
+				})
+				.fail(function() {
+					alert("아이디와 비밀번호를 다시 확인하세요.");
+				})
+			})
+			$(".signup_btn").on("click", function() {
+				location.href = `/${url}/signup`;
 			})
 		}
 	})
@@ -215,7 +235,7 @@ $("#thumb_file").on("change", function() {
 				const fullPath = encodeURIComponent(`${u.path}/${u.uuid}_${u.fileName}`);
 				thumbPath = fullPath;
 				if(u.checkI){
-						files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;"><br>`;
+					files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;"><br>`;
 				}else{
 					files += `<a href="/download?fileName=${fullPath}">${u.fileName}</a><br>`;
 				}

@@ -18,7 +18,7 @@
         href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap"
         rel="stylesheet"></head>
 <body>
-<input type='hidden' value='${userInfo.admin}' id='admin'><input type='hidden' value='aaa' id='url'><input type='hidden' value='shopping' id='opt'>		<input type='hidden' value='${ewbUser.id}' id='ewb_id'><input type='hidden' value='${modify.pno}' id='pno'><input type='hidden' value='${userId}' id='user_id'>	<div id='modifyproduct_entry'>
+<input type='hidden' value='${userInfo.admin}' id='admin'><input type='hidden' value='aaa' id='url'><input type='hidden' value='shopping' id='opt'>		<input type='hidden' value='${ewbUser.id}' id='ewb_id'><input type='hidden' value='${modify.pno}' id='pno'><input type='hidden' value='${userId}' id='user_id'><input type='hidden' value='${modify.tvo.fullpath}' id='thumbpath'>	<div id='modifyproduct_entry'>
 		<div id='header'></div>
 		<div id='modifyproduct_content'>
 			<div id="container">
