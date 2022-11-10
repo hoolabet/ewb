@@ -1,18 +1,18 @@
 @charset "UTF-8";
 
-#product_write_content{
-    height: 1000px;
-    width: 100%;
-    background-color: rgb(236, 228, 228);
-    margin: auto;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+#product_write_content {
+	height: 1000px;
+	width: 100%;
+	background-color: rgb(236, 228, 228);
+	margin: auto;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
 }
 
-#container{
+#container {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
@@ -30,25 +30,25 @@
 	width: 1000px;
 	height: 400px;
 	border: 1px solid black;
-	text-align: center;
+	word-break: break-all;
 }
 
-#thumb_file{
+#thumb_file {
 	display: none;
 }
 
-#thumbnail{
+#thumbnail {
 	width: 500px;
 	height: 500px;
 	background-color: white;
 	border: 1px solid black;
 }
 
-#insert_img{
-	display:none;
+#insert_img {
+	display: none;
 }
 
-#insert_btn, #thumb_btn{
+#thumb_btn {
 	width: 100px;
 	height: 30px;
 	background-color: white;
@@ -58,4 +58,66 @@
 	align-items: center;
 	padding: 10px;
 	cursor: pointer;
+}
+
+#entry {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	position: relative;
+}
+
+#btnss {
+	height: 30px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.btns {
+	width: 30px;
+	height: 30px;
+	border: 1px solid black;
+	border-radius: 5px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+}
+
+.btns:hover {
+	background-color: black;
+	color: white;
+}
+
+#link_div {
+	display: none;
+	width: 200px;
+	height: 200px;
+	border: 1px solid black;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+	background-color: white;
+	position: absolute;
+}
+
+#font_size, #cp_div {
+	display: none;
+	position: absolute;
+}
+
+#sort {
+	display: flex;
+}
+
+.material-symbols-outlined {
+	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+	cursor: pointer;
+}
+
+.minicolors-swatch {
+	display: none;
 }

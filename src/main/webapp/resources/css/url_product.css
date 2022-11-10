@@ -108,3 +108,7 @@ body{
 	padding: 13px;
 	border: 1px solid black;
 }
+
+#add_product {
+	cursor: pointer;
+}

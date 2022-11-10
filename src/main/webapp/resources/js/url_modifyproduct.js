@@ -1,4 +1,5 @@
 
+$("#cp").minicolors();
 const reg = new RegExp("(.*?)\.(exe|zip|alz)$");
 const maxSize = 5242880;
 
@@ -255,4 +256,184 @@ $("#thumb_file").on("change", function() {
 			$("#thumbnail").html(files);
 		}
 	})
+})
+
+$("#able_box").on("change", function(){
+	const chk = $(this).prop("checked");
+	if(chk){
+		$("#content").prop("contenteditable", true);
+	}else{
+		$("#content").prop("contenteditable", false);
+	}
+})
+let newRange = "";
+$("#content").on("keyup", function (e) {
+	// console.log($(this).html());
+	newRange = window.getSelection().getRangeAt(0);
+})
+
+$("#content").on("click", function () {
+	// console.log($(this).html());
+	newRange = window.getSelection().getRangeAt(0);
+})
+
+let dateVal = "";
+const atts = {
+		b: false,
+		i: false,
+		u: false
+}
+$(".btns").on("click", function (e) {
+	const att = $(this).data("att");
+	const date = Date.now();
+	dateVal = date;
+	if (newRange == "") {
+		$("#content").focus();
+	}
+	if (att == "b" || att == "i" || att == "u") {
+		const selection = window.getSelection();
+		const dispan = document.createElement("span");
+		const span = document.createElement("span");
+		if(selectAO == selectFO){
+			span.innerHTML = `<${att}><span class="${att}">&nbsp;</span></${att}>`;
+		}else{
+			span.innerHTML = `<${att}><span class="${att}">${selected}</span></${att}>`;
+		}
+		span.id = `${date}`;
+		if (att == "b") {
+			dispan.innerHTML = `<span style="font-weight:400">&nbsp;</span>`;
+		}else if(att == "u"){
+			dispan.innerHTML = `<span style="text-decoration:none">&nbsp;</span>`;
+		}else {
+			dispan.innerHTML = `<span style="font-style:normal">&nbsp;</span>`;
+		}
+		dispan.id = `${date}`;
+		selection.removeAllRanges();
+		selection.addRange(newRange);
+		newRange.deleteContents();
+
+		if(selectAO == selectFO){
+			if (atts[att]) {
+				$(`div[data-att="${att}"]`).css("background-color", "white").css("color", "black");
+				newRange.insertNode(dispan);
+				atts[att] = false;
+			} else {
+				$(`div[data-att="${att}"]`).css("background-color", "black").css("color", "white");
+				newRange.insertNode(span);
+				atts[att] = true;
+			}
+		}else{
+			newRange.insertNode(span);
+		}
+		window.getSelection().collapse($(`#${date}`)[0], 1);
+	}else if(att == "a"){
+		$("#link_div").css("display","flex").css("top",e.clientY).css("left",e.clientX);
+		$("#href").val("");
+		$("#href_text").val("");
+	}
+})
+$(document).on("click", function(e){
+	if(e.target.id != "link_div" && $(e.target).data("att") != "a" && e.target.className != "links"){
+		$("#link_div").css("display","none");
+	}
+})
+
+$("#link_btn").on("click", function(){
+	if (newRange == "") {
+		$("#content").focus();
+	}
+	const href = $("#href").val();
+	const href_text = $("#href_text").val();
+	if(href.replace(" ","") == "" || href_text.replace(" ","") == ""){
+		alert("주소를 입력하세요.");
+		return false;
+	}
+	const $a = document.createElement("a");
+	$a.href = href;
+	$a.innerHTML = href_text;
+	$a.target = "_blank";
+	const selection = window.getSelection();
+	selection.removeAllRanges();
+	selection.addRange(newRange);
+	newRange.deleteContents();
+	newRange.insertNode($a);
+	$("#link_div").css("display","none");
+})
+
+$("#font_size").val("16");
+$("#font_size_btn").on("click", function (e) {
+	if($("#cp_div").css("display") == "flex"){
+		$("#cp_div").css("display", "none");
+	}
+    if($("#font_size").css("display") == "none"){
+    	$("#font_size").css("display", "flex").css("top", "40px").css("left", "510px");
+    }else{
+    	$("#font_size").css("display", "none");
+    }
+})
+$("#font_size").on("change", function () {
+    if (newRange == "") {
+        $("#edita").focus();
+    }
+    const size = $(this).val();
+    const date = Date.now();
+    const span = document.createElement("span");
+    span.id = date;
+    if (selectAO == selectFO) {
+        span.innerHTML = `<span class="font_size" style="font-size:${size}px">&nbsp;</span>`;
+    } else {
+        span.innerHTML = `<span class="font_size" style="font-size:${size}px">${selected}</span>`;
+    }
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    newRange.deleteContents();
+    newRange.insertNode(span);
+    $(this).toggle();
+})
+
+$("#font_color_btn").on("click", function (e) {
+	if($("#font_size").css("display") == "flex"){
+		$("#font_size").css("display", "none");
+	}
+    if($("#cp_div").css("display") == "none"){
+    	$("#cp_div").css("display", "flex").css("top", "40px").css("left", "550px");
+    }else{
+    	$("#cp_div").css("display", "none");
+    }
+    
+})
+
+$("#font_color_choice").on("click", function () {
+    $("#cp_div").toggle();
+    const color = $("#cp").val();
+    const date = Date.now();
+    const span = document.createElement("span");
+    span.id = date;
+    if (selectAO == selectFO) {
+        span.innerHTML = `<span class="font_color" style="color:${color}">&nbsp;</span>`;
+    } else {
+        span.innerHTML = `<span class="font_color" style="color:${color}">${selected}</span>`;
+    }
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    newRange.deleteContents();
+    newRange.insertNode(span);
+})
+
+$(".sort").on("click", function(){
+	const sort = $(this).data("sort");
+	$("#content").css("text-align",sort);
+	$(".sort").css("background-color","white").css("color","black");
+	$(this).css("background-color","black").css("color","white");
+})
+
+let selectAO = 0;
+let selectFO = 0;
+let selected = "";
+$(document).on("selectstart", function(e){
+	selectAO = window.getSelection().anchorOffset;
+	selectFO = window.getSelection().focusOffset;
+	selected = window.getSelection().toString();
 })

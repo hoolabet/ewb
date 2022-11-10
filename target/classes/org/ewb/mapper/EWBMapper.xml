@@ -4,6 +4,71 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.ewb.mapper.EWBMapper">
+	<select id="memberList" parameterType="java.lang.String" resultType="org.ewb.model.MemberVO">
+		<!-- SELECT * FROM member_${value} WHERE admin=false ORDER BY sign_date DESC -->
+		SELECT
+		*
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY sign_date)
+		as num
+		FROM
+		member_${url} 
+		WHERE
+		admin = false
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					AND
+					id LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					AND
+					name LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					AND
+					(
+					id LIKE CONCAT('%', #{search}, '%')
+					OR
+					name LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		sign_date DESC
+		) add_rn_board
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
+	</select>
+	
+	<select id="memberMaxNumSearch" resultType="int">
+		SELECT
+		ifnull(MAX(num),1)
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY sign_date
+		)
+		as num
+		FROM
+		member_${url}
+		WHERE
+		admin = false
+		ORDER BY
+		sign_date DESC
+		) add_rn_board
+		
+	</select>
+	
+	<delete id="banUser">
+		DELETE FROM member_${url} WHERE id=#{id}
+	</delete>
+	
 	<select id="ewbLogin" resultType="org.ewb.model.MemberVO">
 		SELECT * FROM ewb_member WHERE
 		id=#{id} and pw=#{pw}
@@ -273,6 +338,7 @@
 		<collection property="pvo" resultMap="ProductVO" />
 	</resultMap>
 	<resultMap type="org.ewb.model.PaymentVO" id="PaymentVO">
+		<result column="id" property="id" />
 		<result column="payno" property="payno" />
 		<result column="price" property="price" />
 		<result column="name" property="name" />
@@ -315,11 +381,49 @@
 		as num
 		FROM
 		payment_${url}
+		where
+		id=#{search}
 		ORDER BY
 		payno DESC
 		) add_rn_board
 	</select>
+	
+	<select id="orderlistAll" resultType="org.ewb.model.PaymentVO">
+		SELECT
+		*
+		FROM(
+		SELECT
+		p.*,
+		ROW_NUMBER() OVER(ORDER BY p.payno DESC)
+		as num
+		FROM
+		payment_${url} p
+		ORDER BY
+		p.payno DESC
+		)
+		add_rn_board
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
+	</select>
 
+	<select id="orderlistAllMaxNumSearch" resultType="int">
+		SELECT
+		ifnull(MAX(num),1)
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY payno
+		DESC)
+		as num
+		FROM
+		payment_${url}
+		ORDER BY
+		payno DESC
+		) add_rn_board
+	</select>
+	
 	<insert id="writeReview">
 		INSERT INTO review_${url}(id,pno,content)
 		VALUES(#{id},#{pno},#{content})

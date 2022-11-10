@@ -27,6 +27,15 @@
 					<div class="status" data-href="board">게시판</div>
 				</c:otherwise>
 			</c:choose>
+			<div class="status" data-href="member">회원 관리</div>
+			<c:choose>
+				<c:when test="${opt eq 'shopping'}">
+					<div class="status" data-href="ordermanagement">주문 관리</div>
+				</c:when>
+				<c:otherwise>
+					<div class="status" data-href="boardmanagement">게시글 관리</div>
+				</c:otherwise>
+			</c:choose>
 			<div id="delete">❌</div>
 		</div>
 	</div>

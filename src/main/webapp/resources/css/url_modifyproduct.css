@@ -48,7 +48,7 @@
 	display:none;
 }
 
-#insert_btn, #thumb_btn{
+#thumb_btn{
 	width: 100px;
 	height: 30px;
 	background-color: white;

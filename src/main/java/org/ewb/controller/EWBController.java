@@ -3,6 +3,7 @@ package org.ewb.controller;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -73,6 +74,7 @@ public class EWBController {
 			System.out.println(url+" Folder already exists");
 		}
 		File home = new File(uploadFolder+"\\"+url+"\\home.jsp");
+		File member = new File(uploadFolder+"\\"+url+"\\member.jsp");
 		File signup = new File(uploadFolder+"\\"+url+"\\signup.jsp");
 		File login = new File(uploadFolder+"\\"+url+"\\login.jsp");
 		File product = new File(uploadFolder+"\\"+url+"\\product.jsp");
@@ -82,6 +84,7 @@ public class EWBController {
 		File cart = new File(uploadFolder+"\\"+url+"\\cart.jsp");
 		File order = new File(uploadFolder+"\\"+url+"\\order.jsp");
 		File orderlist = new File(uploadFolder+"\\"+url+"\\orderlist.jsp");
+		File ordermanagement = new File(uploadFolder+"\\"+url+"\\ordermanagement.jsp");
 		File mypage = new File(uploadFolder+"\\"+url+"\\mypage.jsp");
 		File modifyprofile = new File(uploadFolder+"\\"+url+"\\modifyprofile.jsp");
 		File board = new File(uploadFolder+"\\"+url+"\\board.jsp");
@@ -122,13 +125,13 @@ public class EWBController {
 						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 						"    <link\r\n" + 
 						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-						"        rel=\"stylesheet\">"+
+						"        rel=\"stylesheet\">\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
-						"		<input type='hidden' value='${userId}' id='user_id'>"+
-						"		<input type='hidden' value='"+url+"' id='url'>"+
-						"		<input type='hidden' value='"+opt+"' id='opt'>"+
-						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+						"		<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+						"		<input type='hidden' value='"+url+"' id='url'>\r\n"+
+						"		<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 						"    <div id=\"btns\">\r\n" + 
 						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
 						"        <input type=\"button\" value=\"불러오기\" id=\"load\">\r\n" +
@@ -361,12 +364,113 @@ public class EWBController {
 						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 						"    <script src=\"../resources/js/url_home.js\"></script>\r\n" + 
-						"</body>"+
+						"</body>\r\n"+
 						"</html>");
 				bw.close();
 			}else {
 				System.out.println("home File already exists");
 			}
+			
+			if(member.createNewFile()) {
+				System.out.println("member File created");
+				FileWriter fw = new FileWriter(member);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+						"    pageEncoding=\"UTF-8\"%>\r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+						"<!DOCTYPE html>\r\n" + 
+						"<html>\r\n" + 
+						"<head>\r\n" + 
+						"    <meta charset=\"UTF-8\">\r\n" + 
+						"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+						"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+						"    <title>"+url+" member</title>\r\n" + 
+						"    <link rel=\"stylesheet\" href=\"../resources/css/url_member.css\">\r\n" +
+						"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+						"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+						"    <link\r\n" + 
+						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+						"        rel=\"stylesheet\">"+
+						"</head>\r\n" + 
+						"<body>\r\n" + 
+						"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+						"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+						"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+						"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+						"	<div id='member_entry'>\r\n"+
+						"		<div id='header'></div>\r\n"+
+						"		<div id='member_content'>\r\n"+
+						"			<table id=\"member_table\">\r\n" + 
+						"				<tr>\r\n" + 
+						"					<td>아이디</td>\r\n" + 
+						"					<td>이름</td>\r\n" + 
+						"					<td>이메일</td>\r\n" + 
+						"					<td>연락처</td>\r\n" + 
+						"					<td>생년월일</td>\r\n" + 
+						"					<td>가입일</td>\r\n" + 
+						"					<td></td>\r\n" + 
+						"				</tr>\r\n" + 
+						"				<c:forEach items=\"${member}\" var=\"member\">\r\n" + 
+						"					<tr>\r\n" + 
+						"						<td>${member.id}</td>\r\n" + 
+						"						<td>${member.name}</td>\r\n" + 
+						"						<td>${member.email}</td>\r\n" + 
+						"						<td>${member.phone}</td>\r\n" + 
+						"						<td>${member.birth}</td>\r\n" + 
+						"						<td>${member.sign_date}</td>\r\n" + 
+						"						<td>\r\n" + 
+						"							<div class=\"delete_btn\" data-id=\"${member.id}\">❌</div>\r\n" + 
+						"						</td>\r\n" + 
+						"					</tr>\r\n" + 
+						"				</c:forEach>\r\n" + 
+						"			</table>\r\n" + 
+						"			<form action=\"/${url}/member\" id=\"search_form\">\r\n" + 
+						"				<input type=\"hidden\" name=\"pageNum\" value=\"${paging.cri.pageNum}\">\r\n" + 
+						"				<input type=\"hidden\" name=\"amount\" value=\"${paging.cri.amount}\">\r\n" + 
+						"				<select name=\"type\">\r\n" + 
+						"					<option value=\"t\">아이디</option>\r\n" + 
+						"					<option value=\"c\">이름</option>\r\n" + 
+						"					<option value=\"tc\">아이디+이름</option>\r\n" + 
+						"				</select> <input type=\"text\" name=\"search\" value=\"${paging.cri.search}\">\r\n" + 
+						"				<input type=\"submit\" value=\"찾기\">\r\n" + 
+						"			</form>\r\n" + 
+						"			<br> <br>\r\n" + 
+						"			<div id='paging'>\r\n" + 
+						"				<a\r\n" + 
+						"					href=\"/${url}/member?pageNum=1&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">처음으로</a>\r\n" + 
+						"				<c:if test=\"${paging.prev}\">\r\n" + 
+						"					<a\r\n" + 
+						"						href=\"/${url}/member?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">이전</a>\r\n" + 
+						"				</c:if>\r\n" + 
+						"				<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
+						"					var=\"num\">\r\n" + 
+						"					<a\r\n" + 
+						"						href=\"/${url}/member?pageNum=${num}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">${num}</a>\r\n" + 
+						"				</c:forEach>\r\n" + 
+						"				<c:if test=\"${paging.next}\">\r\n" + 
+						"					<a\r\n" + 
+						"						href=\"/${url}/member?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">다음</a>\r\n" + 
+						"				</c:if>\r\n" + 
+						"				<a\r\n" + 
+						"					href=\"/${url}/member?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a>\r\n"+
+						"		</div>\r\n"+
+						"		<div id='footer'></div>\r\n"+
+						"	</div>\r\n"+
+						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+						"    <script src=\"../resources/js/url_member.js\"></script>\r\n"+
+						"</body>\r\n"+
+						"</html>");
+				bw.close();
+
+			}else {
+				System.out.println("member File already exists");
+			}
+			
 			if(signup.createNewFile()) {
 				System.out.println("signup File created");
 				FileWriter fw = new FileWriter(signup);
@@ -389,18 +493,18 @@ public class EWBController {
 						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 						"    <link\r\n" + 
 						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-						"        rel=\"stylesheet\">"+
+						"        rel=\"stylesheet\">\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
-						"<input type='hidden' value='"+url+"' id='url'>"+
-						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+						"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 						"<div id=\"btns\">\r\n" + 
 						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
 						"        <input type=\"button\" value=\"불러오기\" id=\"load\">\r\n" + 
 						"    </div>\r\n" + 
 						"	 <div id=\"reg_info\">\r\n" + 
 						"    	<input type=\"hidden\" id=\"reg_pw\">\r\n" + 
-						"    </div>"+
+						"    </div>\r\n"+
 						"    <div id=\"signup_entry\">\r\n" + 
 						"        <div id=\"header\"></div>\r\n" + 
 						"        <div id='signup_content'>\r\n" +
@@ -503,8 +607,8 @@ public class EWBController {
 						"    </div>"+
 						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-						"    <script src=\"../resources/js/url_signup.js\"></script>"+
-						"</body>"+
+						"    <script src=\"../resources/js/url_signup.js\"></script>\r\n"+
+						"</body>\r\n"+
 						"</html>");
 				bw.close();
 			}else {
@@ -532,13 +636,13 @@ public class EWBController {
 						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 						"    <link\r\n" + 
 						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-						"        rel=\"stylesheet\">"+
+						"        rel=\"stylesheet\">\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
-						"		<input type='hidden' value='${userId}' id='user_id'>"+
-						"		<input type='hidden' value='"+url+"' id='url'>"+
-						"		<input type='hidden' value='"+opt+"' id='opt'>"+
-						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+						"		<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+						"		<input type='hidden' value='"+url+"' id='url'>\r\n"+
+						"		<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 						"    <div id=\"btns\">\r\n" + 
 						"        <input type=\"button\" value=\"저장\" id=\"save\">\r\n" + 
 						"        <input type=\"button\" value=\"불러오기\" id=\"load\">\r\n" +
@@ -634,7 +738,7 @@ public class EWBController {
 						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 						"    <script src=\"../resources/js/url_login.js\"></script>\r\n" + 
-						"</body>"+
+						"</body>\r\n"+
 						"</html>");
 				bw.close();
 			}else {
@@ -663,14 +767,14 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
-							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='"+url+"' id='url'>"+
-							"<input type='hidden' value='"+opt+"' id='opt'>"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
-							"<input type='hidden' value='${userId}' id='user_id'>"+
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='product_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_content'>\r\n"+
@@ -745,8 +849,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_product.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_product.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 					String create_product_table = "create table product_"+url+" ("
@@ -877,14 +981,16 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
+							"<link rel=\"stylesheet\"\r\n" + 
+							"	href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
-							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='"+url+"' id='url'>"+
-							"<input type='hidden' value='"+opt+"' id='opt'>"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
-							"<input type='hidden' value='${userId}' id='user_id'>"+
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='product_write_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_write_content'>\r\n"+
@@ -893,9 +999,61 @@ public class EWBController {
 							"				<label>가격</label><input type='text' id='price'>\r\n"+
 							"				<label>수량</label><input type='text' id='quantity'>\r\n"+
 							"				<label>섬네일</label><div contenteditable='true' id='thumbnail'></div><div id='thumb_btn'>섬네일 넣기</div><input type='file' id='thumb_file'>\r\n"+
-							"        		<label>상세내용</label><div contenteditable='true' id=\"content\"></div>\r\n" +
+							"        		<label>상세내용</label><div id=\"entry\">\r\n" + 
+							"					<input type=\"checkbox\" id=\"able_box\" checked>\r\n" + 
+							"					<div id=\"btnss\">\r\n" + 
+							"						<div class=\"btns\" data-att=\"b\">\r\n" + 
+							"							<b>B</b>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div class=\"btns\" data-att=\"i\">\r\n" + 
+							"							<i>I</i>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div class=\"btns\" data-att=\"u\">\r\n" + 
+							"							<u>U</u>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div class=\"btns\" data-att=\"a\">L</div>\r\n" + 
+							"						<div class=\"btns\" id=\"font_size_btn\">\r\n" + 
+							"							<span class=\"material-symbols-outlined\"> format_size </span>\r\n"+
+							"						</div>\r\n" + 
+							" 						<select\r\n" + 
+							"							id=\"font_size\">\r\n" + 
+							"							<option value=\"8\">8</option>\r\n" + 
+							"							<option value=\"12\">12</option>\r\n" + 
+							"							<option value=\"16\">16</option>\r\n" + 
+							"							<option value=\"20\">20</option>\r\n" + 
+							"							<option value=\"24\">24</option>\r\n" + 
+							"							<option value=\"28\">28</option>\r\n" + 
+							"						</select>\r\n" + 
+							"						<div class=\"btns\" id=\"font_color_btn\">\r\n" + 
+							"							<span class=\"material-symbols-outlined\"> format_color_text\r\n" + 
+							"							</span>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div id=\"cp_div\">\r\n" + 
+							"							<input type=\"text\" id=\"cp\"> <input type=\"button\"\r\n" + 
+							"								value=\"선택\" id=\"font_color_choice\">\r\n" + 
+							"						</div>\r\n" + 
+							"						<div id=\"sort\">\r\n" + 
+							"							<span class=\"material-symbols-outlined sort btns\"\r\n" + 
+							"								data-sort=\"left\"> format_align_left </span> <span\r\n" + 
+							"								class=\"material-symbols-outlined sort btns\" data-sort=\"center\">\r\n" + 
+							"								format_align_center </span> <span\r\n" + 
+							"								class=\"material-symbols-outlined sort btns\" data-sort=\"right\">\r\n" + 
+							"								format_align_right </span>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div class='btns' id='insert_btn'>\r\n"+
+							"							<span class=\"material-symbols-outlined\">\r\n" + 
+							"								imagesmode\r\n" + 
+							"							</span>\r\n"+
+							"						</div>\r\n"+
+							"					</div>\r\n" + 
+							"					<div id=\"link_div\">\r\n" + 
+							"						<input class=\"links\" type=\"text\" id=\"href\" placeholder=\"링크주소\"><br>\r\n" + 
+							"						<input class=\"links\" type=\"text\" id=\"href_text\" placeholder=\"링크이름\"><br>\r\n" + 
+							"						<input class=\"links\" type=\"button\" id=\"link_btn\" value=\"링크만들기\"></br>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div contenteditable=\"true\" id=\"content\"></div>\r\n" + 
+							"				</div>\r\n" +
 							"				<input type='file' id='insert_img' multiple>\r\n"+
-							"				<div id='insert_btn'>이미지 넣기</div>\r\n"+
 							"        		<input type=\"button\" value=\"작성하기\" id=\"write_btn\">\r\n" + 
 							"    		</div>"+
 							"		</div>\r\n"+
@@ -903,8 +1061,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" +
-							"    <script src=\"../resources/js/url_product_write.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_product_write.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
@@ -933,14 +1091,14 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${detail.quantity}' id='product_quantity'>\r\n"+
 							"<input type='hidden' value='${detail.pno}' id='product_pno'>\r\n"+
 							"	<div id='product_detail_entry'>\r\n"+
@@ -1009,8 +1167,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_product_detail.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_product_detail.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
@@ -1034,22 +1192,25 @@ public class EWBController {
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
 							"    <title>"+url+" modify product</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyproduct.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_product_write.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
 							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\"\r\n" + 
+							"		href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
-							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='"+url+"' id='url'>"+
-							"<input type='hidden' value='"+opt+"' id='opt'>"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
-							"<input type='hidden' value='${modify.pno}' id='pno'>"+
-							"<input type='hidden' value='${userId}' id='user_id'>"+
-							"<input type='hidden' value='${modify.tvo.fullpath}' id='thumbpath'>"+
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${modify.pno}' id='pno'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${modify.tvo.fullpath}' id='thumbpath'>\r\n"+
 							"	<div id='modifyproduct_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='modifyproduct_content'>\r\n"+
@@ -1058,9 +1219,61 @@ public class EWBController {
 							"				<label>가격</label><input type='text' id='price' value='${modify.price}'>\r\n"+
 							"				<label>수량</label><input type='text' id='quantity' value='${modify.quantity}'>\r\n"+
 							"				<label>섬네일</label><div contenteditable='true' id='thumbnail'><img src='/display?fileName=${modify.tvo.fullpath}'></div><div id='thumb_btn'>섬네일 넣기</div><input type='file' id='thumb_file'>\r\n"+
-							"        		<label>상세내용</label><div contenteditable='true' id=\"content\">${modify.content}</div>\r\n" +
+							"        		<label>상세내용</label><div id=\"entry\">\r\n" + 
+							"					<input type=\"checkbox\" id=\"able_box\" checked>\r\n" + 
+							"					<div id=\"btnss\">\r\n" + 
+							"						<div class=\"btns\" data-att=\"b\">\r\n" + 
+							"							<b>B</b>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div class=\"btns\" data-att=\"i\">\r\n" + 
+							"							<i>I</i>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div class=\"btns\" data-att=\"u\">\r\n" + 
+							"							<u>U</u>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div class=\"btns\" data-att=\"a\">L</div>\r\n" + 
+							"						<div class=\"btns\" id=\"font_size_btn\">\r\n" + 
+							"							<span class=\"material-symbols-outlined\"> format_size </span>\r\n"+
+							"						</div>\r\n" + 
+							" 						<select\r\n" + 
+							"							id=\"font_size\">\r\n" + 
+							"							<option value=\"8\">8</option>\r\n" + 
+							"							<option value=\"12\">12</option>\r\n" + 
+							"							<option value=\"16\">16</option>\r\n" + 
+							"							<option value=\"20\">20</option>\r\n" + 
+							"							<option value=\"24\">24</option>\r\n" + 
+							"							<option value=\"28\">28</option>\r\n" + 
+							"						</select>\r\n" + 
+							"						<div class=\"btns\" id=\"font_color_btn\">\r\n" + 
+							"							<span class=\"material-symbols-outlined\"> format_color_text\r\n" + 
+							"							</span>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div id=\"cp_div\">\r\n" + 
+							"							<input type=\"text\" id=\"cp\"> <input type=\"button\"\r\n" + 
+							"								value=\"선택\" id=\"font_color_choice\">\r\n" + 
+							"						</div>\r\n" + 
+							"						<div id=\"sort\">\r\n" + 
+							"							<span class=\"material-symbols-outlined sort btns\"\r\n" + 
+							"								data-sort=\"left\"> format_align_left </span> <span\r\n" + 
+							"								class=\"material-symbols-outlined sort btns\" data-sort=\"center\">\r\n" + 
+							"								format_align_center </span> <span\r\n" + 
+							"								class=\"material-symbols-outlined sort btns\" data-sort=\"right\">\r\n" + 
+							"								format_align_right </span>\r\n" + 
+							"						</div>\r\n" + 
+							"						<div class='btns' id='insert_btn'>\r\n"+
+							"							<span class=\"material-symbols-outlined\">\r\n" + 
+							"								imagesmode\r\n" + 
+							"							</span>\r\n"+
+							"						</div>\r\n"+
+							"					</div>\r\n" + 
+							"					<div id=\"link_div\">\r\n" + 
+							"						<input class=\"links\" type=\"text\" id=\"href\" placeholder=\"링크주소\"><br>\r\n" + 
+							"						<input class=\"links\" type=\"text\" id=\"href_text\" placeholder=\"링크이름\"><br>\r\n" + 
+							"						<input class=\"links\" type=\"button\" id=\"link_btn\" value=\"링크만들기\"></br>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div contenteditable=\"true\" id=\"content\">${modify.content}</div>\r\n" + 
+							"				</div>\r\n" +
 							"				<input type='file' id='insert_img' multiple>\r\n"+
-							"				<div id='insert_btn'>이미지 넣기</div>\r\n"+
 							"        		<input type=\"button\" value=\"수정하기\" id=\"modi_btn\">\r\n" + 
 							"    		</div>"+
 							"		</div>\r\n"+
@@ -1068,8 +1281,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" +
-							"    <script src=\"../resources/js/url_modifyproduct.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_modifyproduct.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
@@ -1099,13 +1312,13 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='cart_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1117,14 +1330,14 @@ public class EWBController {
 							"						<input type='checkbox' class='cart_check' data-pno='${cart.pno}' checked>\r\n"+
 							"					</td>\r\n"+
 							"					<td>\r\n"+
-							"<c:choose>"
-							+ "<c:when test=\"${fn:length(cart.pvo.tvo.fullpath) ne 0}\">"
-							+ "<img src='/display?fileName=${cart.pvo.tvo.fullpath}' class='p_imgs'>"
-							+ "</c:when>"
-							+ "<c:otherwise>"
-							+ "<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>"
-							+ "</c:otherwise>"
-							+ "</c:choose>"+
+							"					<c:choose>\r\n"+
+							"					<c:when test=\"${fn:length(cart.pvo.tvo.fullpath) ne 0}\">\r\n"+
+							"						<img src='/display?fileName=${cart.pvo.tvo.fullpath}' class='p_imgs'>\r\n"+
+							"					</c:when>\r\n"+
+							"					<c:otherwise>\r\n"+
+							"						<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>\r\n"+
+							"					</c:otherwise>\r\n"+
+							"					</c:choose>\r\n"+
 							"					</td>\r\n"+
 							"					<td>\r\n"+
 							"						<p>${cart.pvo.pname}</p>\r\n"+
@@ -1151,8 +1364,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_cart.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_cart.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
@@ -1182,13 +1395,13 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='order_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1207,14 +1420,14 @@ public class EWBController {
 							"			<c:forEach var=\"order\" items=\"${order}\">\r\n"+
 							"				<tr>\r\n"+
 							"					<td>\r\n"+
-							"<c:choose>"
-							+ "<c:when test=\"${fn:length(order.pvo.tvo.fullpath) ne 0}\">"
-							+ "<img src='/display?fileName=${order.pvo.tvo.fullpath}' class='p_imgs'>"
-							+ "</c:when>"
-							+ "<c:otherwise>"
-							+ "<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>"
-							+ "</c:otherwise>"
-							+ "</c:choose>"+
+							"					<c:choose>\r\n"+
+							"					<c:when test=\"${fn:length(order.pvo.tvo.fullpath) ne 0}\">\r\n"+
+							"						<img src='/display?fileName=${order.pvo.tvo.fullpath}' class='p_imgs'>\r\n"+
+							"					</c:when>\r\n"+
+							"					<c:otherwise>\r\n"+
+							"						<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>\r\n"+
+							"					</c:otherwise>\r\n"+
+							"					</c:choose>\r\n"+
 							"					</td>\r\n"+
 							"					<td>\r\n"+
 							"						<p>${order.pvo.pname}</p>\r\n"+
@@ -1237,8 +1450,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_order.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_order.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
@@ -1268,19 +1481,99 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='orderlist_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='orderlist_content'>\r\n"+
 							"			<div id='orderlist_div'>\r\n"+
 							"				<table id='orderlist_table'>\r\n"+
+							"				<c:forEach items=\"${orderlist}\" var=\"orderlist\">\r\n"+
+							"					<tr id=\"payno_${orderlist.payno}\">\r\n" + 
+							"						<td class=\"orderlist_td\" data-payno=\"${orderlist.payno}\">\r\n" + 
+							"							결제 아이디 : ${orderlist.id }<br>\r\n" + 
+							"							총 결제 금액 : ${orderlist.price}원<br>\r\n" + 
+							"							받는 사람 : ${orderlist.name}<br>\r\n" + 
+							"							배송주소 : ${orderlist.address}<br>\r\n" + 
+							"							메모 : ${orderlist.memo}<br>\r\n" + 
+							"							결제완료 시간 : ${orderlist.payment_date}" + 
+							"						</td>\r\n" +
+							"					</tr>\r\n"+
+							"				</c:forEach>\r\n"+
+							"				</table>\r\n"+
+							"			<br> <br> <div id='paging'><a\r\n" + 
+							"				href=\"/${url}/orderlist?pageNum=1&amount=${paging.cri.amount}\">처음으로</a>\r\n" + 
+							"			<c:if test=\"${paging.prev}\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/orderlist?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}\">이전</a>\r\n" + 
+							"			</c:if>\r\n" + 
+							"			<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
+							"				var=\"num\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/orderlist?pageNum=${num}&amount=${paging.cri.amount}\">${num}</a>\r\n" + 
+							"			</c:forEach>\r\n" + 
+							"			<c:if test=\"${paging.next}\">\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/orderlist?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}\">다음</a>\r\n" + 
+							"			</c:if>\r\n" + 
+							"			<a\r\n" + 
+							"				href=\"/${url}/orderlist?pageNum=${paging.realEnd}&amount=${paging.cri.amount}\">맨끝으로</a></div>			</div>"+
+							"			</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_orderlist.js\"></script>\r\n"+
+							"</body>\r\n"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("orderlist File already exists");
+				}
+				
+				if(ordermanagement.createNewFile()) {
+					System.out.println("ordermanagement File created");
+					FileWriter fw = new FileWriter(ordermanagement);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" ordermanagement</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_ordermanagement.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">"+
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='ordermanagement_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='ordermanagement_content'>\r\n"+
+							"			<div id='ordermanagement_div'>\r\n"+
+							"				<table id='ordermanagement_table'>\r\n"+
 							"				<c:forEach items=\"${orderlist}\" var=\"orderlist\">\r\n"+
 							"					<tr id=\"payno_${orderlist.payno}\">\r\n" + 
 							"						<td class=\"orderlist_td\" data-payno=\"${orderlist.payno}\">\r\n" + 
@@ -1291,35 +1584,35 @@ public class EWBController {
 							"				</c:forEach>\r\n"+
 							"				</table>\r\n"+
 							"			<br> <br> <div id='paging'><a\r\n" + 
-							"				href=\"/aaa/orderlist?pageNum=1&amount=${paging.cri.amount}\">처음으로</a>\r\n" + 
+							"				href=\"/${url}/ordermanagement?pageNum=1&amount=${paging.cri.amount}\">처음으로</a>\r\n" + 
 							"			<c:if test=\"${paging.prev}\">\r\n" + 
 							"				<a\r\n" + 
-							"					href=\"/aaa/orderlist?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}\">이전</a>\r\n" + 
+							"					href=\"/${url}/ordermanagement?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}\">이전</a>\r\n" + 
 							"			</c:if>\r\n" + 
 							"			<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
 							"				var=\"num\">\r\n" + 
 							"				<a\r\n" + 
-							"					href=\"/aaa/orderlist?pageNum=${num}&amount=${paging.cri.amount}\">${num}</a>\r\n" + 
+							"					href=\"/${url}/ordermanagement?pageNum=${num}&amount=${paging.cri.amount}\">${num}</a>\r\n" + 
 							"			</c:forEach>\r\n" + 
 							"			<c:if test=\"${paging.next}\">\r\n" + 
 							"				<a\r\n" + 
-							"					href=\"/aaa/orderlist?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}\">다음</a>\r\n" + 
+							"					href=\"/${url}/ordermanagement?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}\">다음</a>\r\n" + 
 							"			</c:if>\r\n" + 
 							"			<a\r\n" + 
-							"				href=\"/aaa/orderlist?pageNum=${paging.realEnd}&amount=${paging.cri.amount}\">맨끝으로</a></div>			</div>"+
+							"				href=\"/${url}/ordermanagement?pageNum=${paging.realEnd}&amount=${paging.cri.amount}\">맨끝으로</a></div>			</div>"+
 							"			</div>\r\n"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_orderlist.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_ordermanagement.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
 				}else {
-					System.out.println("orderlist File already exists");
+					System.out.println("ordermanagement File already exists");
 				}
 				
 				if(mypage.createNewFile()) {
@@ -1344,13 +1637,13 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='mypage_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1373,8 +1666,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_mypage.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_mypage.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
@@ -1404,13 +1697,13 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='modifyprofile_entry'>\r\n"+
 							"		<div id=\"reg_info\"></div>\r\n"+
@@ -1578,8 +1871,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_modifyprofile.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_modifyprofile.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
@@ -1610,14 +1903,14 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
-							"<input type='hidden' value='${userInfo.admin}' id='admin'>"+
-							"<input type='hidden' value='"+url+"' id='url'>"+
-							"<input type='hidden' value='"+opt+"' id='opt'>"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
-							"<input type='hidden' value='${userId}' id='user_id'>"+
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='board_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='board_content'></div>\r\n"+
@@ -1625,8 +1918,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_board.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_board.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 					String create_board_table = "create table board_"+url+" ("
@@ -1685,8 +1978,8 @@ public class EWBController {
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"    <script src=\"../resources/js/url_mypage.js\"></script>"+
-							"</body>"+
+							"    <script src=\"../resources/js/url_mypage.js\"></script>\r\n"+
+							"</body>\r\n"+
 							"</html>");
 					bw.close();
 
@@ -1708,13 +2001,25 @@ public class EWBController {
 	}
 
 	@RequestMapping(value = "/management", method = RequestMethod.GET)
-	public void management() {
-		
+	public void management(HttpSession session) {
+		session.setAttribute("userId", "");
 	}
 
 	@RequestMapping(value = "/{url}/home", method = RequestMethod.GET)
 	public void urlHome(@PathVariable String url, HttpSession session) {
 		session.setAttribute("url", url);
+	}
+	
+	@RequestMapping(value = "/{url}/member", method = RequestMethod.GET)
+	public void urlMember(CriteriaVO cri, HttpSession session, Model model) {
+		try {
+			model.addAttribute("member",es.memberList(cri));
+			model.addAttribute("paging", new PageVO(cri, es.memberMaxNumSearch(cri)));
+			session.setAttribute("criValue", new PageVO(cri, es.memberMaxNumSearch(cri)));
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 
 	@RequestMapping(value = "/{url}/signup", method = RequestMethod.GET)
@@ -1782,6 +2087,19 @@ public class EWBController {
 			model.addAttribute("orderlist",es.orderlist(cri));
 			model.addAttribute("paging", new PageVO(cri, es.orderlistMaxNumSearch(cri)));
 			session.setAttribute("criValue", new PageVO(cri, es.orderlistMaxNumSearch(cri)));
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/{url}/ordermanagement", method = RequestMethod.GET)
+	public void urlOrderManagement(CriteriaVO cri, Model model, HttpSession session) {
+		cri.setAmount(10);
+		try {
+			model.addAttribute("orderlist",es.orderlistAll(cri));
+			model.addAttribute("paging", new PageVO(cri, es.orderlistAllMaxNumSearch(cri)));
+			session.setAttribute("criValue", new PageVO(cri, es.orderlistAllMaxNumSearch(cri)));
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -2054,4 +2372,10 @@ public class EWBController {
 		return new ResponseEntity<>(es.loadDes1(dvo),HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/banuser", method = RequestMethod.DELETE)
+	public ResponseEntity<String> banUser(@RequestBody MemberVO mvo) {
+		int result = es.banUser(mvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

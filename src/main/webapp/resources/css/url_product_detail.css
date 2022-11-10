@@ -44,6 +44,7 @@
 	width: 70%;
 	border: 1px solid black;
 	padding: 50px;
+	word-break: break-all;
 }
 
 #review_div {

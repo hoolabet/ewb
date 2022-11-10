@@ -175,4 +175,24 @@ public class EWBServiceImpl implements EWBService{
 	public DestinationVO loadDes1(DestinationVO dvo) {
 		return em.loadDes1(dvo);
 	}
+	
+	public ArrayList<MemberVO> memberList(CriteriaVO cri){
+		return em.memberList(cri);
+	}
+	
+	public int banUser(MemberVO mvo) {
+		return em.banUser(mvo);
+	}
+	
+	public int memberMaxNumSearch(CriteriaVO cri) {
+		return em.memberMaxNumSearch(cri);
+	}
+	
+	public ArrayList<PaymentVO> orderlistAll(CriteriaVO cri){
+		return em.orderlistAll(cri);
+	}
+
+	public int orderlistAllMaxNumSearch(CriteriaVO cri) {
+		return em.orderlistAllMaxNumSearch(cri);
+	}
 }

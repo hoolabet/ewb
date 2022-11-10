@@ -91,5 +91,15 @@ public interface EWBMapper {
 
 	public DestinationVO loadDes1(DestinationVO dvo);
 
+	public ArrayList<MemberVO> memberList(CriteriaVO cri);
+
+	public int banUser(MemberVO mvo);
+
+	public int memberMaxNumSearch(CriteriaVO cri);
+
+	public ArrayList<PaymentVO> orderlistAll(CriteriaVO cri);
+
+	public int orderlistAllMaxNumSearch(CriteriaVO cri);
+
 
 }

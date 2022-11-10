@@ -1,12 +1,10 @@
 @charset "UTF-8";
 
-#cart_content{
-    /* height: 1000px; */
+#member_content{
+    height: 1000px;
     width: 100%;
     background-color: rgb(236, 228, 228);
     margin: auto;
-    padding-top: 50px;
-    padding-bottom: 50px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -14,6 +12,18 @@
     align-items: center;
 }
 
-.remove_btn, #order_all_btn, #order_selected_btn{
+#member_table {
+	margin-top: 50px;
+	margin-bottom: 50px;
+	border-collapse: collapse;
+}
+
+#member_table td{
+	border: 1px solid black;
+	text-align: center;
+	padding: 20px;
+}
+
+.delete_btn {
 	cursor: pointer;
 }
