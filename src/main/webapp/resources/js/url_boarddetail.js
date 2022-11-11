@@ -1,18 +1,12 @@
 /**
  * 
  */
-
+const bno = $("#bno").val();
 let url = $("#url").val();
 if(url == ""){
 	url = location.href.split("/")[3]
 }
-const id = $("#user_id").val();
-const userId = id;
-if(id == ""){
-	alert("로그인이 필요합니다.");
-	location.href=`/${url}/login`;
-}
-
+const userId = $("#user_id").val();
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
 		$("#header").html(res.content);
@@ -41,8 +35,7 @@ function getHF() {
 		.css("color", $("#save_text").data("ftcolor"))
 		.css("border-width", $("#save_text").data("bdwidth"))
 		.css("border-color", $("#save_text").data("bdcolor"));
-
-		if(id != ""){
+		if(userId != ""){
 			$(".log").each(function(i,g) {
 				const target = $(this).data("target");
 				const ndnow = $(this).data("ndnow");
@@ -81,20 +74,6 @@ function getHF() {
 				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 			})
-			$(".login_btn").on("click", function() {
-				const target = $(this).data("target");
-				const id = $(`#login_id_${target}`).val();
-				const pw = $(`#login_pw_${target}`).val();
-				$.getJSON("/login",{id,pw,url},function(res){
-					location.reload();
-				})
-				.fail(function() {
-					alert("아이디와 비밀번호를 다시 확인하세요.");
-				})
-			})
-			$(".signup_btn").on("click", function() {
-				location.href = `/${url}/signup`;
-			})
 		}
 	})
 	$.getJSON("/loadcontent",{type:"footer",url},function(res){
@@ -105,26 +84,60 @@ function getHF() {
 
 getHF();
 
+$("#reply_btn").on("click", function() {
+	const content = $("#reply_content").val();
+	const rData = {
+			url,
+			id:userId,
+			bno,
+			content
+	}
+	
+	$.ajax({
+		type:"post",
+		url:"/writereply",
+		data:JSON.stringify(rData),
+		contentType:"application/json; charset=utf-8",
+		success:function(){
+			location.reload();
+		}
+	})
+})
 
-$(".orderlist_td").each(function(i,o) {
-	const payno = $(o).data("payno");
-	$.getJSON("/orderlist",{payno,url},function(res){
-		res.forEach(function(r,i) {
-			const td = `
-				<td class="list_td">
-				<div class="td_div"><a href="/${url}/productdetail?pno=${r.pno}">
-				`+
-				(r.pvo.tvo == null ?
-						`<img class="p_imgs" src="https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png">`
-						:`<img class="p_imgs" src="/display?fileName=${r.pvo.tvo.fullpath}">`)
-						+`
-						</a></div>
-						<div class="td_div"><a href="/${url}/productdetail?pno=${r.pno}">${r.pvo.pname}</a></div>
-						<div class="td_div">가격 : ${r.pvo.price}원</div>
-						<div class="td_div">구매수량 : ${r.b_quantity}개</div>
-						</td>
-						`;
-			$(`#payno_${payno}`).append(td);
+$.getJSON("/loadreply",{url,bno},function(res){
+	res.forEach(function(r) {
+		const tr = `
+			<tr>
+				<td>${r.id}</td>
+				<td>${r.content}</td>
+				<td>${r.reply_date}</td>
+				<td><span class="remove_reply" data-rno="${r.rno}" data-id="${r.id}">❌</span></td>
+			</tr>
+		`;
+		$("#reply_table").append(tr);
+	})
+})
+.done(function() {
+	$(".remove_reply").on("click", function() {
+		const id = $(this).data("id");
+		const rno = $(this).data("rno");
+		if(userId != id){
+			alert("권한이 없습니다.");
+			return false;
+		}
+		const rData = {
+				url,
+				rno
+		}
+		console.log(rData)
+		$.ajax({
+			type:"delete",
+			url:"/deletereply",
+			data:JSON.stringify(rData),
+			contentType:"application/json; charset=utf-8",
+			success: function() {
+				location.reload();
+			}
 		})
 	})
 })

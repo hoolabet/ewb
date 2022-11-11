@@ -1,7 +1,4 @@
 @charset "UTF-8";
-body{
-	margin: 0px;
-}
 
 #board_content{
     height: 700px;
@@ -10,6 +7,26 @@ body{
     margin: auto;
     position: relative;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
+}
+
+#board_table {
+	margin-top: 50px;
+	margin-bottom: 50px;
+	border-collapse: collapse;
+}
+
+#board_table td{
+	border: 1px solid black;
+	text-align: center;
+	padding: 20px;
+}
+
+#board_write{
+	cursor: pointer;
+	position: absolute;
+	top: 20px;
+    right: 50px;
 }

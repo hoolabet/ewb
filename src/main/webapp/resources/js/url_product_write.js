@@ -30,7 +30,6 @@ function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
 		$("#header").html(res.content);
 		$("#header").attr("style", $("#header_style").val());
-		$("#footer").attr("style", $("#footer_style").val());
 	})
 	.done(function() {
 		$("body")
@@ -113,6 +112,7 @@ function getHF() {
 	})
 	$.getJSON("/loadcontent",{type:"footer",url},function(res){
 		$("#footer").html(res.content);
+		$("#footer").attr("style", $("#footer_style").val());
 	})
 }
 
@@ -314,7 +314,7 @@ $(".btns").on("click", function (e) {
 		}
 		window.getSelection().collapse($(`#${date}`)[0], 1);
 	}else if(att == "a"){
-		$("#link_div").css("display","flex").css("top",e.clientY).css("left",e.clientX);
+		$("#link_div").css("display","flex").css("top","40px").css("left","470px");
 		$("#href").val("");
 		$("#href_text").val("");
 	}

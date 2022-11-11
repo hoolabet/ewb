@@ -747,7 +747,9 @@ $("#create_ul").on("click", function(){
 		<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}mypage" style="cursor:pointer">🛠</span>
 		<span class="remo_li buttons" style="cursor:pointer">✖</span>
 		</li>
-		<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}cart" data-target="${target}" data-ndnow="${ndnow}cart">
+		`+
+		(opt == "shopping" ?
+		`<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}cart" data-target="${target}" data-ndnow="${ndnow}cart">
 		<a href="/${url}/cart" id="li_a_${target}_${ndnow}cart"><span id="li_span_${target}_${ndnow}cart">cart</span></a>
 		<input readonly value="/${url}/cart" size="4" type="text" id="li_a_${target}_${ndnow}cart_modi" style="display:none;">
 		<div contenteditable="true" id="li_span_${target}_${ndnow}cart_modi" style="display:none;background-color:white;border:1px solid black;">cart</div>
@@ -755,6 +757,8 @@ $("#create_ul").on("click", function(){
 		<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}cart" style="cursor:pointer">🛠</span>
 		<span class="remo_li buttons" style="cursor:pointer">✖</span>
 		</li>
+		`:"")+
+		`
 		</ul>
 		<div class="add_li buttons" style="cursor:pointer">➕</div>
 		<div class="remo_element buttons">✖</div>

@@ -13,7 +13,6 @@ function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
 		$("#header").html(res.content);
 		$("#header").attr("style", $("#header_style").val());
-		$("#footer").attr("style", $("#footer_style").val());
 	})
 	.done(function() {
 		$("body")
@@ -96,6 +95,7 @@ function getHF() {
 	})
 	$.getJSON("/loadcontent",{type:"footer",url},function(res){
 		$("#footer").html(res.content);
+		$("#footer").attr("style", $("#footer_style").val());
 	})
 }
 

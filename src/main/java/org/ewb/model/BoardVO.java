@@ -2,12 +2,35 @@ package org.ewb.model;
 
 public class BoardVO {
 	private int bno;
+	private String id;
 	private String bname;
 	private String content;
 	private String reg_date;
 	private int type;
+	private int cnt;
+	private int like_;
 	private String url;
 	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	
+	public int getLike_() {
+		return like_;
+	}
+	public void setLike_(int like_) {
+		this.like_ = like_;
+	}
 	public String getUrl() {
 		return url;
 	}
@@ -47,8 +70,8 @@ public class BoardVO {
 	}
 	@Override
 	public String toString() {
-		return "BoardVO [bno=" + bno + ", bname=" + bname + ", content=" + content + ", reg_date=" + reg_date
-				+ ", type=" + type + ", url=" + url + "]";
+		return "BoardVO [bno=" + bno + ", id=" + id + ", bname=" + bname + ", content=" + content + ", reg_date="
+				+ reg_date + ", type=" + type + ", cnt=" + cnt + ", like_=" + like_ + ", url=" + url + "]";
 	}
 	
 	

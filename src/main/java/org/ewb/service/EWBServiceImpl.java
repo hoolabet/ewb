@@ -3,6 +3,7 @@ package org.ewb.service;
 import java.util.ArrayList;
 
 import org.ewb.mapper.EWBMapper;
+import org.ewb.model.BoardVO;
 import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
@@ -10,6 +11,7 @@ import org.ewb.model.DestinationVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ReplyVO;
 import org.ewb.model.ReviewVO;
 import org.ewb.model.ThumbnailVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,5 +196,33 @@ public class EWBServiceImpl implements EWBService{
 
 	public int orderlistAllMaxNumSearch(CriteriaVO cri) {
 		return em.orderlistAllMaxNumSearch(cri);
+	}
+	
+	public int writeBoard(BoardVO bvo) {
+		return em.writeBoard(bvo);
+	}
+	
+	public ArrayList<BoardVO> boardlist(CriteriaVO cri){
+		return em.boardlist(cri);
+	}
+
+	public int boardlistMaxNumSearch(CriteriaVO cri) {
+		return em.boardlistMaxNumSearch(cri);
+	}
+	
+	public BoardVO boardDetail(BoardVO bvo) {
+		return em.boardDetail(bvo);
+	}
+	
+	public int writeReply(ReplyVO rvo) {
+		return em.writeReply(rvo);
+	}
+
+	public ArrayList<ReplyVO> loadReply(ReplyVO rvo){
+		return em.loadReply(rvo);
+	}
+	
+	public int deleteReply(ReplyVO rvo) {
+		return em.deleteReply(rvo);
 	}
 }

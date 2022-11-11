@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.ewb.model.BoardVO;
 import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
@@ -15,6 +16,7 @@ import org.ewb.model.DestinationVO;
 import org.ewb.model.MemberVO;
 import org.ewb.model.OrderVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ReplyVO;
 import org.ewb.model.ReviewVO;
 import org.ewb.model.ThumbnailVO;
 import org.ewb.service.EWBService;
@@ -88,6 +90,8 @@ public class EWBController {
 		File mypage = new File(uploadFolder+"\\"+url+"\\mypage.jsp");
 		File modifyprofile = new File(uploadFolder+"\\"+url+"\\modifyprofile.jsp");
 		File board = new File(uploadFolder+"\\"+url+"\\board.jsp");
+		File boardwrite = new File(uploadFolder+"\\"+url+"\\boardwrite.jsp");
+		File boarddetail = new File(uploadFolder+"\\"+url+"\\boarddetail.jsp");
 		try {
 			if(home.createNewFile()) {
 				String create_member_table = "create table member_"+url+" ("
@@ -1913,7 +1917,57 @@ public class EWBController {
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='board_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
-							"		<div id='board_content'></div>\r\n"+
+							"		<div id='board_content'>\r\n"+
+							"			<div id=\"board_write\">작성하기</div>\r\n"+
+							"			<table id=\"board_table\">\r\n" + 
+							"				<tr>\r\n" + 
+							"					<td>아이디</td>\r\n" + 
+							"					<td>제목</td>\r\n" + 
+							"					<td>조회 수</td>\r\n" + 
+							"					<td>추천 수</td>\r\n" + 
+							"					<td>작성일</td>\r\n" + 
+							"				</tr>\r\n" + 
+							"				<c:forEach items=\"${boardlist}\" var=\"boardlist\">\r\n" + 
+							"					<tr>\r\n" + 
+							"						<td>${boardlist.id}</td>\r\n" + 
+							"						<td><a href=\"/${url}/boarddetail?bno=${boardlist.bno}\">${boardlist.bname}</a></td>\r\n" + 
+							"						<td>${boardlist.cnt}</td>\r\n" + 
+							"						<td>${boardlist.like_}</td>\r\n" + 
+							"						<td>${boardlist.reg_date}</td>\r\n" + 
+							"					</tr>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"			</table>\r\n" + 
+							"			<form action=\"/${url}/board\" id=\"search_form\">\r\n" + 
+							"				<input type=\"hidden\" name=\"pageNum\" value=\"${paging.cri.pageNum}\">\r\n" + 
+							"				<input type=\"hidden\" name=\"amount\" value=\"${paging.cri.amount}\">\r\n" + 
+							"				<select name=\"type\">\r\n" + 
+							"					<option value=\"t\">아이디</option>\r\n" + 
+							"					<option value=\"c\">이름</option>\r\n" + 
+							"					<option value=\"tc\">아이디+이름</option>\r\n" + 
+							"				</select> <input type=\"text\" name=\"search\" value=\"${paging.cri.search}\">\r\n" + 
+							"				<input type=\"submit\" value=\"찾기\">\r\n" + 
+							"			</form>\r\n" + 
+							"			<br> <br>\r\n" + 
+							"			<div id='paging'>\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/board?pageNum=1&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">처음으로</a>\r\n" + 
+							"				<c:if test=\"${paging.prev}\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/board?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">이전</a>\r\n" + 
+							"				</c:if>\r\n" + 
+							"				<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
+							"					var=\"num\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/board?pageNum=${num}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">${num}</a>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"				<c:if test=\"${paging.next}\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/board?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">다음</a>\r\n" + 
+							"				</c:if>\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/board?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a>\r\n" + 
+							"			</div>"+
+							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
@@ -1923,11 +1977,16 @@ public class EWBController {
 							"</html>");
 					bw.close();
 					String create_board_table = "create table board_"+url+" ("
-							+ "bno int primary key, "
+							+ "bno int auto_increment primary key, "
+							+ "id varchar(100) not null,"
 							+ "bname varchar(100) not null,"
 							+ "content longtext,"
 							+ "reg_date datetime default now(),"
-							+ "type int"
+							+ "type int,"
+							+ "cnt int default 0,"
+							+ "like_ int default 0,"
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade"
 							+ ")";
 					es.createTable(create_board_table);
 
@@ -1936,8 +1995,203 @@ public class EWBController {
 							+ "tname varchar(100) not null"
 							+ ")";
 					es.createTable(create_board_type_table);
+					
+					String create_reply_table = "create table reply_"+url+" ("
+							+ "rno int auto_increment primary key, "
+							+ "bno int, "
+							+ "id varchar(100) not null,"
+							+ "content longtext,"
+							+ "reply_date datetime default now(),"
+							+ "type int,"
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade,"
+							+ "foreign key(bno)"
+							+ "references board_"+url+"(bno) on update cascade on delete cascade"
+							+ ")";
+					es.createTable(create_reply_table);
+					
+					String create_rereply_table = "create table rereply_"+url+" ("
+							+ "rrno int auto_increment primary key, "
+							+ "rno int, "
+							+ "id varchar(100) not null,"
+							+ "content longtext,"
+							+ "rereply_date datetime default now(),"
+							+ "type int,"
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade,"
+							+ "foreign key(rno)"
+							+ "references reply_"+url+"(rno) on update cascade on delete cascade"
+							+ ")";
+					es.createTable(create_rereply_table);
 				}else {
 					System.out.println("board File already exists");
+				}
+				
+				if(boardwrite.createNewFile()) {
+					System.out.println("boardwrite File created");
+					FileWriter fw = new FileWriter(boardwrite);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" boardwrite</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_boardwrite.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">\r\n"+
+							"<link rel=\"stylesheet\"\r\n" + 
+							"	href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200\" />\r\n"+
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='boardwrite_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='boardwrite_content'>\r\n"+
+							"			<div id=\"entry\">\r\n" + 
+							"				<label>제목</label>\r\n" + 
+							"				<input type=\"text\" id=\"bname\">\r\n" + 
+							"				<input type=\"checkbox\" id=\"able_box\" checked>\r\n" + 
+							"				<div id=\"btnss\">\r\n" + 
+							"					<div class=\"btns\" data-att=\"b\">\r\n" + 
+							"						<b>B</b>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div class=\"btns\" data-att=\"i\">\r\n" + 
+							"						<i>I</i>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div class=\"btns\" data-att=\"u\">\r\n" + 
+							"						<u>U</u>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div class=\"btns\" data-att=\"a\">L</div>\r\n" + 
+							"					<div class=\"btns\" id=\"font_size_btn\">\r\n" + 
+							"						<span class=\"material-symbols-outlined\"> format_size </span>\r\n" + 
+							"					</div>\r\n" + 
+							"					<select id=\"font_size\">\r\n" + 
+							"						<option value=\"8\">8</option>\r\n" + 
+							"						<option value=\"12\">12</option>\r\n" + 
+							"						<option value=\"16\">16</option>\r\n" + 
+							"						<option value=\"20\">20</option>\r\n" + 
+							"						<option value=\"24\">24</option>\r\n" + 
+							"						<option value=\"28\">28</option>\r\n" + 
+							"					</select>\r\n" + 
+							"					<div class=\"btns\" id=\"font_color_btn\">\r\n" + 
+							"						<span class=\"material-symbols-outlined\"> format_color_text\r\n" + 
+							"						</span>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div id=\"cp_div\">\r\n" + 
+							"						<input type=\"text\" id=\"cp\"> <input type=\"button\"\r\n" + 
+							"							value=\"선택\" id=\"font_color_choice\">\r\n" + 
+							"					</div>\r\n" + 
+							"					<div id=\"sort\">\r\n" + 
+							"						<span class=\"material-symbols-outlined sort btns\" data-sort=\"left\">\r\n" + 
+							"							format_align_left </span> <span\r\n" + 
+							"							class=\"material-symbols-outlined sort btns\" data-sort=\"center\">\r\n" + 
+							"							format_align_center </span> <span\r\n" + 
+							"							class=\"material-symbols-outlined sort btns\" data-sort=\"right\">\r\n" + 
+							"							format_align_right </span>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div class='btns' id='insert_btn'>\r\n" + 
+							"						<span class=\"material-symbols-outlined\"> imagesmode </span>\r\n" + 
+							"					</div>\r\n" + 
+							"				</div>\r\n" + 
+							"				<div id=\"link_div\">\r\n" + 
+							"					<input class=\"links\" type=\"text\" id=\"href\" placeholder=\"링크주소\"><br>\r\n" + 
+							"					<input class=\"links\" type=\"text\" id=\"href_text\" placeholder=\"링크이름\"><br>\r\n" + 
+							"					<input class=\"links\" type=\"button\" id=\"link_btn\" value=\"링크만들기\"></br>\r\n" + 
+							"				</div>\r\n" + 
+							"				<div contenteditable=\"true\" id=\"content\"></div>\r\n" + 
+							"			</div>\r\n" + 
+							"			<input type='file' id='insert_img' multiple> <input\r\n" + 
+							"				type=\"button\" value=\"작성하기\" id=\"write_btn\">"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_boardwrite.js\"></script>\r\n"+
+							"</body>\r\n"+
+							"</html>");
+					bw.close();
+					
+				}else {
+					System.out.println("boardwrite File already exists");
+				}
+				
+				if(boarddetail.createNewFile()) {
+					System.out.println("boarddetail File created");
+					FileWriter fw = new FileWriter(boarddetail);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" boarddetail</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_boarddetail.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">\r\n"+
+							"<link rel=\"stylesheet\"\r\n" + 
+							"	href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200\" />\r\n"+
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='boarddetail_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='boarddetail_content'>\r\n" + 
+							"			<input type=\"hidden\" value=\"${detail.bno}\" id=\"bno\">\r\n" + 
+							"			<div id=\"entry\">\r\n" + 
+							"				<label>제목</label>\r\n" + 
+							"				<p id=\"bname\">${detail.bname}</p>\r\n" + 
+							"				<label>내용</label>\r\n" + 
+							"				<p id=\"content\">${detail.content}</p>\r\n" + 
+							"			</div>\r\n" + 
+							"			<div id=\"reply\">\r\n" + 
+							"				<textarea rows=\"3\" cols=\"60\" id=\"reply_content\"></textarea>\r\n" + 
+							"				<input type=\"button\" value=\"reply\" id=\"reply_btn\">\r\n" + 
+							"				<table id=\"reply_table\">\r\n" + 
+							"					\r\n" + 
+							"				</table>\r\n" + 
+							"			</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_boarddetail.js\"></script>\r\n"+
+							"</body>\r\n"+
+							"</html>");
+					bw.close();
+					
+				}else {
+					System.out.println("boarddetail File already exists");
 				}
 				
 				if(mypage.createNewFile()) {
@@ -2117,10 +2371,28 @@ public class EWBController {
 	}
 	
 	@RequestMapping(value = "/{url}/board", method = RequestMethod.GET)
-	public void urlBoard() {
-		
+	public void urlBoard(CriteriaVO cri, Model model, HttpSession session) {
+		cri.setAmount(10);
+		try {
+			model.addAttribute("boardlist",es.boardlist(cri));
+			model.addAttribute("paging", new PageVO(cri, es.boardlistMaxNumSearch(cri)));
+			session.setAttribute("criValue", new PageVO(cri, es.boardlistMaxNumSearch(cri)));
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 
+	@RequestMapping(value = "/{url}/boardwrite", method = RequestMethod.GET)
+	public void urlBoardWrite() {
+		
+	}
+	
+	@RequestMapping(value = "/{url}/boarddetail", method = RequestMethod.GET)
+	public void urlBoardDetail(BoardVO bvo, Model model) {
+		model.addAttribute("detail", es.boardDetail(bvo));
+	}
+	
 	@RequestMapping(value = "/savecontent", method = RequestMethod.POST)
 	public ResponseEntity<String> saveContent(@RequestBody ContentVO cvo){
 		int result = es.saveContent(cvo);
@@ -2185,31 +2457,36 @@ public class EWBController {
 			System.out.println("jsp파일이 존재하지 않습니다.");
 		}
 		try {
-			String target = "member_"+cvo.getUrl();
-			String target1 = "product_"+cvo.getUrl();
-			String target2 = "product_type_"+cvo.getUrl();
-			String target3 = "board_"+cvo.getUrl();
-			String target4 = "board_type_"+cvo.getUrl();
-			String target5 = "product_img_"+cvo.getUrl();
-			String target6 = "cart_"+cvo.getUrl();
-			String target7 = "payment_"+cvo.getUrl();
-			String target8 = "order_"+cvo.getUrl();
-			String target9 = "review_"+cvo.getUrl();
-			String target10 = "review_img_"+cvo.getUrl();
-			String target11 = "destination_"+cvo.getUrl();
+			String target_mem = "member_"+cvo.getUrl();
+			String target_pro = "product_"+cvo.getUrl();
+			String target_prot = "product_type_"+cvo.getUrl();
+			String target_brd = "board_"+cvo.getUrl();
+			String target_brdt = "board_type_"+cvo.getUrl();
+			String target_reply = "reply_"+cvo.getUrl();
+			String target_rereply = "rereply_"+cvo.getUrl();
+			String target_proi = "product_img_"+cvo.getUrl();
+			String target_cart = "cart_"+cvo.getUrl();
+			String target_pay = "payment_"+cvo.getUrl();
+			String target_order = "order_"+cvo.getUrl();
+			String target_rev = "review_"+cvo.getUrl();
+			String target_revi = "review_img_"+cvo.getUrl();
+			String target_des = "destination_"+cvo.getUrl();
 			
-			es.dropTable(target11);
-			es.dropTable(target10);
-			es.dropTable(target9);
-			es.dropTable(target8);
-			es.dropTable(target7);
-			es.dropTable(target6);
-			es.dropTable(target5);
-			es.dropTable(target4);
-			es.dropTable(target3);
-			es.dropTable(target2);
-			es.dropTable(target1);
-			es.dropTable(target);
+			
+			es.dropTable(target_des);
+			es.dropTable(target_revi);
+			es.dropTable(target_rev);
+			es.dropTable(target_order);
+			es.dropTable(target_pay);
+			es.dropTable(target_cart);
+			es.dropTable(target_proi);
+			es.dropTable(target_rereply);
+			es.dropTable(target_reply);
+			es.dropTable(target_brdt);
+			es.dropTable(target_brd);
+			es.dropTable(target_prot);
+			es.dropTable(target_pro);
+			es.dropTable(target_mem);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -2375,6 +2652,32 @@ public class EWBController {
 	@RequestMapping(value = "/banuser", method = RequestMethod.DELETE)
 	public ResponseEntity<String> banUser(@RequestBody MemberVO mvo) {
 		int result = es.banUser(mvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/writeboard", method = RequestMethod.POST)
+	public ResponseEntity<String> writeBoard(@RequestBody BoardVO bvo) {
+		int result = es.writeBoard(bvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/writereply", method = RequestMethod.POST)
+	public ResponseEntity<String> writeReply(@RequestBody ReplyVO rvo) {
+		int result = es.writeReply(rvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/loadreply", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<ReplyVO>> loadReply(ReplyVO rvo) {
+		return new ResponseEntity<>(es.loadReply(rvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/deletereply", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteReply(@RequestBody ReplyVO rvo) {
+		int result = es.deleteReply(rvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}

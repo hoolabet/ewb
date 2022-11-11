@@ -59,6 +59,26 @@
 		member_${url}
 		WHERE
 		admin = false
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					AND
+					id LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					AND
+					name LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					AND
+					(
+					id LIKE CONCAT('%', #{search}, '%')
+					OR
+					name LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
 		ORDER BY
 		sign_date DESC
 		) add_rn_board
@@ -510,4 +530,104 @@
 		SELECT * FROM destination_${url} 
 		WHERE id=#{id} and label=#{label}
 	</select>
+	
+	<insert id="writeBoard">
+		INSERT INTO board_${url}(id,bname,content)
+		VALUES(#{id},#{bname},#{content})
+	</insert>
+	
+	<select id="boardlist" resultType="org.ewb.model.BoardVO">
+		SELECT
+		*
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY reg_date)
+		as num
+		FROM
+		board_${url} 
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					WHERE
+					id LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					WHERE
+					bname LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					WHERE
+					(
+					id LIKE CONCAT('%', #{search}, '%')
+					OR
+					bname LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		reg_date DESC
+		) add_rn_board
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
+	</select>
+	
+	<select id="boardlistMaxNumSearch" resultType="int">
+		SELECT
+		ifnull(MAX(num),1)
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY reg_date
+		)
+		as num
+		FROM
+		board_${url}
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					WHERE
+					id LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					WHERE
+					bname LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					WHERE
+					(
+					id LIKE CONCAT('%', #{search}, '%')
+					OR
+					bname LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		reg_date DESC
+		) add_rn_board
+		
+	</select>
+	
+	<select id="boardDetail" resultType="org.ewb.model.BoardVO">
+		SELECT * FROM board_${url} WHERE bno=#{bno}
+	</select>
+	
+	<insert id="writeReply">
+		INSERT INTO reply_${url}(id,bno,content)
+		VALUES(#{id},#{bno},#{content})
+	</insert>
+	
+	<select id="loadReply" resultType="org.ewb.model.ReplyVO">
+		SELECT * FROM reply_${url} WHERE bno=#{bno}
+		ORDER BY rno DESC
+	</select>
+	
+	<delete id="deleteReply">
+		DELETE FROM reply_${url} WHERE rno=#{rno}
+	</delete>
+	
 </mapper>

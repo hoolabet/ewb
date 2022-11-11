@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 
 $("#cp").minicolors();
 const reg = new RegExp("(.*?)\.(exe|zip|alz)$");
@@ -22,7 +25,6 @@ if(url == ""){
 	url = location.href.split("/")[3]
 }
 const userId = $("#user_id").val();
-const pno = $("#pno").val();
 
 
 function getHF() {
@@ -117,57 +119,22 @@ function getHF() {
 
 getHF();
 
-
-
-$("#modi_btn").on("click", function(){
-	const pname = $("#pname").val();
-	const price = $("#price").val();
-	const quantity = $("#quantity").val();
+$("#write_btn").on("click", function(){
+	const bname = $("#bname").val();
 	const content = $("#content").html();
-	if(isNaN(price) || Number(price) <= 0){
-		alert("가격은 0 이상의 숫자만 입력가능합니다.");
-		return false;
-	}
-	if(isNaN(quantity) || Number(quantity) <= 0){
-		alert("수량은 0 이상의 숫자만 입력가능합니다.");
-		return false;
-	}
-	const pData = {
-			url, 
-			pname,
-			price,
-			quantity,
-			content,
-			pno
+	const bData = {
+			url,
+			id:userId,
+			bname,
+			content
 	}
 	$.ajax({
-		type:"put",
-		url:"/modifyproduct",
-		data:JSON.stringify(pData),
+		type:"post",
+		url:"/writeboard",
+		data:JSON.stringify(bData),
 		contentType: "application/json; charset=utf-8",
 		success: function() {
-			$.getJSON("/searchthumbnail",{url,pno},function(){
-				$.ajax({
-					type:"put",
-					url:"/modifythumbnail",
-					data:JSON.stringify({fullpath:thumbPath, url,pno}),
-					contentType: "application/json; charset=utf-8",
-					success: function() {
-						location.href = `/${url}/product`;
-					}
-				})
-			})
-			.fail(function() {
-				$.ajax({
-					type:"post",
-					url:"/savethumbnail2",
-					data:JSON.stringify({fullpath:thumbPath, url,pno}),
-					contentType: "application/json; charset=utf-8",
-					success: function() {
-						location.href = `/${url}/product`;
-					}
-				})
-			})
+			location.href = `/${url}/board`;
 		}
 	})
 })
@@ -215,45 +182,6 @@ $("#insert_img").on("change",function(){
 				}
 			})
 			$("#content").append(files);
-		}
-	})
-})
-
-$("#thumb_btn").on("click", function() {
-	$("#thumb_file").click();
-})
-let thumbPath = $("#thumbpath").val();
-$("#thumb_file").on("change", function() {
-	const formData = new FormData();
-	const inputFile = $(`#thumb_file`);
-	const files = inputFile[0].files;
-
-	for(j = 0; j < files.length; j++){
-		console.log(files[j]);
-		if(!checkExtension(files[j].fileName, files[j].size)){
-			return false;
-		} 
-		formData.append("uploadFile", files[j]);
-	}
-	$.ajax({
-		type: "post",
-		url: "/uploadAjaxAction",
-		data: formData,
-		contentType: false,
-		processData: false,
-		dataType: "json",
-		success: function(r){
-			let files = "";
-			r.forEach((u)=>{
-				const fullPath = encodeURIComponent(`${u.path}/${u.uuid}_${u.fileName}`);
-				thumbPath = fullPath;
-				if(u.checkI){
-					files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;"><br>`;
-				}else{
-					files += `<a href="/download?fileName=${fullPath}">${u.fileName}</a><br>`;
-				}
-			})
-			$("#thumbnail").html(files);
 		}
 	})
 })
@@ -327,7 +255,7 @@ $(".btns").on("click", function (e) {
 		}
 		window.getSelection().collapse($(`#${date}`)[0], 1);
 	}else if(att == "a"){
-		$("#link_div").css("display","flex").css("top",e.clientY).css("left",e.clientX);
+		$("#link_div").css("display","flex").css("top","40px").css("left","470px");
 		$("#href").val("");
 		$("#href_text").val("");
 	}
@@ -371,6 +299,7 @@ $("#font_size_btn").on("click", function (e) {
     	$("#font_size").css("display", "none");
     }
 })
+
 $("#font_size").on("change", function () {
     if (newRange == "") {
         $("#edita").focus();

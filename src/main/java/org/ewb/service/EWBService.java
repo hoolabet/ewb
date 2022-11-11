@@ -2,6 +2,7 @@ package org.ewb.service;
 
 import java.util.ArrayList;
 
+import org.ewb.model.BoardVO;
 import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
@@ -10,6 +11,7 @@ import org.ewb.model.MemberVO;
 import org.ewb.model.OrderVO;
 import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
+import org.ewb.model.ReplyVO;
 import org.ewb.model.ReviewVO;
 import org.ewb.model.ThumbnailVO;
 
@@ -102,6 +104,20 @@ public interface EWBService {
 	public ArrayList<PaymentVO> orderlistAll(CriteriaVO cri);
 
 	public int orderlistAllMaxNumSearch(CriteriaVO cri);
+
+	public int writeBoard(BoardVO bvo);
+
+	public ArrayList<BoardVO> boardlist(CriteriaVO cri);
+
+	public int boardlistMaxNumSearch(CriteriaVO cri);
+
+	public BoardVO boardDetail(BoardVO bvo);
+
+	public int writeReply(ReplyVO rvo);
+
+	public ArrayList<ReplyVO> loadReply(ReplyVO rvo);
+
+	public int deleteReply(ReplyVO rvo);
 
 
 
