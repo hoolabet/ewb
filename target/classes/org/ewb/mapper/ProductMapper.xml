@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ewb.mapper.ProductMapper">
+	<resultMap type="org.ewb.model.ThumbnailVO" id="ThumbnailVO">
+		<result column="fullpath" property="fullpath" />
+	</resultMap>
+	<resultMap type="org.ewb.model.ProductVO" id="ProductVO">
+		<result column="pno" property="pno" />
+		<result column="pname" property="pname" />
+		<result column="price" property="price" />
+		<result column="content" property="content" />
+		<result column="quantity" property="quantity" />
+		<result column="s_quantity" property="s_quantity" />
+		<result column="reg_date" property="reg_date" />
+		<result column="type" property="type" />
+		<collection property="tvo" resultMap="ThumbnailVO" />
+	</resultMap>
+	
+	<select id="productList" resultMap="ProductVO">
+		SELECT
+		*
+		FROM(
+		SELECT
+		p.*,fullpath,
+		ROW_NUMBER() OVER(ORDER BY p.pno DESC)
+		as num
+		FROM
+		product_${url} p
+		LEFT JOIN
+		product_img_${url} i
+		ON
+		p.pno = i.pno
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					WHERE
+					pname LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					WHERE
+					content LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					WHERE
+					pname LIKE CONCAT('%', #{search}, '%')
+					OR
+					content LIKE CONCAT('%', #{search}, '%')
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		p.pno DESC
+		) add_rn_board
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
+	</select>
+
+	<select id="productMaxNumSearch" resultType="int">
+		SELECT
+		ifnull(MAX(num),1)
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY pno
+		DESC) as num
+		FROM
+		product_${url}
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					WHERE
+					pname LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					WHERE
+					content LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					WHERE
+					pname LIKE CONCAT('%', #{search}, '%')
+					OR
+					content LIKE CONCAT('%', #{search}, '%')
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		pno DESC
+		) add_rn_board
+	</select>
+
+	<insert id="writeProduct">
+		<selectKey keyProperty="pno" order="BEFORE" resultType="int">
+			select
+			ifnull(MAX(pno)+1,1)
+			from product_${url}
+		</selectKey>
+		INSERT INTO product_${url} (pno,pname,price,quantity,content)
+		VALUES
+		(#{pno},#{pname},#{price},#{quantity},#{content})
+	</insert>
+
+	<update id="modifyProduct">
+		UPDATE product_${url}
+		SET pname=#{pname},
+		price=#{price}, quantity=#{quantity}, content=#{content}
+		WHERE
+		pno=#{pno}
+	</update>
+
+	<select id="loadProductDetail" resultMap="ProductVO">
+		select *
+		from
+		product_${url} p
+		left join
+		product_img_${url} i
+		on
+		p.pno = i.pno
+		where
+		p.pno=#{pno}
+	</select>
+
+	<insert id="saveThumbnail">
+		<selectKey keyProperty="pno" order="BEFORE" resultType="int">
+			select
+			ifnull(MAX(pno),1)
+			from product_${url}
+		</selectKey>
+		INSERT INTO product_img_${url} (pno, fullpath)
+		VALUES
+		(#{pno},#{fullpath})
+	</insert>
+
+	<insert id="saveThumbnail2">
+		INSERT INTO product_img_${url} (pno, fullpath)
+		VALUES
+		(#{pno},#{fullpath})
+	</insert>
+
+	<update id="modifyThumbnail">
+		UPDATE product_img_${url}
+		SET fullpath = #{fullpath}
+		WHERE pno = #{pno}
+	</update>
+	
+	<delete id="deleteProduct">
+		DELETE FROM product_${url}
+		WHERE pno=#{pno}
+	</delete>
+	
+	<insert id="writeReview">
+		INSERT INTO review_${url}(id,pno,content)
+		VALUES(#{id},#{pno},#{content})
+	</insert>
+
+	<insert id="saveReviewImg">
+		<selectKey keyProperty="rno" order="BEFORE" resultType="int">
+			select
+			ifnull(MAX(rno),1)
+			from review_${url}
+		</selectKey>
+		INSERT INTO review_img_${url}(rno,pno,fullpath)
+		VALUES(#{rno},#{pno},#{fullpath})
+	</insert>
+
+	<resultMap type="org.ewb.model.ReviewVO" id="ReviewVO">
+		<result column="pno" property="pno" />
+		<result column="rno" property="rno" />
+		<result column="id" property="id" />
+		<result column="content" property="content" />
+		<result column="review_date" property="review_date" />
+		<collection property="tvo" resultMap="ThumbnailVO" />
+	</resultMap>
+	
+	<select id="loadReview" resultMap="ReviewVO">
+		select *
+		from review_${url} r
+		join review_img_${url} i
+		on r.rno = i.rno
+		where r.pno=#{pno}
+		order by r.rno desc
+	</select>
+	
+	<delete id="deleteReview">
+		DELETE FROM review_${url} WHERE rno=#{rno}
+	</delete>
+</mapper>

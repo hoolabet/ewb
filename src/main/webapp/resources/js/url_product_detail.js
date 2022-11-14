@@ -414,8 +414,8 @@ function displayData(currentPage, dataPerPage) {
 			i++
 	) {
 		chartHtml += `
-		<tr>
-		<td>
+			<tr>
+			<td>
 			${dataList[i].id}
 			</td>
 			`+(dataList[i].tvo.fullpath != "" ?

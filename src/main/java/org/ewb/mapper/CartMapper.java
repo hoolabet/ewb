@@ -1,5 +1,7 @@
 package org.ewb.mapper;
 
+import java.util.ArrayList;
+
 import org.ewb.model.CartVO;
 
 public interface CartMapper {
@@ -13,5 +15,7 @@ public interface CartMapper {
 	public int orderSelected(CartVO cvo);
 
 	public int deleteCart(CartVO cvo);
+
+	public ArrayList<CartVO> loadCart(CartVO cvo);
 
 }

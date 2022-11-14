@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ewb.mapper.BoardMapper">
+	<insert id="writeBoard">
+		INSERT INTO board_${url}(id,bname,content)
+		VALUES(#{id},#{bname},#{content})
+	</insert>
+	
+	<select id="boardlist" resultType="org.ewb.model.BoardVO">
+		SELECT
+		*
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY reg_date)
+		as num
+		FROM
+		board_${url} 
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					WHERE
+					id LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					WHERE
+					bname LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					WHERE
+					(
+					id LIKE CONCAT('%', #{search}, '%')
+					OR
+					bname LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		reg_date DESC
+		) add_rn_board
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
+	</select>
+	
+	<select id="boardlistMaxNumSearch" resultType="int">
+		SELECT
+		ifnull(MAX(num),1)
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY reg_date
+		)
+		as num
+		FROM
+		board_${url}
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					WHERE
+					id LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					WHERE
+					bname LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					WHERE
+					(
+					id LIKE CONCAT('%', #{search}, '%')
+					OR
+					bname LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		reg_date DESC
+		) add_rn_board
+		
+	</select>
+	
+	<select id="boardDetail" resultType="org.ewb.model.BoardVO">
+		SELECT * FROM board_${url} WHERE bno=#{bno}
+	</select>
+	
+	<insert id="writeReply">
+		INSERT INTO reply_${url}(id,bno,content)
+		VALUES(#{id},#{bno},#{content})
+	</insert>
+	
+	<select id="loadReply" resultType="org.ewb.model.ReplyVO">
+		SELECT * FROM reply_${url} WHERE bno=#{bno}
+		ORDER BY rno DESC
+	</select>
+	
+	<delete id="deleteReply">
+		DELETE FROM reply_${url} WHERE rno=#{rno}
+	</delete>
+	
+	<delete id="deleteBoard">
+		DELETE FROM board_${url} WHERE bno=#{bno}
+	</delete>
+	
+	<update id="updateBoard">
+		UPDATE board_${url}
+		SET bname = #{bname} , content = #{content}
+		WHERE bno = #{bno}
+	</update>
+	
+	<update id="countBoard">
+		UPDATE board_${url}
+		SET cnt = cnt + 1
+		WHERE bno = #{bno}
+	</update>
+</mapper>

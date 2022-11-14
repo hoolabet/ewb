@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.ewb.mapper.OrderMapper;
 import org.ewb.model.CartVO;
+import org.ewb.model.CriteriaVO;
 import org.ewb.model.OrderVO;
 import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
@@ -14,6 +15,22 @@ import org.springframework.stereotype.Service;
 public class OrderServiceImpl implements OrderService{
 	@Autowired
 	OrderMapper om;
+	
+	public ArrayList<PaymentVO> orderlist(CriteriaVO cri){
+		return om.orderlist(cri);
+	}
+	
+	public int orderlistMaxNumSearch(CriteriaVO cri) {
+		return om.orderlistMaxNumSearch(cri);
+	}
+	
+	public ArrayList<PaymentVO> orderlistAll(CriteriaVO cri){
+		return om.orderlistAll(cri);
+	}
+
+	public int orderlistAllMaxNumSearch(CriteriaVO cri) {
+		return om.orderlistAllMaxNumSearch(cri);
+	}
 	
 	public int payment(PaymentVO pvo) {
 		return om.payment(pvo);
@@ -27,8 +44,8 @@ public class OrderServiceImpl implements OrderService{
 		return om.updateQuan(pvo);
 	}
 	
-	public ArrayList<OrderVO> orderlist(OrderVO ovo){
-		return om.orderlist(ovo);
+	public ArrayList<OrderVO> orderlist1(OrderVO ovo){
+		return om.orderlist1(ovo);
 	}
 	
 	public int directOrder1(CartVO cvo) {

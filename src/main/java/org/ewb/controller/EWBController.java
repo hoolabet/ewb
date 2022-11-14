@@ -92,6 +92,7 @@ public class EWBController {
 		File board = new File(uploadFolder+"\\"+url+"\\board.jsp");
 		File boardwrite = new File(uploadFolder+"\\"+url+"\\boardwrite.jsp");
 		File boarddetail = new File(uploadFolder+"\\"+url+"\\boarddetail.jsp");
+		File modifyboard = new File(uploadFolder+"\\"+url+"\\modifyboard.jsp");
 		try {
 			if(home.createNewFile()) {
 				String create_member_table = "create table member_"+url+" ("
@@ -2167,7 +2168,12 @@ public class EWBController {
 							"		<div id='header'></div>\r\n"+
 							"		<div id='boarddetail_content'>\r\n" + 
 							"			<input type=\"hidden\" value=\"${detail.bno}\" id=\"bno\">\r\n" + 
+							"			<input type=\"hidden\" value=\"${detail.id}\" id=\"b_id\">\r\n" + 
 							"			<div id=\"entry\">\r\n" + 
+							"				<div id=\"rm\">\r\n" + 
+							"					<input type=\"button\" value=\"수정\" id=\"modi_btn\">\r\n" + 
+							"					<input type=\"button\" value=\"삭제\" id=\"remo_btn\">\r\n" + 
+							"				</div>\r\n" + 
 							"				<label>제목</label>\r\n" + 
 							"				<p id=\"bname\">${detail.bname}</p>\r\n" + 
 							"				<label>내용</label>\r\n" + 
@@ -2177,9 +2183,11 @@ public class EWBController {
 							"				<textarea rows=\"3\" cols=\"60\" id=\"reply_content\"></textarea>\r\n" + 
 							"				<input type=\"button\" value=\"reply\" id=\"reply_btn\">\r\n" + 
 							"				<table id=\"reply_table\">\r\n" + 
-							"					\r\n" + 
+							"\r\n" + 
 							"				</table>\r\n" + 
-							"			</div>\r\n"+
+							"				<ul id=\"pagingul\">\r\n" + 
+							"				</ul>\r\n" + 
+							"			</div>"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
@@ -2192,6 +2200,111 @@ public class EWBController {
 					
 				}else {
 					System.out.println("boarddetail File already exists");
+				}
+				
+				if(modifyboard.createNewFile()) {
+					System.out.println("modifyboard File created");
+					FileWriter fw = new FileWriter(modifyboard);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" modifyboard</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyboard.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">\r\n"+
+							"<link rel=\"stylesheet\"\r\n" + 
+							"	href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200\" />\r\n"+
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='modifyboard_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='modifyboard_content'>\r\n"+
+							"			<input type=\"hidden\" value=\"${detail.bno}\" id=\"bno\">\r\n"+
+							"			<div id=\"entry\">\r\n" + 
+							"				<label>제목</label>\r\n" + 
+							"				<input type=\"text\" id=\"bname\" value=\"${detail.bname}\">\r\n" + 
+							"				<input type=\"checkbox\" id=\"able_box\" checked>\r\n" + 
+							"				<div id=\"btnss\">\r\n" + 
+							"					<div class=\"btns\" data-att=\"b\">\r\n" + 
+							"						<b>B</b>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div class=\"btns\" data-att=\"i\">\r\n" + 
+							"						<i>I</i>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div class=\"btns\" data-att=\"u\">\r\n" + 
+							"						<u>U</u>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div class=\"btns\" data-att=\"a\">L</div>\r\n" + 
+							"					<div class=\"btns\" id=\"font_size_btn\">\r\n" + 
+							"						<span class=\"material-symbols-outlined\"> format_size </span>\r\n" + 
+							"					</div>\r\n" + 
+							"					<select id=\"font_size\">\r\n" + 
+							"						<option value=\"8\">8</option>\r\n" + 
+							"						<option value=\"12\">12</option>\r\n" + 
+							"						<option value=\"16\">16</option>\r\n" + 
+							"						<option value=\"20\">20</option>\r\n" + 
+							"						<option value=\"24\">24</option>\r\n" + 
+							"						<option value=\"28\">28</option>\r\n" + 
+							"					</select>\r\n" + 
+							"					<div class=\"btns\" id=\"font_color_btn\">\r\n" + 
+							"						<span class=\"material-symbols-outlined\"> format_color_text\r\n" + 
+							"						</span>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div id=\"cp_div\">\r\n" + 
+							"						<input type=\"text\" id=\"cp\"> <input type=\"button\"\r\n" + 
+							"							value=\"선택\" id=\"font_color_choice\">\r\n" + 
+							"					</div>\r\n" + 
+							"					<div id=\"sort\">\r\n" + 
+							"						<span class=\"material-symbols-outlined sort btns\" data-sort=\"left\">\r\n" + 
+							"							format_align_left </span> <span\r\n" + 
+							"							class=\"material-symbols-outlined sort btns\" data-sort=\"center\">\r\n" + 
+							"							format_align_center </span> <span\r\n" + 
+							"							class=\"material-symbols-outlined sort btns\" data-sort=\"right\">\r\n" + 
+							"							format_align_right </span>\r\n" + 
+							"					</div>\r\n" + 
+							"					<div class='btns' id='insert_btn'>\r\n" + 
+							"						<span class=\"material-symbols-outlined\"> imagesmode </span>\r\n" + 
+							"					</div>\r\n" + 
+							"				</div>\r\n" + 
+							"				<div id=\"link_div\">\r\n" + 
+							"					<input class=\"links\" type=\"text\" id=\"href\" placeholder=\"링크주소\"><br>\r\n" + 
+							"					<input class=\"links\" type=\"text\" id=\"href_text\" placeholder=\"링크이름\"><br>\r\n" + 
+							"					<input class=\"links\" type=\"button\" id=\"link_btn\" value=\"링크만들기\"></br>\r\n" + 
+							"				</div>\r\n" + 
+							"				<div contenteditable=\"true\" id=\"content\">${detail.content}</div>\r\n" + 
+							"			</div>\r\n" + 
+							"			<input type='file' id='insert_img' multiple> <input\r\n" + 
+							"				type=\"button\" value=\"수정하기\" id=\"write_btn\">"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"    <script src=\"../resources/js/url_modifyboard.js\"></script>\r\n"+
+							"</body>\r\n"+
+							"</html>");
+					bw.close();
+					
+				}else {
+					System.out.println("modifyboard File already exists");
 				}
 				
 				if(mypage.createNewFile()) {
@@ -2264,135 +2377,6 @@ public class EWBController {
 		session.setAttribute("url", url);
 	}
 	
-	@RequestMapping(value = "/{url}/member", method = RequestMethod.GET)
-	public void urlMember(CriteriaVO cri, HttpSession session, Model model) {
-		try {
-			model.addAttribute("member",es.memberList(cri));
-			model.addAttribute("paging", new PageVO(cri, es.memberMaxNumSearch(cri)));
-			session.setAttribute("criValue", new PageVO(cri, es.memberMaxNumSearch(cri)));
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
-
-	@RequestMapping(value = "/{url}/signup", method = RequestMethod.GET)
-	public void urlSignUp(@PathVariable String url, HttpSession session) {
-		
-	}
-
-	@RequestMapping(value = "/{url}/login", method = RequestMethod.GET)
-	public void urlLogin(@PathVariable String url, HttpSession session) {
-		
-	}
-
-	@RequestMapping(value = "/{url}/product", method = RequestMethod.GET)
-	public void urlProduct(HttpSession session, Model model, CriteriaVO cri) {
-
-		try {
-			model.addAttribute("product",es.productList(cri));
-			model.addAttribute("paging", new PageVO(cri, es.productMaxNumSearch(cri)));
-			session.setAttribute("criValue", new PageVO(cri, es.productMaxNumSearch(cri)));
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
-
-	@RequestMapping(value = "/{url}/productwrite", method = RequestMethod.GET)
-	public void urlProductWrite(@PathVariable String url, HttpSession session) {
-		
-	}
-
-	@RequestMapping(value = "/{url}/productdetail", method = RequestMethod.GET)
-	public void urlProductDetail(ProductVO pvo, Model model) {
-		model.addAttribute("detail", es.loadProductDetail(pvo));
-	}
-	
-	@RequestMapping(value = "/productdetail", method = RequestMethod.GET)
-	public ResponseEntity<ProductVO> productDetail(ProductVO pvo) {
-		return new ResponseEntity<>(es.loadProductDetail(pvo),HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/{url}/modifyproduct", method = RequestMethod.GET)
-	public void urlModifyProduct(ProductVO pvo, Model model) {
-		model.addAttribute("modify", es.loadProductDetail(pvo));
-	}
-	
-	
-	@RequestMapping(value = "/{url}/cart", method = RequestMethod.GET)
-	public void urlCart(CartVO cvo, Model model, HttpSession session) {
-		cvo.setId((String)session.getAttribute("userId"));
-		model.addAttribute("cart", es.loadCart(cvo));
-	}
- 
-	@RequestMapping(value = "/{url}/order", method = RequestMethod.GET)
-	public void urlOrder(CartVO cvo, Model model, HttpSession session) {
-		cvo.setId((String)session.getAttribute("userId"));
-		cvo.setDoOrder(true);
-		model.addAttribute("order", es.loadCart(cvo));
-	}
-	
-	@RequestMapping(value = "/{url}/orderlist", method = RequestMethod.GET)
-	public void urlOrderList(CriteriaVO cri, Model model, HttpSession session) {
-		cri.setSearch((String)session.getAttribute("userId"));
-		cri.setAmount(5);
-		try {
-			model.addAttribute("orderlist",es.orderlist(cri));
-			model.addAttribute("paging", new PageVO(cri, es.orderlistMaxNumSearch(cri)));
-			session.setAttribute("criValue", new PageVO(cri, es.orderlistMaxNumSearch(cri)));
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
-	
-	@RequestMapping(value = "/{url}/ordermanagement", method = RequestMethod.GET)
-	public void urlOrderManagement(CriteriaVO cri, Model model, HttpSession session) {
-		cri.setAmount(10);
-		try {
-			model.addAttribute("orderlist",es.orderlistAll(cri));
-			model.addAttribute("paging", new PageVO(cri, es.orderlistAllMaxNumSearch(cri)));
-			session.setAttribute("criValue", new PageVO(cri, es.orderlistAllMaxNumSearch(cri)));
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
-
-	@RequestMapping(value = "/{url}/mypage", method = RequestMethod.GET)
-	public void urlMyPage() {
-		
-	}
-	
-	@RequestMapping(value = "/{url}/modifyprofile", method = RequestMethod.GET)
-	public void urlModifyProfile() {
-		
-	}
-	
-	@RequestMapping(value = "/{url}/board", method = RequestMethod.GET)
-	public void urlBoard(CriteriaVO cri, Model model, HttpSession session) {
-		cri.setAmount(10);
-		try {
-			model.addAttribute("boardlist",es.boardlist(cri));
-			model.addAttribute("paging", new PageVO(cri, es.boardlistMaxNumSearch(cri)));
-			session.setAttribute("criValue", new PageVO(cri, es.boardlistMaxNumSearch(cri)));
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
-
-	@RequestMapping(value = "/{url}/boardwrite", method = RequestMethod.GET)
-	public void urlBoardWrite() {
-		
-	}
-	
-	@RequestMapping(value = "/{url}/boarddetail", method = RequestMethod.GET)
-	public void urlBoardDetail(BoardVO bvo, Model model) {
-		model.addAttribute("detail", es.boardDetail(bvo));
-	}
-	
 	@RequestMapping(value = "/savecontent", method = RequestMethod.POST)
 	public ResponseEntity<String> saveContent(@RequestBody ContentVO cvo){
 		int result = es.saveContent(cvo);
@@ -2405,26 +2389,6 @@ public class EWBController {
 		int result = es.modifyContent(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/insertreg", method = RequestMethod.POST)
-	public ResponseEntity<String> insertReg(@RequestBody ContentVO cvo){
-		int result = es.insertReg(cvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	@RequestMapping(value = "/updatereg", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateReg(@RequestBody ContentVO cvo){
-		int result = es.updateReg(cvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	@RequestMapping(value = "/loadreg", method = RequestMethod.GET)
-	public ResponseEntity<ContentVO> loadReg(ContentVO cvo){
-
-		return new ResponseEntity<>(es.loadReg(cvo),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/deletecontent", method = RequestMethod.DELETE)
@@ -2500,185 +2464,5 @@ public class EWBController {
 	public ResponseEntity<ContentVO> loadContent(ContentVO cvo){
 
 		return new ResponseEntity<>(es.loadContent(cvo),HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/dupcheck", method = RequestMethod.GET)
-	public ResponseEntity<MemberVO> dupCheck(MemberVO mvo, HttpSession session) {
-		return new ResponseEntity<>(es.dupCheck(mvo),HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ResponseEntity<String> signUp(@RequestBody MemberVO mvo) {
-
-		int result = es.signUp(mvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ResponseEntity<MemberVO> login(MemberVO mvo, HttpSession session) {
-		session.setAttribute("userId", es.login(mvo).getId());
-		session.setAttribute("userInfo", es.login(mvo));
-		return new ResponseEntity<>(es.login(mvo),HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ResponseEntity<String> logout(HttpSession session) {
-		session.removeAttribute("userId");
-		session.removeAttribute("userInfo");
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
-	//	@RequestMapping(value = "/productlist", method = RequestMethod.GET)
-	//	public ResponseEntity<ArrayList<ProductVO>> productList(ProductVO pvo, HttpSession session) {
-	//		return new ResponseEntity<>(es.productList(pvo),HttpStatus.OK);
-	//	}
-
-	@RequestMapping(value = "/writeproduct", method = RequestMethod.POST)
-	public ResponseEntity<String> writeProduct(@RequestBody ProductVO pvo) {
-		int result = es.writeProduct(pvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/modifyproduct", method = RequestMethod.PUT)
-	public ResponseEntity<String> modifyProduct(@RequestBody ProductVO pvo) {
-		int result = es.modifyProduct(pvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	@RequestMapping(value = "/savethumbnail", method = RequestMethod.POST)
-	public ResponseEntity<String> saveThumbnail(@RequestBody ThumbnailVO tvo) {
-		int result = es.saveThumbnail(tvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/savethumbnail2", method = RequestMethod.POST)
-	public ResponseEntity<String> saveThumbnail2(@RequestBody ThumbnailVO tvo) {
-		int result = es.saveThumbnail2(tvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/modifythumbnail", method = RequestMethod.PUT)
-	public ResponseEntity<String> modifyThumbnail(@RequestBody ThumbnailVO tvo) {
-		int result = es.modifyThumbnail(tvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/deleteproduct", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteProduct(@RequestBody ProductVO pvo) {
-		if(pvo.getReg_date().equals("true")) {
-			int result = es.deleteProduct(pvo);
-			return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-					: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}else {
-			return null;
-		}
-	}
-	
-	@RequestMapping(value = "/writereview", method = RequestMethod.POST)
-	public ResponseEntity<String> writeReview(@RequestBody ReviewVO rvo) {
-		int result = es.writeReview(rvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/savereviewimg", method = RequestMethod.POST)
-	public ResponseEntity<String> saveReviewImg(@RequestBody ThumbnailVO tvo) {
-		int result = es.saveReviewImg(tvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/loadreview", method = RequestMethod.GET)
-	public ResponseEntity<ArrayList<ReviewVO>> loadReview(ReviewVO rvo) {
-		return new ResponseEntity<>(es.loadReview(rvo),HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/deletereview", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteReview(@RequestBody ReviewVO rvo) {
-		int result = es.deleteReview(rvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/loaduserinfo", method = RequestMethod.GET)
-	public ResponseEntity<MemberVO> loadUserInfo(MemberVO mvo) {
-		return new ResponseEntity<>(es.loadUserInfo(mvo),HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/modifyprofile", method = RequestMethod.PUT)
-	public ResponseEntity<String> modifyProfile(@RequestBody MemberVO mvo) {
-		int result = es.modifyProfile(mvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/insertdes", method = RequestMethod.POST)
-	public ResponseEntity<String> insertDes(@RequestBody DestinationVO dvo) {
-		int result = es.insertDes(dvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/updatedes", method = RequestMethod.PUT)
-	public ResponseEntity<String> updateDes(@RequestBody DestinationVO dvo) {
-		int result = es.updateDes(dvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/deletedes", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteDes(@RequestBody DestinationVO dvo) {
-		int result = es.deleteDes(dvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/loaddes", method = RequestMethod.GET)
-	public ResponseEntity<ArrayList<DestinationVO>> loadDes(DestinationVO dvo) {
-		return new ResponseEntity<>(es.loadDes(dvo),HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/loaddes1", method = RequestMethod.GET)
-	public ResponseEntity<DestinationVO> loadDes1(DestinationVO dvo) {
-		return new ResponseEntity<>(es.loadDes1(dvo),HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/banuser", method = RequestMethod.DELETE)
-	public ResponseEntity<String> banUser(@RequestBody MemberVO mvo) {
-		int result = es.banUser(mvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/writeboard", method = RequestMethod.POST)
-	public ResponseEntity<String> writeBoard(@RequestBody BoardVO bvo) {
-		int result = es.writeBoard(bvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/writereply", method = RequestMethod.POST)
-	public ResponseEntity<String> writeReply(@RequestBody ReplyVO rvo) {
-		int result = es.writeReply(rvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@RequestMapping(value = "/loadreply", method = RequestMethod.GET)
-	public ResponseEntity<ArrayList<ReplyVO>> loadReply(ReplyVO rvo) {
-		return new ResponseEntity<>(es.loadReply(rvo),HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/deletereply", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteReply(@RequestBody ReplyVO rvo) {
-		int result = es.deleteReply(rvo);
-		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

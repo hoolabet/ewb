@@ -4,6 +4,36 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.ewb.mapper.CartMapper">
+	<resultMap type="org.ewb.model.CartVO" id="CartVO">
+		<result column="pno" property="pno" />
+		<result column="b_quantity" property="b_quantity" />
+		<collection property="pvo" resultMap="ProductVO" />
+	</resultMap>
+	<select id="loadCart" resultMap="CartVO">
+		select *
+		from
+		cart_${url} c
+		join
+		(
+		select p.*, fullpath
+		from
+		product_${url} p
+		left join
+		product_img_${url} i
+		on
+		p.pno = i.pno
+		) joined
+		on
+		c.pno =
+		joined.pno
+		where
+		id=#{id}
+		<if test="doOrder == true">
+			and
+			doOrder = #{doOrder}
+		</if>
+	</select>
+	
 	<select id="searchCart" resultType="org.ewb.model.CartVO">
 		SELECT * FROM cart_${url} WHERE id=#{id} and pno=#{pno}
 	</select>
