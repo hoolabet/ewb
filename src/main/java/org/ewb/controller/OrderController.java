@@ -10,7 +10,7 @@ import org.ewb.model.OrderVO;
 import org.ewb.model.PageVO;
 import org.ewb.model.PaymentVO;
 import org.ewb.model.ProductVO;
-import org.ewb.service.EWBService;
+import org.ewb.service.CartService;
 import org.ewb.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,13 +27,13 @@ public class OrderController {
 	OrderService os;
 	
 	@Autowired
-	EWBService es;
+	CartService cs;
 	
 	@RequestMapping(value = "/{url}/order", method = RequestMethod.GET)
 	public void urlOrder(CartVO cvo, Model model, HttpSession session) {
 		cvo.setId((String)session.getAttribute("userId"));
 		cvo.setDoOrder(true);
-		model.addAttribute("order", es.loadCart(cvo));
+		model.addAttribute("order", cs.loadCart(cvo));
 	}
 	
 	@RequestMapping(value = "/{url}/orderlist", method = RequestMethod.GET)
@@ -72,7 +72,7 @@ public class OrderController {
 	
 	@RequestMapping(value = "/searchordered", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<CartVO>> searchCart(CartVO cvo) {
-		return new ResponseEntity<>(es.loadCart(cvo),HttpStatus.OK);
+		return new ResponseEntity<>(cs.loadCart(cvo),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/insertorder", method = RequestMethod.POST)

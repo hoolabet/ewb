@@ -3,17 +3,8 @@ package org.ewb.service;
 import java.util.ArrayList;
 
 import org.ewb.mapper.EWBMapper;
-import org.ewb.model.BoardVO;
-import org.ewb.model.CartVO;
 import org.ewb.model.ContentVO;
-import org.ewb.model.CriteriaVO;
-import org.ewb.model.DestinationVO;
 import org.ewb.model.MemberVO;
-import org.ewb.model.PaymentVO;
-import org.ewb.model.ProductVO;
-import org.ewb.model.ReplyVO;
-import org.ewb.model.ReviewVO;
-import org.ewb.model.ThumbnailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,10 +51,6 @@ public class EWBServiceImpl implements EWBService{
 	
 	public void dropTable(String target) {
 		em.dropTable(target);
-	}
-	
-	public ArrayList<CartVO> loadCart(CartVO cvo){
-		return em.loadCart(cvo);
 	}
 	
 }
