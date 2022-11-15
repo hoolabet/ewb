@@ -722,7 +722,7 @@ $("#create_ul").on("click", function(){
 		<ul id="ul_${target}_${dnow}" class="ul_">
 		<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}login" data-target="${target}" data-ndnow="${ndnow}login">
 
-		<a href="/${url}/login" class="log" id="li_a_${target}_${ndnow}login" data-target="${target}" data-ndnow="${ndnow}login"><span id="li_span_${target}_${ndnow}login">로그인</span></a>
+		<a href="/${url}/login" class="log" id="li_a_${target}_${ndnow}login" data-target="${target}" data-ndnow="${ndnow}login"><span id="li_span_${target}_${ndnow}login">log in</span></a>
 
 		<input readonly value="/${url}/login" size="4" type="text" id="li_a_${target}_${ndnow}login_modi" style="display:none;">
 		<div contenteditable="true" id="li_span_${target}_${ndnow}login_modi" style="display:none;background-color:white;border:1px solid black;">log in</div>

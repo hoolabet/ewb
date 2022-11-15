@@ -129,7 +129,7 @@ $("#reply_btn").on("click", function() {
 		data:JSON.stringify(rData),
 		contentType:"application/json; charset=utf-8",
 		success:function(){
-			location.reload();
+//			location.reload();
 		}
 	})
 })
@@ -192,7 +192,7 @@ $.getJSON("/loadreply",{url,bno},function(res){
 	displayData(1, dataPerPage);
 	paging(totalData, dataPerPage, pageCount, 1);
 	
-	$(".remove_reply").on("click", function() {
+	$(".remove_reply").off("click").on("click", function() {
 		const id = $(this).data("id");
 		const rno = $(this).data("rno");
 		if(userId != id){

@@ -455,6 +455,7 @@ public class EWBController {
 						"				</c:if>\r\n" + 
 						"				<a\r\n" + 
 						"					href=\"/${url}/member?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a>\r\n"+
+						"			</div>\r\n"+
 						"		</div>\r\n"+
 						"		<div id='footer'></div>\r\n"+
 						"	</div>\r\n"+
