@@ -26,4 +26,12 @@ public interface BoardService {
 	public int updateBoard(BoardVO bvo);
 
 	public int countBoard(BoardVO bvo);
+
+	public int llike(BoardVO bvo);
+
+	public int unlike(BoardVO bvo);
+
+	public BoardVO checkLike(BoardVO bvo);
+
+	public int countLike(BoardVO bvo);
 }

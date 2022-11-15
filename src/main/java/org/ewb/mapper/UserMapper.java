@@ -41,4 +41,6 @@ public interface UserMapper {
 
 	public int memberMaxNumSearch(CriteriaVO cri);
 
+	public int updateStatus(MemberVO mvo);
+
 }

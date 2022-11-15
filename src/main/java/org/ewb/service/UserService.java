@@ -40,4 +40,6 @@ public interface UserService {
 	public ArrayList<MemberVO> memberList(CriteriaVO cri);
 
 	public int memberMaxNumSearch(CriteriaVO cri);
+
+	public int updateStatus(MemberVO mvo);
 }

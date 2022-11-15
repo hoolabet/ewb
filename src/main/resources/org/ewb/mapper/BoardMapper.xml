@@ -118,4 +118,32 @@
 		SET cnt = cnt + 1
 		WHERE bno = #{bno}
 	</update>
+	
+	<insert id="llike">
+		INSERT INTO like_${url}(id, bno)
+		VALUES(#{id},#{bno})
+	</insert>
+	
+	<delete id="unlike">
+		DELETE FROM like_${url} WHERE bno=#{bno} and id=#{id}
+	</delete>
+	
+	<select id="checkLike" resultType="org.ewb.model.BoardVO">
+		SELECT * FROM like_${url} WHERE bno=#{bno} and id=#{id}
+	</select>
+	
+	<update id="countLike">
+		UPDATE board_${url}
+		SET 
+		<choose>
+			<when test="bname == 'up'">
+				like_ = like_ + 1
+			</when>
+			<otherwise>
+				like_ = like_ - 1
+			</otherwise>
+		</choose>
+		WHERE
+		bno=#{bno}
+	</update>
 </mapper>

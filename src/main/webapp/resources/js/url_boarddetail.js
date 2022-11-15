@@ -7,17 +7,32 @@ if(url == ""){
 	url = location.href.split("/")[3]
 }
 
-$.ajax({
-	type:"put",
-	url:"/countboard",
-	data:JSON.stringify({bno,url}),
-	contentType:"application/json; charset=utf-8",
-	success: function() {
-		
-	}
-})
 const userId = $("#user_id").val();
 const bId = $("#b_id").val();
+const status = $("#status").val();
+
+$.getJSON("/loaduserinfo",{url,id:userId}, function(res) {
+	if(res.status != bno){
+		$.ajax({
+			type:"put",
+			url:"/countboard",
+			data:JSON.stringify({bno,url}),
+			contentType:"application/json; charset=utf-8",
+			success: function() {
+				$.ajax({
+					type:"put",
+					url:"/updatestatus",
+					data:JSON.stringify({url,status:bno,id:userId}),
+					contentType:"application/json; charset=utf-8",
+					success: function() {
+						
+					}
+				})
+			}
+		})
+	}
+})
+
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
 		$("#header").html(res.content);
@@ -52,8 +67,8 @@ function getHF() {
 				const ndnow = $(this).data("ndnow");
 
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/logout`);
-				$(`#li_span_${target}_${ndnow}`).html("로그아웃");
-				$(`#li_span_${target}_${ndnow}_modi`).html("로그아웃");
+				$(`#li_span_${target}_${ndnow}`).html("log out");
+				$(`#li_span_${target}_${ndnow}_modi`).html("log out");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/logout`);
 
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
@@ -61,8 +76,8 @@ function getHF() {
 					$.getJSON("/logout",0,function(){
 						console.log("haha");
 						$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
-						$(`#li_span_${target}_${ndnow}`).html("로그인");
-						$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
+						$(`#li_span_${target}_${ndnow}`).html("log in");
+						$(`#li_span_${target}_${ndnow}_modi`).html("log in");
 						$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 					})
 					return location.reload();
@@ -81,8 +96,8 @@ function getHF() {
 				const ndnow = $(this).data("ndnow");
 
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
-				$(`#li_span_${target}_${ndnow}`).html("로그인");
-				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
+				$(`#li_span_${target}_${ndnow}`).html("log in");
+				$(`#li_span_${target}_${ndnow}_modi`).html("log in");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 			})
 		}
@@ -312,3 +327,41 @@ function displayData(currentPage, dataPerPage) {
 		})
 	})
 }
+let like = false;
+$.getJSON("/checklike",{url,bno,id:userId}, function(res) {
+	like = true;
+	$("#like_btn").css("background-color", "blue").css("color", "white");
+})
+
+$("#like_btn").on("click", function() {
+	let type_ = "post";
+	let url_ = "/llike";
+	let bname = "up";
+	if(like){
+		type_ = "delete";
+		url_ = "/unlike";
+		bname = "down";
+	}
+	
+	const lData = {
+			url,bno,id:userId,bname
+	}
+	
+	$.ajax({
+		type: type_,
+		url: url_,
+		data:JSON.stringify(lData),
+		contentType:"application/json; charset=utf-8",
+		success: function() {
+			$.ajax({
+				type:"put",
+				url:"/countlike",
+				data:JSON.stringify(lData),
+				contentType:"application/json; charset=utf-8",
+				success: function() {
+					location.reload();
+				}
+			})
+		}
+	})
+})

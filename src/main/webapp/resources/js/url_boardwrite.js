@@ -62,8 +62,8 @@ function getHF() {
 				const ndnow = $(this).data("ndnow");
 
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/logout`);
-				$(`#li_span_${target}_${ndnow}`).html("로그아웃");
-				$(`#li_span_${target}_${ndnow}_modi`).html("로그아웃");
+				$(`#li_span_${target}_${ndnow}`).html("log out");
+				$(`#li_span_${target}_${ndnow}_modi`).html("log out");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/logout`);
 
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
@@ -71,8 +71,8 @@ function getHF() {
 					$.getJSON("/logout",0,function(){
 						console.log("haha");
 						$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
-						$(`#li_span_${target}_${ndnow}`).html("로그인");
-						$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
+						$(`#li_span_${target}_${ndnow}`).html("log in");
+						$(`#li_span_${target}_${ndnow}_modi`).html("log in");
 						$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 					})
 					return location.reload();
@@ -91,8 +91,8 @@ function getHF() {
 				const ndnow = $(this).data("ndnow");
 
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
-				$(`#li_span_${target}_${ndnow}`).html("로그인");
-				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
+				$(`#li_span_${target}_${ndnow}`).html("log in");
+				$(`#li_span_${target}_${ndnow}_modi`).html("log in");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 			})
 			$(".login_btn").on("click", function() {
@@ -168,14 +168,13 @@ $("#insert_img").on("change",function(){
 				const fullPath = encodeURIComponent(`${u.path}/${u.uuid}_${u.fileName}`);
 				if(u.checkI){
 					const width = prompt(u.fileName+" 가로 길이 (px)");
-					const height = prompt(u.fileName+" 세로 길이 (px)");
-					if(isNaN(width) || isNaN(height) || width < 0 || height < 0){
+					if(isNaN(width) || width < 0){
 						alert("0 보다 큰 숫자만 입력하세요.");
 						return false;
-					}else if(width == 0 && height == 0){
+					}else if(width == 0){
 						files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;"><br>`;
 					}else{
-						files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;width:${width}px;height:${height}px"><br>`;
+						files += `<img src="/display?fileName=${fullPath}" class="imgs" style="display:block;margin:auto;width:${width}px;"><br>`;
 					}
 				}else{
 					files += `<a href="/download?fileName=${fullPath}">${u.fileName}</a><br>`;

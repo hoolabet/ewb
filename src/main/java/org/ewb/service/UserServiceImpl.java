@@ -79,4 +79,8 @@ public class UserServiceImpl implements UserService{
 	public int memberMaxNumSearch(CriteriaVO cri) {
 		return um.memberMaxNumSearch(cri);
 	}
+	
+	public int updateStatus(MemberVO mvo) {
+		return um.updateStatus(mvo);
+	}
 }

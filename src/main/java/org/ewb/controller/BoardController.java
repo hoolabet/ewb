@@ -97,4 +97,30 @@ public class BoardController {
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@RequestMapping(value = "/checklike", method = RequestMethod.GET)
+	public ResponseEntity<BoardVO> checkLike(BoardVO bvo) {
+		return new ResponseEntity<>(bs.checkLike(bvo),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/llike", method = RequestMethod.POST)
+	public ResponseEntity<String> llike(@RequestBody BoardVO bvo) {
+		int result = bs.llike(bvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/unlike", method = RequestMethod.DELETE)
+	public ResponseEntity<String> unlike(@RequestBody BoardVO bvo) {
+		int result = bs.unlike(bvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@RequestMapping(value = "/countlike", method = RequestMethod.PUT)
+	public ResponseEntity<String> countLike(@RequestBody BoardVO bvo) {
+		int result = bs.countLike(bvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

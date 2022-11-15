@@ -53,4 +53,20 @@ public class BoardServiceImpl implements BoardService{
 	public int countBoard(BoardVO bvo) {
 		return bm.countBoard(bvo);
 	}
+	
+	public int llike(BoardVO bvo) {
+		return bm.llike(bvo);
+	}
+
+	public int unlike(BoardVO bvo) {
+		return bm.unlike(bvo);
+	}
+	
+	public BoardVO checkLike(BoardVO bvo){
+		return bm.checkLike(bvo);
+	}
+	
+	public int countLike(BoardVO bvo) {
+		return bm.countLike(bvo);
+	}
 }

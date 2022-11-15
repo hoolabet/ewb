@@ -125,17 +125,16 @@ function loadFunc() {
 				const ndnow = $(this).data("ndnow");
 
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/logout`);
-				$(`#li_span_${target}_${ndnow}`).html("로그아웃");
-				$(`#li_span_${target}_${ndnow}_modi`).html("로그아웃");
+				$(`#li_span_${target}_${ndnow}`).html("log out");
+				$(`#li_span_${target}_${ndnow}_modi`).html("log out");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/logout`);
 
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
 					e.preventDefault();
 					$.getJSON("/logout",0,function(){
-						console.log("haha");
 						$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
-						$(`#li_span_${target}_${ndnow}`).html("로그인");
-						$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
+						$(`#li_span_${target}_${ndnow}`).html("log in");
+						$(`#li_span_${target}_${ndnow}_modi`).html("log in");
 						$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 					})
 					return location.reload();
@@ -154,8 +153,8 @@ function loadFunc() {
 				const ndnow = $(this).data("ndnow");
 
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
-				$(`#li_span_${target}_${ndnow}`).html("로그인");
-				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
+				$(`#li_span_${target}_${ndnow}`).html("log in");
+				$(`#li_span_${target}_${ndnow}_modi`).html("log in");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 			})
 		}
@@ -669,9 +668,9 @@ function afterLoadCreateUl(){
 		const ndnow = Date.now();
 		const li = `
 			<li class="ul_li li_${target}_${dnow}" id="li_${target}_${ndnow}" data-target="${target}" data-ndnow="${ndnow}">
-			<a href="#" id="li_a_${target}_${ndnow}"><span id="li_span_${target}_${ndnow}">목록</span></a>
+			<a href="#" id="li_a_${target}_${ndnow}"><span id="li_span_${target}_${ndnow}">list</span></a>
 			<input value="#" size="4" type="text" id="li_a_${target}_${ndnow}_modi" style="display:none;">
-			<div contenteditable="true" id="li_span_${target}_${ndnow}_modi" style="display:none;background-color:white;border:1px solid black;">목록</div>
+			<div contenteditable="true" id="li_span_${target}_${ndnow}_modi" style="display:none;background-color:white;border:1px solid black;">list</div>
 			<div id="img_li_${target}_${ndnow}" class="img_li" data-target="${target}" data-ndnow="${ndnow}" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
 			<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}" style="cursor:pointer">🛠</span>
 			<span class="remo_li buttons" style="cursor:pointer">✖</span>
@@ -726,7 +725,7 @@ $("#create_ul").on("click", function(){
 		<a href="/${url}/login" class="log" id="li_a_${target}_${ndnow}login" data-target="${target}" data-ndnow="${ndnow}login"><span id="li_span_${target}_${ndnow}login">로그인</span></a>
 
 		<input readonly value="/${url}/login" size="4" type="text" id="li_a_${target}_${ndnow}login_modi" style="display:none;">
-		<div contenteditable="true" id="li_span_${target}_${ndnow}login_modi" style="display:none;background-color:white;border:1px solid black;">로그인</div>
+		<div contenteditable="true" id="li_span_${target}_${ndnow}login_modi" style="display:none;background-color:white;border:1px solid black;">log in</div>
 		<div id="img_li_${target}_${ndnow}login" class="img_li" data-target="${target}" data-ndnow="${ndnow}login" style="cursor:pointer;display:none"><img src="https://static.thenounproject.com/png/1119385-200.png" style="width: 25px"></div>
 		<span class="modi_li buttons" data-target="${target}" data-ndnow="${ndnow}login" style="cursor:pointer">🛠</span>
 		<span class="remo_li buttons" style="cursor:pointer">✖</span>
@@ -877,7 +876,9 @@ $("#upload_input").on("change",function(){
 					files += `<a href="/download?fileName=${fullPath}">${u.fileName}</a><br>`;
 				}
 			})
+			
 			$(`#${$("#upload_input").data("target")}`).html($(`#${$("#upload_input").data("target")}`).html() + files);
+			
 		}
 	})
 })

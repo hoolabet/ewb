@@ -89,6 +89,7 @@ public class EWBController {
 						+ "phone varchar(100),"
 						+ "birth varchar(100),"
 						+ "sign_date datetime default now(),"
+						+ "status int default 0,"
 						+ "admin boolean default false"
 						+ ")";
 				es.createTable(create_member_table);
@@ -117,6 +118,7 @@ public class EWBController {
 						"    <link\r\n" + 
 						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 						"        rel=\"stylesheet\">\r\n"+
+						"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
 						"		<input type='hidden' value='${userId}' id='user_id'>\r\n"+
@@ -259,7 +261,11 @@ public class EWBController {
 						"            Sticky\r\n" + 
 						"        </div>\r\n" + 
 						"    </div>\r\n" + 
-						"    <div id=\"body_controller_btn\"></div>\r\n" + 
+						"    <div id=\"body_controller_btn\">\r\n"+
+						"		<span class=\"material-symbols-outlined\" style=\"font-size: 40px;\">\r\n" + 
+						"			public\r\n" + 
+						"		</span>\r\n"+
+						"	</div>\r\n" + 
 						"    <div id=\"body_controller\">\r\n" + 
 						"        <div id=\"margin_controller_btn\" class=\"controllers\">전체 영역 공백</div>\r\n" + 
 						"        <div id=\"button_controller_btn\" class=\"controllers input_controller_btn\" data-type=\"button\">버튼</div>\r\n" + 
@@ -385,6 +391,7 @@ public class EWBController {
 						"    <link\r\n" + 
 						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 						"        rel=\"stylesheet\">"+
+						"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
 						"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -485,6 +492,7 @@ public class EWBController {
 						"    <link\r\n" + 
 						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 						"        rel=\"stylesheet\">\r\n"+
+						"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
 						"<input type='hidden' value='"+url+"' id='url'>\r\n"+
@@ -628,6 +636,7 @@ public class EWBController {
 						"    <link\r\n" + 
 						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 						"        rel=\"stylesheet\">\r\n"+
+						"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
 						"		<input type='hidden' value='${userId}' id='user_id'>\r\n"+
@@ -759,6 +768,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -1083,6 +1093,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -1304,6 +1315,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -1387,6 +1399,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -1473,6 +1486,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -1553,6 +1567,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -1629,6 +1644,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -1689,6 +1705,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -1895,6 +1912,7 @@ public class EWBController {
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
 							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
@@ -2010,6 +2028,16 @@ public class EWBController {
 							+ "references reply_"+url+"(rno) on update cascade on delete cascade"
 							+ ")";
 					es.createTable(create_rereply_table);
+					
+					String create_like_table = "create table like_"+url+" ("
+							+ "bno int, "
+							+ "id varchar(100), "
+							+ "foreign key(id)"
+							+ "references member_"+url+"(id) on update cascade on delete cascade,"
+							+ "foreign key(bno)"
+							+ "references board_"+url+"(bno) on update cascade on delete cascade"
+							+ ")";
+					es.createTable(create_like_table);
 				}else {
 					System.out.println("board File already exists");
 				}
@@ -2150,6 +2178,7 @@ public class EWBController {
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${userInfo.status}' id='status'>\r\n"+
 							"	<div id='boarddetail_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='boarddetail_content'>\r\n" + 
@@ -2165,6 +2194,9 @@ public class EWBController {
 							"				<label>내용</label>\r\n" + 
 							"				<p id=\"content\">${detail.content}</p>\r\n" + 
 							"			</div>\r\n" + 
+							"			<div id=\"like_div\">\r\n" + 
+							"				<span class=\"material-symbols-outlined\" id=\"like_btn\" style=\"font-size: 32px;\"> thumb_up </span>\r\n" + 
+							"			</div>\r\n"+
 							"			<div id=\"reply\">\r\n" + 
 							"				<textarea rows=\"3\" cols=\"60\" id=\"reply_content\"></textarea>\r\n" + 
 							"				<input type=\"button\" value=\"reply\" id=\"reply_btn\">\r\n" + 
@@ -2173,7 +2205,7 @@ public class EWBController {
 							"				</table>\r\n" + 
 							"				<ul id=\"pagingul\">\r\n" + 
 							"				</ul>\r\n" + 
-							"			</div>"+
+							"			</div>\r\n"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
@@ -2307,7 +2339,7 @@ public class EWBController {
 							"    <meta charset=\"UTF-8\">\r\n" + 
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" mypage</title>\r\n" + 
+							"    <title>"+url+" ${userInfo.id} mypage</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
@@ -2315,17 +2347,25 @@ public class EWBController {
 							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
 							"    <link\r\n" + 
 							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">"+
+							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 							"</head>\r\n" + 
 							"<body>\r\n" + 
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
 							"	<div id='mypage_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='mypage_content'>\r\n"+
+							"			<table id='mypage_table'>\r\n"+
+							"				<tr>\r\n"+
+							"					<td>\r\n"+
+							"						<a href='/${url}/modifyprofile'>정보수정</a>\r\n"+
+							"					</td>\r\n"+
+							"				</tr>\r\n"+
+							"			</table>\r\n"+
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
@@ -2421,8 +2461,10 @@ public class EWBController {
 			String target_rev = "review_"+cvo.getUrl();
 			String target_revi = "review_img_"+cvo.getUrl();
 			String target_des = "destination_"+cvo.getUrl();
+			String target_like = "like_"+cvo.getUrl();
 			
 			
+			es.dropTable(target_like);
 			es.dropTable(target_des);
 			es.dropTable(target_revi);
 			es.dropTable(target_rev);

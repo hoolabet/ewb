@@ -44,8 +44,8 @@ function getHF() {
 				const ndnow = $(this).data("ndnow");
 
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/logout`);
-				$(`#li_span_${target}_${ndnow}`).html("로그아웃");
-				$(`#li_span_${target}_${ndnow}_modi`).html("로그아웃");
+				$(`#li_span_${target}_${ndnow}`).html("log out");
+				$(`#li_span_${target}_${ndnow}_modi`).html("log out");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/logout`);
 
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
@@ -53,8 +53,8 @@ function getHF() {
 					$.getJSON("/logout",0,function(){
 						console.log("haha");
 						$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
-						$(`#li_span_${target}_${ndnow}`).html("로그인");
-						$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
+						$(`#li_span_${target}_${ndnow}`).html("log in");
+						$(`#li_span_${target}_${ndnow}_modi`).html("log in");
 						$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 					})
 					return location.reload();
@@ -73,8 +73,8 @@ function getHF() {
 				const ndnow = $(this).data("ndnow");
 
 				$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
-				$(`#li_span_${target}_${ndnow}`).html("로그인");
-				$(`#li_span_${target}_${ndnow}_modi`).html("로그인");
+				$(`#li_span_${target}_${ndnow}`).html("log in");
+				$(`#li_span_${target}_${ndnow}_modi`).html("log in");
 				$(`#li_a_${target}_${ndnow}_modi`).val(`/${url}/login`);
 			})
 			$(".login_btn").on("click", function() {

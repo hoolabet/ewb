@@ -153,4 +153,11 @@ public class UserController {
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@RequestMapping(value = "/updatestatus", method = RequestMethod.PUT)
+	public ResponseEntity<String> updateStatus(@RequestBody MemberVO mvo) {
+		int result = us.updateStatus(mvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

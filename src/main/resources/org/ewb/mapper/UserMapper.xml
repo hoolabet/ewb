@@ -155,4 +155,10 @@
 		WHERE id=#{id}
 	</update>
 	
+	<update id="updateStatus">
+		UPDATE member_${url}
+		SET status = #{status}
+		WHERE id=#{id}
+	</update>
+	
 </mapper>
