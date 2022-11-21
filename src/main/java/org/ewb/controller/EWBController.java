@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.ewb.model.ContentVO;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +56,7 @@ public class EWBController {
 		session.setAttribute("opt", opt);
 		System.out.println(opt);
 		//		String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\ewb\\src\\main\\webapp\\WEB-INF\\views";
-		String uploadFolder = "D:\\01-STUDY\\e\\ewb\\src\\main\\webapp\\WEB-INF\\views";
+		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
 		File uploadPath = new File(uploadFolder, url);
 		if(!uploadPath.exists()) {
 			System.out.println(url+" Folder created");
@@ -93,6 +96,14 @@ public class EWBController {
 						+ "admin boolean default false"
 						+ ")";
 				es.createTable(create_member_table);
+				
+				String create_chat_table = "create table chat_"+url+" ("
+						+ "id varchar(100), "
+						+ "content longtext, "
+						+ "chat_date datetime default now()"
+						+ ")";
+				es.createTable(create_chat_table);
+				
 				MemberVO mvo = new MemberVO();
 				mvo.setId(url);
 				mvo.setPw(url);
@@ -358,9 +369,13 @@ public class EWBController {
 						"        <div class=\"close_btn\">✖</div>\r\n" + 
 						"    </div>"+
 						"    <input type='file' id='upload_input' style='display:none'>\r\n" + 
-						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
-						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-						"    <script src=\"../resources/js/url_home.js\"></script>\r\n" + 
+						"	<div id=\"chat_btn\">💬</div>\r\n" + 
+						"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+						"	<script\r\n" + 
+						"		src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+						"	<script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+						"	<script src=\"../resources/js/url_home.js\"></script>\r\n" + 
+						"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 						"</body>\r\n"+
 						"</html>");
 				bw.close();
@@ -849,9 +864,13 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
-							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
-							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<script\r\n" + 
+							"		src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"	<script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"    <script src=\"../resources/js/url_product.js\"></script>\r\n"+
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
 					bw.close();
@@ -1061,8 +1080,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" +
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_product_write.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1168,8 +1190,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_product_detail.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1282,8 +1307,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" +
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_modifyproduct.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1366,8 +1394,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_cart.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1453,8 +1484,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_order.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1534,8 +1568,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_orderlist.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1611,8 +1648,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_ordermanagement.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1672,8 +1712,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_mypage.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1878,8 +1921,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_modifyprofile.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -1976,8 +2022,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_board.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -2136,8 +2185,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_boardwrite.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -2210,8 +2262,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_boarddetail.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -2315,8 +2370,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_modifyboard.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -2370,8 +2428,11 @@ public class EWBController {
 							"		</div>\r\n"+
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
 							"    <script src=\"../resources/js/url_mypage.js\"></script>\r\n"+
 							"</body>\r\n"+
 							"</html>");
@@ -2398,6 +2459,13 @@ public class EWBController {
 	public void management(HttpSession session) {
 		session.setAttribute("userId", "");
 	}
+	
+	@RequestMapping(value = "/chat", method = RequestMethod.GET)
+	public String view_chat(String id ,String chat_url,HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+		session.setAttribute("url", chat_url);
+		session.setAttribute("userId", id);
+		return "/chat";
+	}
 
 	@RequestMapping(value = "/{url}/home", method = RequestMethod.GET)
 	public void urlHome(@PathVariable String url, HttpSession session) {
@@ -2421,7 +2489,7 @@ public class EWBController {
 	@RequestMapping(value = "/deletecontent", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteContent(@RequestBody ContentVO cvo){
 		//String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\test\\src\\main\\webapp\\WEB-INF\\views";
-		String uploadFolder = "D:\\01-STUDY\\e\\ewb\\src\\main\\webapp\\WEB-INF\\views";
+		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
 		File file = new File(uploadFolder+"\\"+cvo.getUrl());
 		if( file.exists() ){ 
 
@@ -2449,6 +2517,7 @@ public class EWBController {
 		}
 		try {
 			String target_mem = "member_"+cvo.getUrl();
+			String target_chat = "chat_"+cvo.getUrl();
 			String target_pro = "product_"+cvo.getUrl();
 			String target_prot = "product_type_"+cvo.getUrl();
 			String target_brd = "board_"+cvo.getUrl();
@@ -2479,6 +2548,7 @@ public class EWBController {
 			es.dropTable(target_brd);
 			es.dropTable(target_prot);
 			es.dropTable(target_pro);
+			es.dropTable(target_chat);
 			es.dropTable(target_mem);
 		} catch (Exception e) {
 			// TODO: handle exception
