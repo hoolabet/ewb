@@ -69,4 +69,20 @@ public class BoardServiceImpl implements BoardService{
 	public int countLike(BoardVO bvo) {
 		return bm.countLike(bvo);
 	}
+	
+	public ArrayList<BoardVO> checkWrite(CriteriaVO cri) {
+		return bm.checkWrite(cri);
+	}
+
+	public int checkWriteMaxNumSearch(CriteriaVO cri) {
+		return bm.checkWriteMaxNumSearch(cri);
+	}
+
+	public ArrayList<ReplyVO> checkReply(CriteriaVO cri) {
+		return bm.checkReply(cri);
+	}
+
+	public int checkReplyMaxNumSearch(CriteriaVO cri) {
+		return bm.checkReplyMaxNumSearch(cri);
+	}
 }

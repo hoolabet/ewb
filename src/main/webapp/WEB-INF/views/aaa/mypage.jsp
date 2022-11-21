@@ -33,6 +33,12 @@
 					<td>
 						<a href='/${url}/modifyprofile'>정보수정</a>
 					</td>
+					<td>
+						<a href='/${url}/checkwrite'>작성 글 보기</a>
+					</td>
+					<td>
+						<a href='/${url}/checkreply'>작성 댓글 보기</a>
+					</td>
 				</tr>
 			</table>
 		</div>

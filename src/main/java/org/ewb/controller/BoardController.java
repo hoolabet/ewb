@@ -51,6 +51,34 @@ public class BoardController {
 		model.addAttribute("detail", bs.boardDetail(bvo));
 	}
 	
+	@RequestMapping(value = "/{url}/checkwrite", method = RequestMethod.GET)
+	public void urlCheckWrite(CriteriaVO cri, Model model, HttpSession session) {
+		cri.setAmount(10);
+		cri.setArray((String)session.getAttribute("userId"));
+		try {
+			model.addAttribute("cw",bs.checkWrite(cri));
+			model.addAttribute("paging", new PageVO(cri, bs.checkWriteMaxNumSearch(cri)));
+			session.setAttribute("criValue", new PageVO(cri, bs.checkWriteMaxNumSearch(cri)));
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/{url}/checkreply", method = RequestMethod.GET)
+	public void urlCheckReply(CriteriaVO cri, Model model, HttpSession session) {
+		cri.setAmount(10);
+		cri.setArray((String)session.getAttribute("userId"));
+		try {
+			model.addAttribute("cr",bs.checkReply(cri));
+			model.addAttribute("paging", new PageVO(cri, bs.checkReplyMaxNumSearch(cri)));
+			session.setAttribute("criValue", new PageVO(cri, bs.checkReplyMaxNumSearch(cri)));
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
 	@RequestMapping(value = "/writeboard", method = RequestMethod.POST)
 	public ResponseEntity<String> writeBoard(@RequestBody BoardVO bvo) {
 		int result = bs.writeBoard(bvo);

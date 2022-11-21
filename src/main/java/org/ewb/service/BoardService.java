@@ -34,4 +34,12 @@ public interface BoardService {
 	public BoardVO checkLike(BoardVO bvo);
 
 	public int countLike(BoardVO bvo);
+
+	public ArrayList<BoardVO> checkWrite(CriteriaVO cri);
+
+	public int checkWriteMaxNumSearch(CriteriaVO cri);
+
+	public ArrayList<ReplyVO> checkReply(CriteriaVO cri);
+
+	public int checkReplyMaxNumSearch(CriteriaVO cri);
 }

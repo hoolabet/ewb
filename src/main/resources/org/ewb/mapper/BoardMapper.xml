@@ -146,4 +146,164 @@
 		WHERE
 		bno=#{bno}
 	</update>
+	
+	<select id="checkWrite" resultType="org.ewb.model.BoardVO">
+		SELECT
+		*
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY reg_date)
+		as num
+		FROM
+		board_${url} 
+		WHERE
+		id=#{array}
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					AND
+					bname LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					AND
+					content LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					AND
+					(
+					bname LIKE CONCAT('%', #{search}, '%')
+					OR
+					content LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		reg_date DESC
+		) add_rn_board
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
+	</select>
+	
+	<select id="checkWriteMaxNumSearch" resultType="int">
+		SELECT
+		ifnull(MAX(num),1)
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY reg_date
+		)
+		as num
+		FROM
+		board_${url}
+		WHERE
+		id=#{array}
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					AND
+					bname LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					AND
+					content LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					AND
+					(
+					bname LIKE CONCAT('%', #{search}, '%')
+					OR
+					content LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		reg_date DESC
+		) add_rn_board
+		
+	</select>
+	
+	<select id="checkReply" resultType="org.ewb.model.ReplyVO">
+		SELECT
+		*
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY reply_date)
+		as num
+		FROM
+		reply_${url} 
+		WHERE
+		id=#{array}
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					AND
+					id LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					AND
+					content LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					AND
+					(
+					id LIKE CONCAT('%', #{search}, '%')
+					OR
+					content LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		reply_date DESC
+		) add_rn_reply
+		<![CDATA[
+		WHERE
+			num > (#{pageNum} - 1)*#{amount} and num <= #{pageNum}*#{amount}
+		]]>
+	</select>
+	
+	<select id="checkReplyMaxNumSearch" resultType="int">
+		SELECT
+		ifnull(MAX(num),1)
+		FROM(
+		SELECT
+		*,
+		ROW_NUMBER() OVER(ORDER BY reply_date
+		)
+		as num
+		FROM
+		reply_${url}
+		WHERE
+		id=#{array}
+		<if test="search != ''.toString">
+			<choose>
+				<when test="type == 't'.toString()">
+					AND
+					id LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					AND
+					content LIKE CONCAT('%', #{search}, '%')
+				</when>
+				<when test="type == 'tc'.toString()">
+					AND
+					(
+					id LIKE CONCAT('%', #{search}, '%')
+					OR
+					content LIKE CONCAT('%', #{search}, '%')
+					)
+				</when>
+			</choose>
+		</if>
+		ORDER BY
+		reply_date DESC
+		) add_rn_reply
+		
+	</select>
 </mapper>

@@ -82,6 +82,8 @@ public class EWBController {
 		File boardwrite = new File(uploadFolder+"\\"+url+"\\boardwrite.jsp");
 		File boarddetail = new File(uploadFolder+"\\"+url+"\\boarddetail.jsp");
 		File modifyboard = new File(uploadFolder+"\\"+url+"\\modifyboard.jsp");
+		File checkwrite = new File(uploadFolder+"\\"+url+"\\checkwrite.jsp");
+		File checkreply = new File(uploadFolder+"\\"+url+"\\checkreply.jsp");
 		try {
 			if(home.createNewFile()) {
 				String create_member_table = "create table member_"+url+" ("
@@ -2423,6 +2425,12 @@ public class EWBController {
 							"					<td>\r\n"+
 							"						<a href='/${url}/modifyprofile'>정보수정</a>\r\n"+
 							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<a href='/${url}/checkwrite'>작성 글 보기</a>\r\n"+
+							"					</td>\r\n"+
+							"					<td>\r\n"+
+							"						<a href='/${url}/checkreply'>작성 댓글 보기</a>\r\n"+
+							"					</td>\r\n"+
 							"				</tr>\r\n"+
 							"			</table>\r\n"+
 							"		</div>\r\n"+
@@ -2440,6 +2448,194 @@ public class EWBController {
 
 				}else {
 					System.out.println("mypage File already exists");
+				}
+				
+				if(checkwrite.createNewFile()) {
+					System.out.println("checkwrite File created");
+					FileWriter fw = new FileWriter(checkwrite);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" ${userInfo.id} checkwrite</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_checkwrite.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='checkwrite_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='checkwrite_content'>\r\n"+
+							"			<table id=\"checkwrite_table\">\r\n" + 
+							"				<tr>\r\n" + 
+							"					<td>게시물 번호</td>\r\n" + 
+							"					<td>제목</td>\r\n" + 
+							"					<td>작성일</td>\r\n" + 
+							"				</tr>\r\n" + 
+							"				<c:forEach items=\"${cw}\" var=\"cw\">\r\n" + 
+							"					<tr>\r\n" + 
+							"						<td>${cw.bno}</td>\r\n" + 
+							"						<td><a href=\"/${url}/boarddetail?bno=${cw.bno}\">${cw.bname}</a></td>\r\n" + 
+							"						<td>${cw.reg_date}</td>\r\n" + 
+							"					</tr>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"			</table>\r\n" + 
+							"			<form action=\"/${url}/checkwrite\" id=\"search_form\">\r\n" + 
+							"				<input type=\"hidden\" name=\"pageNum\" value=\"${paging.cri.pageNum}\">\r\n" + 
+							"				<input type=\"hidden\" name=\"amount\" value=\"${paging.cri.amount}\">\r\n" + 
+							"				<select name=\"type\">\r\n" + 
+							"					<option value=\"t\">제목</option>\r\n" + 
+							"					<option value=\"c\">내용</option>\r\n" + 
+							"					<option value=\"tc\">제목+내용</option>\r\n" + 
+							"				</select> <input type=\"text\" name=\"search\" value=\"${paging.cri.search}\">\r\n" + 
+							"				<input type=\"submit\" value=\"찾기\">\r\n" + 
+							"			</form>\r\n" + 
+							"			<br> <br>\r\n" + 
+							"			<div id='paging'>\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/checkwrite?pageNum=1&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">처음으로</a>\r\n" + 
+							"				<c:if test=\"${paging.prev}\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/checkwrite?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">이전</a>\r\n" + 
+							"				</c:if>\r\n" + 
+							"				<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
+							"					var=\"num\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/checkwrite?pageNum=${num}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">${num}</a>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"				<c:if test=\"${paging.next}\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/checkwrite?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">다음</a>\r\n" + 
+							"				</c:if>\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/checkwrite?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a>\r\n" + 
+							"			</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
+							"    <script src=\"../resources/js/url_checkwrite.js\"></script>\r\n"+
+							"</body>\r\n"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("checkwrite File already exists");
+				}
+				
+				if(checkreply.createNewFile()) {
+					System.out.println("checkreply File created");
+					FileWriter fw = new FileWriter(checkreply);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" ${userInfo.id} checkreply</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_checkreply.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"	<div id='checkreply_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='checkreply_content'>\r\n"+
+							"			<table id=\"checkreply_table\">\r\n" + 
+							"				<tr>\r\n" + 
+							"					<td>게시물 번호</td>\r\n" + 
+							"					<td>내용</td>\r\n" + 
+							"					<td>작성일</td>\r\n" + 
+							"				</tr>\r\n" + 
+							"				<c:forEach items=\"${cr}\" var=\"cr\">\r\n" + 
+							"					<tr>\r\n" + 
+							"						<td><a href=\"/${url}/boarddetail?bno=${cw.bno}\">${cr.bno}</a></td>\r\n" + 
+							"						<td><a href=\"/${url}/boarddetail?bno=${cw.bno}\">${cr.content}</a></td>\r\n" + 
+							"						<td>${cr.reply_date}</td>\r\n" + 
+							"					</tr>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"			</table>\r\n" + 
+							"			<form action=\"/${url}/checkreply\" id=\"search_form\">\r\n" + 
+							"				<input type=\"hidden\" name=\"pageNum\" value=\"${paging.cri.pageNum}\">\r\n" + 
+							"				<input type=\"hidden\" name=\"amount\" value=\"${paging.cri.amount}\">\r\n" + 
+							"				<select name=\"type\">\r\n" + 
+							"					<option value=\"c\">내용</option>\r\n" + 
+							"				</select> <input type=\"text\" name=\"search\" value=\"${paging.cri.search}\">\r\n" + 
+							"				<input type=\"submit\" value=\"찾기\">\r\n" + 
+							"			</form>\r\n" + 
+							"			<br> <br>\r\n" + 
+							"			<div id='paging'>\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/checkreply?pageNum=1&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">처음으로</a>\r\n" + 
+							"				<c:if test=\"${paging.prev}\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/checkreply?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">이전</a>\r\n" + 
+							"				</c:if>\r\n" + 
+							"				<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
+							"					var=\"num\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/checkreply?pageNum=${num}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">${num}</a>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"				<c:if test=\"${paging.next}\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/checkreply?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">다음</a>\r\n" + 
+							"				</c:if>\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/checkreply?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a>\r\n" + 
+							"			</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
+							"    <script src=\"../resources/js/url_checkreply.js\"></script>\r\n"+
+							"</body>\r\n"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("checkreply File already exists");
 				}
 			}
 
