@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.ewb.model.ChatVO;
-import org.ewb.service.HandlerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -18,8 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class HandlerChat extends TextWebSocketHandler {
-	@Autowired
-	HandlerService hs;
 	// (<"chat_url", 방ID>, <"session", 세션>) - (<"chat_url", 방ID>, <"session", 세션>) - (<"chat_url", 방ID>, <"session", 세션>) 형태 
 	private List<Map<String, Object>> sessionList = new ArrayList<Map<String, Object>>();
 	
@@ -88,12 +83,6 @@ public class HandlerChat extends TextWebSocketHandler {
 					String jsonStr = objectMapper.writeValueAsString(mapToSend);
 					sess.sendMessage(new TextMessage(jsonStr));
 					
-					ChatVO cvo = new ChatVO();
-					cvo.setUrl(chat_url);
-					cvo.setId(mapReceive.get("id"));
-					cvo.setContent(mapReceive.get("msg"));
-					
-					hs.insertChat(cvo);
 				}
 			}
 			break;
@@ -133,7 +122,6 @@ public class HandlerChat extends TextWebSocketHandler {
 				mapToSend.put("chat_url", chat_url);
 				mapToSend.put("cmd", "CMD_EXIT");
 				mapToSend.put("msg", session.getId() + "님이 퇴장 했습니다.");
-				System.out.println(sessionList.size());
 
 				String jsonStr = objectMapper.writeValueAsString(mapToSend);
 				sess.sendMessage(new TextMessage(jsonStr));

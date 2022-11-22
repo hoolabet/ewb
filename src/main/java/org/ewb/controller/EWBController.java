@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.ewb.model.ChatVO;
 import org.ewb.model.ContentVO;
 import org.ewb.model.MemberVO;
 import org.ewb.service.EWBService;
+import org.ewb.service.HandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class EWBController {
 	@Autowired
 	EWBService es;
-
+	
+	@Autowired
+	HandlerService hs;
+	
 	@RequestMapping(value = "/ewblogin", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> ewbLogin(MemberVO mvo, HttpSession session) {
 		session.setAttribute("ewbUser", es.ewbLogin(mvo));
@@ -2657,10 +2662,18 @@ public class EWBController {
 	}
 	
 	@RequestMapping(value = "/chat", method = RequestMethod.GET)
-	public String view_chat(String id ,String chat_url,HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+	public String view_chat(String id ,String chat_url,HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws Exception {
 		session.setAttribute("url", chat_url);
 		session.setAttribute("userId", id);
+		model.addAttribute("lastchat",hs.lastchat(chat_url));
 		return "/chat";
+	}
+	
+	@RequestMapping(value = "/insertchat", method = RequestMethod.POST)
+	public ResponseEntity<String> insertChat(@RequestBody ChatVO cvo){
+		int result = hs.insertChat(cvo);
+		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@RequestMapping(value = "/{url}/home", method = RequestMethod.GET)

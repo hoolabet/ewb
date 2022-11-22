@@ -8,4 +8,8 @@
 		INSERT INTO chat_${url}(id,content)
 		VALUES(#{id},#{content})
 	</insert>
+	
+	<select id="lastchat" resultType="org.ewb.model.ChatVO" parameterType="java.lang.String">
+		SELECT * FROM chat_${value}
+	</select>
 </mapper>

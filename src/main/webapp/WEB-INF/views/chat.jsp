@@ -16,6 +16,15 @@
 			<div id="count_div">
 				현재 접속자 수 : <span id="cu"></span>
 			</div>
+			<c:forEach items="${lastchat}" var="lc">
+				<div class="chats">
+					<div class="ids" data-id="${lc.id}">
+						${lc.id}
+						<span class="dates">${lc.chat_date}</span>
+					</div>
+					<div class="msgs">${lc.content}</div>
+				</div>
+			</c:forEach>
 		</div>
 		<div id="chat_ctrl">
 			<input type="text" id="message" /> <input type="button" id="btnSend"
@@ -59,6 +68,7 @@
 				// 입장
 				else if(msgData.cmd == 'CMD_ENTER') {
 					/* $('#divChatData').append('<div>' + msgData.msg + '</div>'); */
+					$("#divChatData").scrollTop($("#divChatData")[0].scrollHeight);
 					$("#cu").html(msgData.count);
 				}
 				// 퇴장

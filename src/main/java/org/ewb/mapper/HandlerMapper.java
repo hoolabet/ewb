@@ -1,9 +1,13 @@
 package org.ewb.mapper;
 
+import java.util.ArrayList;
+
 import org.ewb.model.ChatVO;
 
 public interface HandlerMapper {
 
-	public void insertChat(ChatVO cvo);
+	public int insertChat(ChatVO cvo);
+
+	public ArrayList<ChatVO> lastchat(String chat_url);
 
 }
