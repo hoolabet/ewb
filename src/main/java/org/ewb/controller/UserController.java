@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.ewb.controller.SessionConfig;
 import org.ewb.model.ContentVO;
 import org.ewb.model.CriteriaVO;
 import org.ewb.model.DestinationVO;
@@ -92,6 +93,7 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> login(MemberVO mvo, HttpSession session) {
+		String userId = SessionConfig.getSessionidCheck("userId", mvo.getId());
 		session.setAttribute("userId", us.login(mvo).getId());
 		session.setAttribute("userInfo", us.login(mvo));
 		return new ResponseEntity<>(us.login(mvo),HttpStatus.OK);
@@ -99,8 +101,7 @@ public class UserController {
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ResponseEntity<String> logout(HttpSession session) {
-		session.removeAttribute("userId");
-		session.removeAttribute("userInfo");
+		session.invalidate();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
