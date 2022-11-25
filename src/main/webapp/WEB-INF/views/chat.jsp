@@ -41,6 +41,7 @@
 		webSocket.init({ url: '<c:url value="/chat" />' });	
 	});
 	
+	
 	const webSocket = {
 			init: function(param) {
 				this._url = param.url;

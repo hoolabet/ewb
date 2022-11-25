@@ -161,4 +161,11 @@ public class UserController {
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@RequestMapping(value = "/si", method = RequestMethod.GET)
+	public ResponseEntity<String> si(HttpSession session) {
+		session.invalidate();
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 }

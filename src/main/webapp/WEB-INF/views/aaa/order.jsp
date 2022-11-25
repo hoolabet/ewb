@@ -8,8 +8,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aaa ${userInfo.id} mypage</title>
-    <link rel="stylesheet" href="../resources/css/url_mypage.css">
+    <title>aaa order</title>
+    <link rel="stylesheet" href="../resources/css/url_order.css">
     <link rel="stylesheet" href="../resources/css/url_home.css">
     <link rel="stylesheet" href="../resources/color_picker/jquery.minicolors.css">
 	 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,22 +25,48 @@
 <input type='hidden' value='shopping' id='opt'>
 <input type='hidden' value='${ewbUser.id}' id='ewb_id'>
 <input type='hidden' value='${userId}' id='user_id'>
-	<div id='mypage_entry'>
+	<div id='order_entry'>
 		<div id='header'></div>
-		<div id='mypage_content'>
-			<table id='mypage_table'>
+		<div id='order_content'>
+			<div id='order_des'>
+				<select id="des_select">
+					<option value="new">새로운 배송지</option>
+				</select><br>
+				<input type='text' id='label' placeholder='배송지 이름'><br>
+				<input type='text' id='name' placeholder='이름'><br>
+				<input type='text' id='address' placeholder='주소'><br>
+				<input type='text' id='phone' placeholder='연락처'><br>
+				<input type='text' id='memo' placeholder='메모'><br>
+			</div>
+			<table id='order_table'>
+			<c:forEach var="order" items="${order}">
 				<tr>
 					<td>
-						<a href='/${url}/modifyprofile'>정보수정</a>
+					<c:choose>
+					<c:when test="${fn:length(order.pvo.tvo.fullpath) ne 0}">
+						<img src='/display?fileName=${order.pvo.tvo.fullpath}' class='p_imgs'>
+					</c:when>
+					<c:otherwise>
+						<img src='https://usagi-post.com/wp-content/uploads/2020/05/no-image-found-360x250-1.png' class='p_imgs'>
+					</c:otherwise>
+					</c:choose>
 					</td>
 					<td>
-						<a href='/${url}/cart'>장바구니</a>
+						<p>${order.pvo.pname}</p>
+						<p>수량 : <input type='text' value='${order.b_quantity}' id='quan_${order.pno}' data-price='${order.pvo.price}' readonly></p>
 					</td>
 					<td>
-						<a href='/${url}/orderlist'>주문내역</a>
+						<p>가격 : <span id='price_${order.pno}' class='prices'>${order.pvo.price*order.b_quantity}</span> 원</p>
+					</td>
+				</tr>
+			</c:forEach>
+				<tr>
+					<td colspan='4'>
+						<p><span id='f_price'></span> 원</p>
 					</td>
 				</tr>
 			</table>
+			<div id='pay_btn'>결제하기</div>
 		</div>
 		<div id='footer'></div>
 	</div>
@@ -49,6 +75,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../resources/color_picker/jquery.minicolors.js"></script>
 	<script src="../resources/js/url_chat.js"></script>
-    <script src="../resources/js/url_mypage.js"></script>
+    <script src="../resources/js/url_order.js"></script>
 </body>
 </html>

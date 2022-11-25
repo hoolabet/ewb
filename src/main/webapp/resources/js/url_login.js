@@ -35,7 +35,22 @@ function getHF() {
 		.css("color", $("#save_text").data("ftcolor"))
 		.css("border-width", $("#save_text").data("bdwidth"))
 		.css("border-color", $("#save_text").data("bdcolor"));
-
+		
+		$(".login_btn").on("click", function() {
+			const target = $(this).data("target");
+			const id = $(`#login_id_${target}`).val();
+			const pw = $(`#login_pw_${target}`).val();
+			$.getJSON("/login",{id,pw,url},function(res){
+//				location.reload();
+				location.href = `/${url}/home`;
+			})
+			.fail(function() {
+				alert("아이디와 비밀번호를 다시 확인하세요.");
+			})
+		})
+		$(".signup_btn").on("click", function() {
+			location.href = `/${url}/signup`;
+		})
 	})
 	$.getJSON("/loadcontent",{type:"footer",url},function(res){
 		$("#footer").html(res.content);

@@ -13,6 +13,7 @@ import org.ewb.model.ContentVO;
 import org.ewb.model.MemberVO;
 import org.ewb.service.EWBService;
 import org.ewb.service.HandlerService;
+import org.ewb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,9 @@ public class EWBController {
 	@Autowired
 	HandlerService hs;
 	
+	@Autowired
+	UserService us;
+	
 	@RequestMapping(value = "/ewblogin", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> ewbLogin(MemberVO mvo, HttpSession session) {
 		session.setAttribute("ewbUser", es.ewbLogin(mvo));
@@ -45,11 +49,11 @@ public class EWBController {
 	}
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void main(HttpSession session) {
+	public void main(HttpSession session,Model model) {
 		try {
 			MemberVO mvo = new MemberVO();
 			mvo = (MemberVO)session.getAttribute("ewbUser");
-			session.setAttribute("editPage", es.getPage(mvo.getId()));
+			model.addAttribute("editPage", es.getPage(mvo.getId()));
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -61,7 +65,8 @@ public class EWBController {
 		session.setAttribute("opt", opt);
 		System.out.println(opt);
 		//		String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\ewb\\src\\main\\webapp\\WEB-INF\\views";
-		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
+//		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
+		String uploadFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ewb\\WEB-INF\\views";
 		File uploadPath = new File(uploadFolder, url);
 		if(!uploadPath.exists()) {
 			System.out.println(url+" Folder created");
@@ -1380,7 +1385,7 @@ public class EWBController {
 							"					</td>\r\n"+
 							"					<td>\r\n"+
 							"						<p>${cart.pvo.pname}</p>\r\n"+
-							"						<p>수량 : <input type='button' value='🔻'  class='quan' data-pno='${cart.pno}' data-val='down'><input type='text' value='${cart.b_quantity}' id='quan_${cart.pno}' data-price='${cart.pvo.price}' data-quantity='${cart.pvo.quantity}'><input type='button' value='🔺'  class='quan' data-pno='${cart.pno}' data-val='up'></p>\r\n"+
+							"						<p>수량 : <input type='button' value='🔻'  class='quan' data-pno='${cart.pno}' data-val='down'><input type='text' value='${cart.b_quantity}' id='quan_${cart.pno}' data-price='${cart.pvo.price}' data-quantity='${cart.pvo.quantity}' readonly><input type='button' value='🔺'  class='quan' data-pno='${cart.pno}' data-val='up'></p>\r\n"+
 							"					</td>\r\n"+
 							"					<td>\r\n"+
 							"						<p>가격 : <span id='price_${cart.pno}' class='prices'>${cart.pvo.price*cart.b_quantity}</span> 원</p>\r\n"+
@@ -1474,7 +1479,7 @@ public class EWBController {
 							"					</td>\r\n"+
 							"					<td>\r\n"+
 							"						<p>${order.pvo.pname}</p>\r\n"+
-							"						<p>수량 : <input type='text' value='${order.b_quantity}' id='quan_${order.pno}' data-price='${order.pvo.price}'></p>\r\n"+
+							"						<p>수량 : <input type='text' value='${order.b_quantity}' id='quan_${order.pno}' data-price='${order.pvo.price}' readonly></p>\r\n"+
 							"					</td>\r\n"+
 							"					<td>\r\n"+
 							"						<p>가격 : <span id='price_${order.pno}' class='prices'>${order.pvo.price*order.b_quantity}</span> 원</p>\r\n"+
@@ -2679,6 +2684,14 @@ public class EWBController {
 	@RequestMapping(value = "/{url}/home", method = RequestMethod.GET)
 	public void urlHome(@PathVariable String url, HttpSession session) {
 		session.setAttribute("url", url);
+		
+		MemberVO mvo = new MemberVO();
+		mvo.setId((String)session.getAttribute("userId"));
+		mvo.setUrl(url);
+		
+		if(us.dupCheck(mvo) == null && session.getAttribute("userId") != null) {
+			session.removeAttribute("userId");
+		}
 	}
 	
 	@RequestMapping(value = "/savecontent", method = RequestMethod.POST)
@@ -2698,7 +2711,8 @@ public class EWBController {
 	@RequestMapping(value = "/deletecontent", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteContent(@RequestBody ContentVO cvo){
 		//String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\test\\src\\main\\webapp\\WEB-INF\\views";
-		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
+//		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
+		String uploadFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ewb\\WEB-INF\\views";
 		File file = new File(uploadFolder+"\\"+cvo.getUrl());
 		if( file.exists() ){ 
 

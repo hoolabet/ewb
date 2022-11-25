@@ -72,6 +72,11 @@ $("#save").on("click", function(){
 		})
 
 	})
+	.done(function() {
+		setTimeout(() => {
+			$(".buttons").toggle();
+		}, 100);
+	})
 })
 function loadFunc() {
 	$.getJSON("/loadcontent",{url,type:"home_page"},function(res){

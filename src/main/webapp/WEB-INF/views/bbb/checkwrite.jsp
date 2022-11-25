@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aaa ${userInfo.id} checkwrite</title>
+    <title>bbb ${userInfo.id} checkwrite</title>
     <link rel="stylesheet" href="../resources/css/url_checkwrite.css">
     <link rel="stylesheet" href="../resources/css/url_home.css">
     <link rel="stylesheet" href="../resources/color_picker/jquery.minicolors.css">
@@ -21,7 +21,7 @@
 </head>
 <body>
 <input type='hidden' value='${userInfo.admin}' id='admin'>
-<input type='hidden' value='aaa' id='url'>
+<input type='hidden' value='bbb' id='url'>
 <input type='hidden' value='community' id='opt'>
 <input type='hidden' value='${ewbUser.id}' id='ewb_id'>
 <input type='hidden' value='${userId}' id='user_id'>

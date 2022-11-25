@@ -17,3 +17,7 @@
 .remove_btn, #order_all_btn, #order_selected_btn{
 	cursor: pointer;
 }
+
+.p_imgs {
+	box-shadow: 2px 2px 2px 2px #cbcbcb;
+}

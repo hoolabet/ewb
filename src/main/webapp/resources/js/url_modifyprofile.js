@@ -333,3 +333,18 @@ $("#des_select").on("change", function() {
 	})
 
 })
+
+$("#user_delete_btn").on("click", function() {
+	if(prompt(`계정을 삭제하시겠습니까? \n"삭제한다/${userId}"`) ==`삭제한다/${userId}`){
+		$.ajax({
+			type: "delete",
+			url: "/banuser",
+			data: JSON.stringify({url,id:userId}),
+			contentType: "application/json; charset=utf-8",
+			success: function() {
+				alert("삭제되었습니다.");
+				location.href = `/${url}/home`;
+			}
+		})
+	}
+})

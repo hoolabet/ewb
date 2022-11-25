@@ -8,8 +8,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aaa login</title>
-    <link rel="stylesheet" href="../resources/css/url_login.css">
+    <title>bbb home</title>
+    <link rel="stylesheet" href="../resources/css/url_signup.css">
     <link rel="stylesheet" href="../resources/css/url_home.css">
     <link rel="stylesheet" href="../resources/color_picker/jquery.minicolors.css">
 	 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,53 +20,67 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </head>
 <body>
-		<input type='hidden' value='${userId}' id='user_id'>
-		<input type='hidden' value='aaa' id='url'>
-		<input type='hidden' value='shopping' id='opt'>
+<input type='hidden' value='bbb' id='url'>
 		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>
-    <div id="btns">
+<div id="btns">
         <input type="button" value="저장" id="save">
         <input type="button" value="불러오기" id="load">
     </div>
-    <div id="login_entry">
-        <div id="header">
-            <div>
-                <input type="hidden" id="header_style">
-                <input type="hidden" id="save_margin">
-                <input type="hidden" id="save_button">
-                <input type="hidden" id="save_text">
+	 <div id="reg_info">
+    	<input type="hidden" id="reg_pw">
+    </div>
+    <div id="signup_entry">
+        <div id="header"></div>
+        <div id='signup_content'>
+			<input type='hidden' id='signup_style'>
+            <div id='sign_div'>
+                <form id='sign_form'>
+                    <table id='sign_table'>
+                        <tr>
+                            <td style='width:150px;'><span class='modi_span' id='id_span'>ID</span></td>
+                            <td style='width:650px;'><input class='modi_input input' type='text' name='id' id='id' required
+                                    data-able='f'><input type='button' value='중복확인' id='dup_check'><span
+                                    class='id check_span'></span></td>
+                        </tr>
+                        <tr>
+                            <td><span class='modi_span' id='pw_span'>PASSWORD</span></td>
+                            <td><input class='modi_input input' type='password' name='password' id='pw' required
+                                    data-able='f'><span class='pw check_span'></span></td>
+                        </tr>
+                        <tr>
+                            <td><span class='modi_span' id='pwc_span'>PASSWORD CHECK</span></td>
+                            <td><input class='modi_input input' type='password' id='pw_check' required><span
+                                    class='pw_check check_span'></span></td>
+                        </tr>
+                        <tr id='before'>
+                            <td><img id='sign_img'
+                                    src='https://icons-for-free.com/download-icon-circle+more+plus+icon-1320183136549593898_512.png'>
+                            </td>
+                            <td><input type='submit' value='가입하기' id='sign_submit'></td>
+                        </tr>
+                    </table>
+                </form>
             </div>
         </div>
-        <div id="login_content">
-			<input type='hidden' id='login_style'>
-            <div id="login_box">
-                <table id="login_table">
-                    <tr>
-                        <td>
-                            <span class="modi_span" data-target="id">ID</span>
-                        </td>
-                        <td>
-                            <input type="text" id="input_id" class="input">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="modi_span" data-target="pw">PASSWORD</span>
-                        </td>
-                        <td>
-                            <input type="password" id="input_pw" class="input">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align:center">
-                            <input type="button" value="Log In" id="login_btn"><br>
-                            <input type="button" value="Sign Up" id="signup_btn">
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>        <div id="footer"><input type="hidden" id="footer_style"></div>
-        
+        <div id="footer"></div>
+    </div>
+    <div id='sign_element'>
+        <div class='sign_element' id='sign_name'>이름</div>
+        <div class='sign_element' id='sign_mail'>이메일</div>
+        <div class='sign_element' id='sign_phone'>전화번호</div>
+        <div class='sign_element' id='sign_birth'>생년월일</div>
+    </div>
+    <div id='modify_span'>
+        <div class='modify_span' id='ss_modify'>수정</div>
+    </div>
+    <div id='modify_input'>
+        <div class='modify_input' id='reg'>정규식 설정
+            <div class='reg' id='reg_free'>모두 허용</div>
+            <div class='reg' id='reg_str'>문자</div>
+            <div class='reg' id='reg_num'>숫자</div>
+            <div class='reg' id='reg_spe'>특수문자</div>
+        </div>
+        <div class='modify_input' id='len'>글자 수 설정</div>
     </div>
 	<div id="controller">
         <div id="target_name"></div>
@@ -116,6 +130,6 @@
         <div class="close_btn" style="top: 0px; right: 0px">✖</div>
     </div>    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../resources/color_picker/jquery.minicolors.js"></script>
-    <script src="../resources/js/url_login.js"></script>
+    <script src="../resources/js/url_signup.js"></script>
 </body>
 </html>
