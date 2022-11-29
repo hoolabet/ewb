@@ -54,7 +54,7 @@ public class BoardController {
 	@RequestMapping(value = "/{url}/checkwrite", method = RequestMethod.GET)
 	public void urlCheckWrite(CriteriaVO cri, Model model, HttpSession session) {
 		cri.setAmount(10);
-		cri.setArray((String)session.getAttribute("userId"));
+		cri.setArray((String)session.getAttribute(cri.getUrl()+"_userId"));
 		try {
 			model.addAttribute("cw",bs.checkWrite(cri));
 			model.addAttribute("paging", new PageVO(cri, bs.checkWriteMaxNumSearch(cri)));
@@ -68,7 +68,7 @@ public class BoardController {
 	@RequestMapping(value = "/{url}/checkreply", method = RequestMethod.GET)
 	public void urlCheckReply(CriteriaVO cri, Model model, HttpSession session) {
 		cri.setAmount(10);
-		cri.setArray((String)session.getAttribute("userId"));
+		cri.setArray((String)session.getAttribute(cri.getUrl()+"_userId"));
 		try {
 			model.addAttribute("cr",bs.checkReply(cri));
 			model.addAttribute("paging", new PageVO(cri, bs.checkReplyMaxNumSearch(cri)));

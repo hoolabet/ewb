@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </head>
 <body>
-		<input type='hidden' value='${userId}' id='user_id'>
+		<input type='hidden' value='${aaa_userId}' id='user_id'>
 		<input type='hidden' value='aaa' id='url'>
 		<input type='hidden' value='shopping' id='opt'>
 		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>

@@ -24,7 +24,7 @@
 <input type='hidden' value='aaa' id='url'>
 <input type='hidden' value='shopping' id='opt'>
 <input type='hidden' value='${ewbUser.id}' id='ewb_id'>
-<input type='hidden' value='${userId}' id='user_id'>
+<input type='hidden' value='${aaa_userId}' id='user_id'>
 	<div id='order_entry'>
 		<div id='header'></div>
 		<div id='order_content'>
@@ -71,7 +71,7 @@
 		<div id='footer'></div>
 	</div>
 	<div id="chat_btn">💬</div>
-	<iframe id="if"	width="400" height="500" src="http://localhost:8080/chat?chat_url=${url}&id=${userId}"></iframe>
+	<iframe id="if"	width="400" height="500" src="http://localhost:8080/chat?chat_url=${url}&id=${aaa_userId}"></iframe>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../resources/color_picker/jquery.minicolors.js"></script>
 	<script src="../resources/js/url_chat.js"></script>

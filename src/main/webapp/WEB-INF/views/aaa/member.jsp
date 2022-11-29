@@ -22,7 +22,7 @@
 <input type='hidden' value='${userInfo.admin}' id='admin'>
 <input type='hidden' value='aaa' id='url'>
 <input type='hidden' value='shopping' id='opt'>
-		<input type='hidden' value='${ewbUser.id}' id='ewb_id'><input type='hidden' value='${userId}' id='user_id'>
+		<input type='hidden' value='${ewbUser.id}' id='ewb_id'><input type='hidden' value='${aaa_userId}' id='user_id'>
 	<div id='member_entry'>
 		<div id='header'></div>
 		<div id='member_content'>

@@ -21,7 +21,7 @@ public class CartController {
 	
 	@RequestMapping(value = "/{url}/cart", method = RequestMethod.GET)
 	public void urlCart(CartVO cvo, Model model, HttpSession session) {
-		cvo.setId((String)session.getAttribute("userId"));
+		cvo.setId((String)session.getAttribute(cvo.getUrl()+"_userId"));
 		model.addAttribute("cart", cs.loadCart(cvo));
 	}
 	

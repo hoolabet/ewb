@@ -65,8 +65,8 @@ public class EWBController {
 		session.setAttribute("opt", opt);
 		System.out.println(opt);
 		//		String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\ewb\\src\\main\\webapp\\WEB-INF\\views";
-//		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
-		String uploadFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ewb\\WEB-INF\\views";
+		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
+//		String uploadFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ewb\\WEB-INF\\views";
 		File uploadPath = new File(uploadFolder, url);
 		if(!uploadPath.exists()) {
 			System.out.println(url+" Folder created");
@@ -144,7 +144,7 @@ public class EWBController {
 						"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
-						"		<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+						"		<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 						"		<input type='hidden' value='"+url+"' id='url'>\r\n"+
 						"		<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
@@ -382,7 +382,7 @@ public class EWBController {
 						"    </div>"+
 						"    <input type='file' id='upload_input' style='display:none'>\r\n" + 
 						"	<div id=\"chat_btn\">💬</div>\r\n" + 
-						"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+						"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 						"	<script\r\n" + 
 						"		src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 						"	<script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
@@ -425,7 +425,7 @@ public class EWBController {
 						"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 						"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>"+
-						"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+						"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 						"	<div id='member_entry'>\r\n"+
 						"		<div id='header'></div>\r\n"+
 						"		<div id='member_content'>\r\n"+
@@ -667,7 +667,7 @@ public class EWBController {
 						"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
 						"</head>\r\n" + 
 						"<body>\r\n" + 
-						"		<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+						"		<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 						"		<input type='hidden' value='"+url+"' id='url'>\r\n"+
 						"		<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 						"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
@@ -803,7 +803,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='product_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_content'>\r\n"+
@@ -877,7 +877,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"	<script\r\n" + 
 							"		src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"	<script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
@@ -1023,7 +1023,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='product_write_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='product_write_content'>\r\n"+
@@ -1093,7 +1093,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" +
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1134,7 +1134,7 @@ public class EWBController {
 							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${detail.quantity}' id='product_quantity'>\r\n"+
 							"<input type='hidden' value='${detail.pno}' id='product_pno'>\r\n"+
@@ -1203,7 +1203,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1249,7 +1249,7 @@ public class EWBController {
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
 							"<input type='hidden' value='${modify.pno}' id='pno'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"<input type='hidden' value='${modify.tvo.fullpath}' id='thumbpath'>\r\n"+
 							"	<div id='modifyproduct_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1320,7 +1320,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" +
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1363,7 +1363,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='cart_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='cart_content'>\r\n"+
@@ -1407,7 +1407,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1450,7 +1450,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='order_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='order_content'>\r\n"+
@@ -1497,7 +1497,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1540,7 +1540,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='orderlist_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='orderlist_content'>\r\n"+
@@ -1581,7 +1581,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1624,7 +1624,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='ordermanagement_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='ordermanagement_content'>\r\n"+
@@ -1661,7 +1661,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1704,7 +1704,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='mypage_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='mypage_content'>\r\n"+
@@ -1725,7 +1725,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1768,7 +1768,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='modifyprofile_entry'>\r\n"+
 							"		<div id=\"reg_info\"></div>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -1934,7 +1934,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -1978,7 +1978,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='board_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='board_content'>\r\n"+
@@ -2035,7 +2035,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -2135,7 +2135,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='boardwrite_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='boardwrite_content'>\r\n"+
@@ -2198,7 +2198,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -2242,7 +2242,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"<input type='hidden' value='${userInfo.status}' id='status'>\r\n"+
 							"	<div id='boarddetail_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
@@ -2275,7 +2275,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -2319,7 +2319,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='modifyboard_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='modifyboard_content'>\r\n"+
@@ -2383,7 +2383,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -2426,7 +2426,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='mypage_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='mypage_content'>\r\n"+
@@ -2447,7 +2447,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -2490,7 +2490,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='checkwrite_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='checkwrite_content'>\r\n"+
@@ -2542,7 +2542,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -2585,7 +2585,7 @@ public class EWBController {
 							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
 							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
 							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${userId}' id='user_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
 							"	<div id='checkreply_entry'>\r\n"+
 							"		<div id='header'></div>\r\n"+
 							"		<div id='checkreply_content'>\r\n"+
@@ -2635,7 +2635,7 @@ public class EWBController {
 							"		<div id='footer'></div>\r\n"+
 							"	</div>\r\n"+
 							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${userId}\"></iframe>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
 							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
 							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
 							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
@@ -2663,7 +2663,7 @@ public class EWBController {
 
 	@RequestMapping(value = "/management", method = RequestMethod.GET)
 	public void management(HttpSession session) {
-		session.setAttribute("userId", "");
+		
 	}
 	
 	@RequestMapping(value = "/chat", method = RequestMethod.GET)
@@ -2686,11 +2686,11 @@ public class EWBController {
 		session.setAttribute("url", url);
 		
 		MemberVO mvo = new MemberVO();
-		mvo.setId((String)session.getAttribute("userId"));
+		mvo.setId((String)session.getAttribute(url+"_userId"));
 		mvo.setUrl(url);
 		
-		if(us.dupCheck(mvo) == null && session.getAttribute("userId") != null) {
-			session.removeAttribute("userId");
+		if(us.dupCheck(mvo) == null && session.getAttribute(url+"_userId") != null) {
+			session.removeAttribute(url+"_userId");
 		}
 	}
 	
@@ -2711,8 +2711,8 @@ public class EWBController {
 	@RequestMapping(value = "/deletecontent", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteContent(@RequestBody ContentVO cvo){
 		//String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\test\\src\\main\\webapp\\WEB-INF\\views";
-//		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
-		String uploadFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ewb\\WEB-INF\\views";
+		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
+//		String uploadFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ewb\\WEB-INF\\views";
 		File file = new File(uploadFolder+"\\"+cvo.getUrl());
 		if( file.exists() ){ 
 

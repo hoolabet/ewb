@@ -19,7 +19,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </head>
 <body>
-		<input type='hidden' value='${userId}' id='user_id'>
+		<input type='hidden' value='${aaa_userId}' id='user_id'>
 		<input type='hidden' value='aaa' id='url'>
 		<input type='hidden' value='shopping' id='opt'>
 		<input type='hidden' value='${ewbUser.id}' id='ewb_id'>
@@ -256,7 +256,7 @@
         <div class="close_btn">✖</div>
     </div>    <input type='file' id='upload_input' style='display:none'>
 	<div id="chat_btn">💬</div>
-	<iframe id="if"	width="400" height="500" src="http://localhost:8080/chat?chat_url=${url}&id=${userId}"></iframe>
+	<iframe id="if"	width="400" height="500" src="http://localhost:8080/chat?chat_url=${url}&id=${aaa_userId}"></iframe>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="../resources/color_picker/jquery.minicolors.js"></script>

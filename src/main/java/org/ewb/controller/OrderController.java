@@ -31,14 +31,14 @@ public class OrderController {
 	
 	@RequestMapping(value = "/{url}/order", method = RequestMethod.GET)
 	public void urlOrder(CartVO cvo, Model model, HttpSession session) {
-		cvo.setId((String)session.getAttribute("userId"));
+		cvo.setId((String)session.getAttribute(cvo.getUrl()+"_userId"));
 		cvo.setDoOrder(true);
 		model.addAttribute("order", cs.loadCart(cvo));
 	}
 	
 	@RequestMapping(value = "/{url}/orderlist", method = RequestMethod.GET)
 	public void urlOrderList(CriteriaVO cri, Model model, HttpSession session) {
-		cri.setSearch((String)session.getAttribute("userId"));
+		cri.setSearch((String)session.getAttribute(cri.getUrl()+"_userId"));
 		cri.setAmount(5);
 		try {
 			model.addAttribute("orderlist",os.orderlist(cri));

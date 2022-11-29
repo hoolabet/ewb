@@ -93,8 +93,8 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> login(MemberVO mvo, HttpSession session) {
-		String userId = SessionConfig.getSessionidCheck("userId", mvo.getId());
-		session.setAttribute("userId", us.login(mvo).getId());
+		String userId = SessionConfig.getSessionidCheck(mvo.getUrl()+"_userId", mvo.getId());
+		session.setAttribute(mvo.getUrl()+"_userId", us.login(mvo).getId());
 		session.setAttribute("userInfo", us.login(mvo));
 		return new ResponseEntity<>(us.login(mvo),HttpStatus.OK);
 	}
