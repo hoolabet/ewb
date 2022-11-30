@@ -79,6 +79,20 @@ public class BoardController {
 		}
 	}
 	
+	@RequestMapping(value = "/{url}/boardmanagement", method = RequestMethod.GET)
+	public void urlBoardManagement(CriteriaVO cri, Model model, HttpSession session) {
+		cri.setAmount(10);
+		cri.setArray((String)session.getAttribute(cri.getUrl()+"_userId"));
+		try {
+			model.addAttribute("bm",bs.boardlist(cri));
+			model.addAttribute("paging", new PageVO(cri, bs.boardlistMaxNumSearch(cri)));
+			session.setAttribute("criValue", new PageVO(cri, bs.boardlistMaxNumSearch(cri)));
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
 	@RequestMapping(value = "/writeboard", method = RequestMethod.POST)
 	public ResponseEntity<String> writeBoard(@RequestBody BoardVO bvo) {
 		int result = bs.writeBoard(bvo);

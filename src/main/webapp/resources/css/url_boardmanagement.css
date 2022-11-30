@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+#boardmanagement_content{
+    width: 100%;
+    background-color: rgb(236, 228, 228);
+    margin: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#boardmanagement_table td{
+	border: 1px solid black;
+	padding: 20px;
+}
+
+#boardmanagement_table {
+	border-collapse: collapse;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+#paging {
+	margin-bottom: 50px;
+}
+
+.remove_btn {
+	cursor: pointer;
+}

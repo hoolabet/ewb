@@ -35,19 +35,20 @@ public class EWBController {
 	@Autowired
 	UserService us;
 	
+	// ewb 서비스 로그인
 	@RequestMapping(value = "/ewblogin", method = RequestMethod.GET)
 	public ResponseEntity<MemberVO> ewbLogin(MemberVO mvo, HttpSession session) {
 		session.setAttribute("ewbUser", es.ewbLogin(mvo));
 		return new ResponseEntity<>(es.ewbLogin(mvo),HttpStatus.OK);
 	}
-
+	// ewb 서비스 회원가입
 	@RequestMapping(value = "/ewbsignup", method = RequestMethod.POST)
 	public ResponseEntity<String> ewbSignUp(@RequestBody MemberVO mvo) {
 		int result = es.ewbSignUp(mvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+	// ewb 메인화면
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public void main(HttpSession session,Model model) {
 		try {
@@ -58,15 +59,17 @@ public class EWBController {
 			// TODO: handle exception
 		}
 	}
-
+	// 새로운 페이지 생성 id: ewb 아이디 , url: 설정한 주소 이름 , opt: 쇼핑몰 or 커뮤니티  
 	@RequestMapping(value = "/newpage", method = RequestMethod.GET)
 	public void newPage(String id,String url, String opt, HttpSession session) {
 		session.setAttribute("url", url);
 		session.setAttribute("opt", opt);
 		System.out.println(opt);
+		// 파일 생성 경로
 		//		String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\ewb\\src\\main\\webapp\\WEB-INF\\views";
 		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
 //		String uploadFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ewb\\WEB-INF\\views";
+		// 파일 생성 경로에 url 이름의 폴더 생성
 		File uploadPath = new File(uploadFolder, url);
 		if(!uploadPath.exists()) {
 			System.out.println(url+" Folder created");
@@ -74,6 +77,7 @@ public class EWBController {
 		}else {
 			System.out.println(url+" Folder already exists");
 		}
+		// 파일명 선언
 		File home = new File(uploadFolder+"\\"+url+"\\home.jsp");
 		File member = new File(uploadFolder+"\\"+url+"\\member.jsp");
 		File signup = new File(uploadFolder+"\\"+url+"\\signup.jsp");
@@ -94,8 +98,11 @@ public class EWBController {
 		File modifyboard = new File(uploadFolder+"\\"+url+"\\modifyboard.jsp");
 		File checkwrite = new File(uploadFolder+"\\"+url+"\\checkwrite.jsp");
 		File checkreply = new File(uploadFolder+"\\"+url+"\\checkreply.jsp");
+		File boardmanagement = new File(uploadFolder+"\\"+url+"\\boardmanagement.jsp");
 		try {
+			// 선언한 파일명을 만드는데 성공하면 true
 			if(home.createNewFile()) {
+				// table 생성
 				String create_member_table = "create table member_"+url+" ("
 						+ "id varchar(100) primary key, "
 						+ "pw varchar(100) not null,"
@@ -119,8 +126,10 @@ public class EWBController {
 				MemberVO mvo = new MemberVO();
 				mvo.setId(url);
 				mvo.setPw(url);
+				// 초기 운영자 id 생성
 				es.createFirstAccount(mvo);
 				System.out.println("home File created");
+				// 생성된 파일에 내용 쓰기
 				FileWriter fw = new FileWriter(home);
 				BufferedWriter bw = new BufferedWriter(fw);
 				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
@@ -772,6 +781,7 @@ public class EWBController {
 			}else {
 				System.out.println("login File already exists");
 			}
+			// 페이지 생성 시 쇼핑몰 옵션 선택
 			if(opt.equals("shopping")) {
 				if(product.createNewFile()) {
 					System.out.println("product File created");
@@ -1633,8 +1643,12 @@ public class EWBController {
 							"				<c:forEach items=\"${orderlist}\" var=\"orderlist\">\r\n"+
 							"					<tr id=\"payno_${orderlist.payno}\">\r\n" + 
 							"						<td class=\"orderlist_td\" data-payno=\"${orderlist.payno}\">\r\n" + 
-							"							${orderlist.price}원<br>\r\n" + 
-							"							${orderlist.payment_date}\r\n" + 
+							"							결제 아이디 : ${orderlist.id }<br>\r\n" + 
+							"							총 결제 금액 : ${orderlist.price}원<br>\r\n" + 
+							"							받는 사람 : ${orderlist.name}<br>\r\n" + 
+							"							배송주소 : ${orderlist.address}<br>\r\n" + 
+							"							메모 : ${orderlist.memo}<br>\r\n" + 
+							"							결제완료 시간 : ${orderlist.payment_date}\r\n" + 
 							"						</td>\r\n" +
 							"					</tr>\r\n"+
 							"				</c:forEach>\r\n"+
@@ -1688,7 +1702,7 @@ public class EWBController {
 							"    <meta charset=\"UTF-8\">\r\n" + 
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" ${userInfo.id} mypage</title>\r\n" + 
+							"    <title>"+url+" ${"+url+"_userId} mypage</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
@@ -1752,7 +1766,7 @@ public class EWBController {
 							"    <meta charset=\"UTF-8\">\r\n" + 
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" ${userInfo.id} modify profile</title>\r\n" + 
+							"    <title>"+url+" ${"+url+"_userId} modify profile</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyprofile.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
@@ -2410,7 +2424,7 @@ public class EWBController {
 							"    <meta charset=\"UTF-8\">\r\n" + 
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" ${userInfo.id} mypage</title>\r\n" + 
+							"    <title>"+url+" ${"+url+"_userId} mypage</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
@@ -2474,7 +2488,7 @@ public class EWBController {
 							"    <meta charset=\"UTF-8\">\r\n" + 
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" ${userInfo.id} checkwrite</title>\r\n" + 
+							"    <title>"+url+" ${"+url+"_userId} checkwrite</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_checkwrite.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
@@ -2569,7 +2583,7 @@ public class EWBController {
 							"    <meta charset=\"UTF-8\">\r\n" + 
 							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" ${userInfo.id} checkreply</title>\r\n" + 
+							"    <title>"+url+" ${"+url+"_userId} checkreply</title>\r\n" + 
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_checkreply.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
 							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
@@ -2647,6 +2661,103 @@ public class EWBController {
 				}else {
 					System.out.println("checkreply File already exists");
 				}
+				
+				if(boardmanagement.createNewFile()) {
+					System.out.println("boardmanagement File created");
+					FileWriter fw = new FileWriter(boardmanagement);
+					BufferedWriter bw = new BufferedWriter(fw);
+					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+							"    pageEncoding=\"UTF-8\"%>\r\n" + 
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+							"<!DOCTYPE html>\r\n" + 
+							"<html>\r\n" + 
+							"<head>\r\n" + 
+							"    <meta charset=\"UTF-8\">\r\n" + 
+							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+							"    <title>"+url+" ${"+url+"_userId} boardmanagement</title>\r\n" + 
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_boardmanagement.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+							"    <link\r\n" + 
+							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+							"        rel=\"stylesheet\">\r\n"+
+							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
+							"</head>\r\n" + 
+							"<body>\r\n" + 
+							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
+							"	<div id='boardmanagement_entry'>\r\n"+
+							"		<div id='header'></div>\r\n"+
+							"		<div id='boardmanagement_content'>\r\n"+
+							"			<table id=\"boardmanagement_table\">\r\n" + 
+							"				<tr>\r\n" + 
+							"					<td>게시물 번호</td>\r\n" + 
+							"					<td>제목</td>\r\n" + 
+							"					<td>작성일</td>\r\n" + 
+							"					<td></td>\r\n"+
+							"				</tr>\r\n" + 
+							"				<c:forEach items=\"${bm}\" var=\"bm\">\r\n" + 
+							"					<tr>\r\n" + 
+							"						<td>${bm.bno}</td>\r\n" + 
+							"						<td><a href=\"/${url}/boarddetail?bno=${bm.bno}\">${bm.bname}</a></td>\r\n" + 
+							"						<td>${bm.reg_date}</td>\r\n" +
+							"						<td class=\"remove_btn\" data-bno=\"${bm.bno}\">❌</td>\r\n" +
+							"					</tr>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"			</table>\r\n" + 
+							"			<form action=\"/${url}/boardmanagement\" id=\"search_form\">\r\n" + 
+							"				<input type=\"hidden\" name=\"pageNum\" value=\"${paging.cri.pageNum}\">\r\n" + 
+							"				<input type=\"hidden\" name=\"amount\" value=\"${paging.cri.amount}\">\r\n" + 
+							"				<select name=\"type\">\r\n" + 
+							"					<option value=\"t\">제목</option>\r\n" + 
+							"					<option value=\"c\">내용</option>\r\n" + 
+							"					<option value=\"tc\">제목+내용</option>\r\n" + 
+							"				</select> <input type=\"text\" name=\"search\" value=\"${paging.cri.search}\">\r\n" + 
+							"				<input type=\"submit\" value=\"찾기\">\r\n" + 
+							"			</form>\r\n" + 
+							"			<br> <br>\r\n" + 
+							"			<div id='paging'>\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/boardmanagement?pageNum=1&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">처음으로</a>\r\n" + 
+							"				<c:if test=\"${paging.prev}\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/boardmanagement?pageNum=${paging.endPage-10}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">이전</a>\r\n" + 
+							"				</c:if>\r\n" + 
+							"				<c:forEach begin=\"${paging.startPage}\" end=\"${paging.endPage}\"\r\n" + 
+							"					var=\"num\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/boardmanagement?pageNum=${num}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">${num}</a>\r\n" + 
+							"				</c:forEach>\r\n" + 
+							"				<c:if test=\"${paging.next}\">\r\n" + 
+							"					<a\r\n" + 
+							"						href=\"/${url}/boardmanagement?pageNum=${paging.endPage+1}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">다음</a>\r\n" + 
+							"				</c:if>\r\n" + 
+							"				<a\r\n" + 
+							"					href=\"/${url}/boardmanagement?pageNum=${paging.realEnd}&amount=${paging.cri.amount}&type=${paging.cri.type}&search=${paging.cri.search}\">맨끝으로</a>\r\n" + 
+							"			</div>\r\n"+
+							"		</div>\r\n"+
+							"		<div id='footer'></div>\r\n"+
+							"	</div>\r\n"+
+							"	<div id=\"chat_btn\">💬</div>\r\n" + 
+							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
+							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
+							"    <script src=\"../resources/js/url_boardmanagement.js\"></script>\r\n"+
+							"</body>\r\n"+
+							"</html>");
+					bw.close();
+
+				}else {
+					System.out.println("boardmanagement File already exists");
+				}
 			}
 
 		}catch (Exception e) {
@@ -2654,18 +2765,18 @@ public class EWBController {
 			e.printStackTrace();
 		}
 	}
-
+	// ewb main에서 생성되어있는 페이지를 불러오는 과정
 	@RequestMapping(value = "/loadpage", method = RequestMethod.GET)
 	public void loadPage(HttpSession session, String url, String opt) {
 		session.setAttribute("url",url);
 		session.setAttribute("opt",opt);
 	}
-
+	// management 페이지
 	@RequestMapping(value = "/management", method = RequestMethod.GET)
 	public void management(HttpSession session) {
 		
 	}
-	
+	// chat 페이지
 	@RequestMapping(value = "/chat", method = RequestMethod.GET)
 	public String view_chat(String id ,String chat_url,HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws Exception {
 		session.setAttribute("url", chat_url);
@@ -2673,14 +2784,14 @@ public class EWBController {
 		model.addAttribute("lastchat",hs.lastchat(chat_url));
 		return "/chat";
 	}
-	
+	// 채팅 보낼 때 DB에 저장
 	@RequestMapping(value = "/insertchat", method = RequestMethod.POST)
 	public ResponseEntity<String> insertChat(@RequestBody ChatVO cvo){
 		int result = hs.insertChat(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+	// url home 페이지
 	@RequestMapping(value = "/{url}/home", method = RequestMethod.GET)
 	public void urlHome(@PathVariable String url, HttpSession session) {
 		session.setAttribute("url", url);
@@ -2693,27 +2804,28 @@ public class EWBController {
 			session.removeAttribute(url+"_userId");
 		}
 	}
-	
+	// 페이지 내용을 DB에 저장
 	@RequestMapping(value = "/savecontent", method = RequestMethod.POST)
 	public ResponseEntity<String> saveContent(@RequestBody ContentVO cvo){
 		int result = es.saveContent(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+	// 페이지 수정 내용을 DB에 저장
 	@RequestMapping(value = "/modifycontent", method = RequestMethod.PUT)
 	public ResponseEntity<String> modifyContent(@RequestBody ContentVO cvo){
 		int result = es.modifyContent(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+	// 페이지 삭제
 	@RequestMapping(value = "/deletecontent", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteContent(@RequestBody ContentVO cvo){
 		//String uploadFolder = "C:\\Users\\master\\Desktop\\sp\\test\\src\\main\\webapp\\WEB-INF\\views";
 		String uploadFolder = "D:\\01-STUDY\\workspace\\ewb\\src\\main\\webapp\\WEB-INF\\views";
 //		String uploadFolder = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ewb\\WEB-INF\\views";
 		File file = new File(uploadFolder+"\\"+cvo.getUrl());
+		// 해당 경로에 파일이 있으면 전부 삭제
 		if( file.exists() ){ 
 
 			if(file.isDirectory()){ 
@@ -2739,6 +2851,7 @@ public class EWBController {
 			System.out.println("jsp파일이 존재하지 않습니다.");
 		}
 		try {
+			// DB table 삭제
 			String target_mem = "member_"+cvo.getUrl();
 			String target_chat = "chat_"+cvo.getUrl();
 			String target_pro = "product_"+cvo.getUrl();
@@ -2776,12 +2889,12 @@ public class EWBController {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-
+		// DB에 저장된 페이지 수정 내용 삭제
 		int result = es.deleteContent(cvo);
 		return result==1? new ResponseEntity<>("success",HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+	// DB에 저장된 페이지 수정 내용 불러오기
 	@RequestMapping(value = "/loadcontent", method = RequestMethod.GET)
 	public ResponseEntity<ContentVO> loadContent(ContentVO cvo){
 
