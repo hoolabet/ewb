@@ -28,3 +28,13 @@
 	text-align: center;
 }
 
+#user_delete_btn {
+	cursor: pointer;
+	padding: 30px;
+	border: 1px solid black;
+}
+
+#user_delete_btn:hover {
+	background-color: black;
+	color: white;
+}

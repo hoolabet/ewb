@@ -781,6 +781,288 @@ public class EWBController {
 			}else {
 				System.out.println("login File already exists");
 			}
+			
+			if(mypage.createNewFile()) {
+				System.out.println("mypage File created");
+				FileWriter fw = new FileWriter(mypage);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+						"    pageEncoding=\"UTF-8\"%>\r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+						"<!DOCTYPE html>\r\n" + 
+						"<html>\r\n" + 
+						"<head>\r\n" + 
+						"    <meta charset=\"UTF-8\">\r\n" + 
+						"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+						"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+						"    <title>"+url+" ${"+url+"_userId} mypage</title>\r\n" + 
+						"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
+						"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+						"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+						"    <link\r\n" + 
+						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+						"        rel=\"stylesheet\">\r\n"+
+						"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
+						"</head>\r\n" + 
+						"<body>\r\n" + 
+						"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+						"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+						"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+						"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+						"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
+						"	<div id='mypage_entry'>\r\n"+
+						"		<div id='header'></div>\r\n"+
+						"		<div id='mypage_content'>\r\n"+
+						"			<table id='mypage_table'>\r\n"+
+						"				<tr>\r\n"+
+						"					<td>\r\n"+
+						"						<a href='/${url}/modifyprofile'>정보수정</a>\r\n"+
+						"					</td>\r\n"+
+						"					<td class=\"prod\">\r\n"+
+						"						<a href='/${url}/cart'>장바구니</a>\r\n"+
+						"					</td>\r\n"+
+						"					<td class=\"prod\">\r\n"+
+						"						<a href='/${url}/orderlist'>주문내역</a>\r\n"+
+						"					</td>\r\n"+
+						"					<td class=\"comm\">\r\n"+
+						"						<a href='/${url}/checkwrite'>작성 글 보기</a>\r\n"+
+						"					</td>\r\n"+
+						"					<td class=\"comm\">\r\n"+
+						"						<a href='/${url}/checkreply'>작성 댓글 보기</a>\r\n"+
+						"					</td>\r\n"+
+						"				</tr>\r\n"+
+						"			</table>\r\n"+
+						"		</div>\r\n"+
+						"		<div id='footer'></div>\r\n"+
+						"	</div>\r\n"+
+						"	<div id=\"chat_btn\">💬</div>\r\n" + 
+						"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
+						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+						"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
+						"    <script src=\"../resources/js/url_mypage.js\"></script>\r\n"+
+						"</body>\r\n"+
+						"</html>");
+				bw.close();
+
+			}else {
+				System.out.println("mypage File already exists");
+			}
+			
+			if(modifyprofile.createNewFile()) {
+				System.out.println("modifyprofile File created");
+				FileWriter fw = new FileWriter(modifyprofile);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
+						"    pageEncoding=\"UTF-8\"%>\r\n" + 
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
+						"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
+						"<!DOCTYPE html>\r\n" + 
+						"<html>\r\n" + 
+						"<head>\r\n" + 
+						"    <meta charset=\"UTF-8\">\r\n" + 
+						"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
+						"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
+						"    <title>"+url+" ${"+url+"_userId} modify profile</title>\r\n" + 
+						"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyprofile.css\">\r\n" +
+						"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
+						"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
+						"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
+						"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
+						"    <link\r\n" + 
+						"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
+						"        rel=\"stylesheet\">\r\n"+
+						"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
+						"</head>\r\n" + 
+						"<body>\r\n" + 
+						"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
+						"<input type='hidden' value='"+url+"' id='url'>\r\n"+
+						"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
+						"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
+						"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
+						"	<div id='modifyprofile_entry'>\r\n"+
+						"		<div id=\"reg_info\"></div>\r\n"+
+						"		<div id='header'></div>\r\n"+
+						"		<div id='modifyprofile_content'>\r\n"+
+						"			<div id=\"modifyprofile_div\">\r\n" + 
+						"				<div class=\"modifyprofile_div\">\r\n" + 
+						"					<table>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<label>비밀번호 수정</label>\r\n" + 
+						"							</td>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"password\" id=\"pw\"><span style=\"position:absolute\" class=\"pw\"></span>\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<label>비밀번호 수정 확인</label>\r\n" + 
+						"							</td>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"password\" id=\"pwc\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+						"								<input type=\"button\" value=\"비밀번호 수정\" id=\"pw_btn\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"					</table>\r\n" + 
+						"				</div>\r\n" + 
+						"				<div class=\"modifyprofile_div\">\r\n" + 
+						"					<table>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<label>이름 수정</label>\r\n" + 
+						"							</td>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"text\" id=\"name\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+						"								<input type=\"button\" value=\"이름 수정\" id=\"name_btn\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"					</table>\r\n" + 
+						"				</div>\r\n" + 
+						"				<div class=\"modifyprofile_div\">\r\n" + 
+						"					<table>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<label>전화번호 수정</label>\r\n" + 
+						"							</td>\r\n" + 
+						"							<td>\r\n" + 
+						"								<select id=\"f_phone\">\r\n" + 
+						"									<option value=\"010\">010</option>\r\n" + 
+						"									<option value=\"011\">011</option>\r\n" + 
+						"									<option value=\"016\">016</option>\r\n" + 
+						"									<option value=\"017\">017</option>\r\n" + 
+						"									<option value=\"018\">018</option>\r\n" + 
+						"									<option value=\"019\">019</option>\r\n" + 
+						"								</select>\r\n" + 
+						"								<input type=\"text\" id=\"phone\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+						"								<input type=\"button\" value=\"번호 수정\" id=\"phone_btn\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"					</table>\r\n" + 
+						"				</div>\r\n" + 
+						"				<div class=\"modifyprofile_div\">\r\n" + 
+						"					<table>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<label>이메일 수정</label>\r\n" + 
+						"							</td>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"text\" id=\"email\">@\r\n" + 
+						"								<input type=\"text\" id=\"e_address\" readonly>\r\n" + 
+						"								<select id=\"e_select\">\r\n" + 
+						"									<option value=\"naver.com\">naver.com</option>\r\n" + 
+						"									<option value=\"google.com\">google.com</option>\r\n" + 
+						"									<option value=\"dir\">직접입력</option>\r\n" + 
+						"								</select>\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+						"								<input type=\"button\" value=\"이메일 수정\" id=\"email_btn\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"					</table>\r\n" + 
+						"				</div>\r\n" + 
+						"				<div class=\"modifyprofile_div\">\r\n" + 
+						"					<table>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<label>생년월일 수정</label>\r\n" + 
+						"							</td>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"date\" id=\"birth\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
+						"								<input type=\"button\" value=\"생년월일 수정\" id=\"birth_btn\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"					</table>\r\n" + 
+						"				</div>\r\n" + 
+						"				<div class=\"modifyprofile_div\" id=\"des_div\">\r\n" + 
+						"					<table>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<label>배송지 설정</label>\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<select id=\"des_select\">\r\n" + 
+						"									<option value=\"new\">새로운 배송지</option>\r\n" + 
+						"								</select>\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"text\" id=\"des_label\" placeholder=\"배송지 이름\" required>\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"text\" id=\"des_name\" placeholder=\"이름\" required>\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"text\" id=\"des_address\" placeholder=\"배송지 주소\" required>\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"text\" id=\"des_phone\" placeholder=\"연락처\" required>\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"text\" id=\"des_memo\" placeholder=\"메모\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"						<tr>\r\n" + 
+						"							<td>\r\n" + 
+						"								<input type=\"button\" id=\"des_add_btn\" value=\"추가\">\r\n" + 
+						"								<input type=\"button\" id=\"des_modify_btn\" value=\"수정\">\r\n" + 
+						"								<input type=\"button\" id=\"des_remove_btn\" value=\"삭제\">\r\n" + 
+						"							</td>\r\n" + 
+						"						</tr>\r\n" + 
+						"					</table>\r\n" + 
+						"				</div>\r\n"+
+						"				<div id=\"user_delete_btn\">회원탈퇴\r\n"+
+						"				</div>\r\n"+
+						"			</div>\r\n"+
+						"		</div>\r\n"+
+						"		<div id='footer'></div>\r\n"+
+						"	</div>\r\n"+
+						"	<div id=\"chat_btn\">💬</div>\r\n" + 
+						"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
+						"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
+						"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
+						"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
+						"    <script src=\"../resources/js/url_modifyprofile.js\"></script>\r\n"+
+						"</body>\r\n"+
+						"</html>");
+				bw.close();
+
+			}else {
+				System.out.println("modifyprofile File already exists");
+			}
+			
 			// 페이지 생성 시 쇼핑몰 옵션 선택
 			if(opt.equals("shopping")) {
 				if(product.createNewFile()) {
@@ -1688,279 +1970,6 @@ public class EWBController {
 					System.out.println("ordermanagement File already exists");
 				}
 				
-				if(mypage.createNewFile()) {
-					System.out.println("mypage File created");
-					FileWriter fw = new FileWriter(mypage);
-					BufferedWriter bw = new BufferedWriter(fw);
-					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
-							"    pageEncoding=\"UTF-8\"%>\r\n" + 
-							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
-							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
-							"<!DOCTYPE html>\r\n" + 
-							"<html>\r\n" + 
-							"<head>\r\n" + 
-							"    <meta charset=\"UTF-8\">\r\n" + 
-							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
-							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" ${"+url+"_userId} mypage</title>\r\n" + 
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
-							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
-							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
-							"    <link\r\n" + 
-							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">\r\n"+
-							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
-							"</head>\r\n" + 
-							"<body>\r\n" + 
-							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
-							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
-							"	<div id='mypage_entry'>\r\n"+
-							"		<div id='header'></div>\r\n"+
-							"		<div id='mypage_content'>\r\n"+
-							"			<table id='mypage_table'>\r\n"+
-							"				<tr>\r\n"+
-							"					<td>\r\n"+
-							"						<a href='/${url}/modifyprofile'>정보수정</a>\r\n"+
-							"					</td>\r\n"+
-							"					<td>\r\n"+
-							"						<a href='/${url}/cart'>장바구니</a>\r\n"+
-							"					</td>\r\n"+
-							"					<td>\r\n"+
-							"						<a href='/${url}/orderlist'>주문내역</a>\r\n"+
-							"					</td>\r\n"+
-							"				</tr>\r\n"+
-							"			</table>\r\n"+
-							"		</div>\r\n"+
-							"		<div id='footer'></div>\r\n"+
-							"	</div>\r\n"+
-							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
-							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
-							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
-							"    <script src=\"../resources/js/url_mypage.js\"></script>\r\n"+
-							"</body>\r\n"+
-							"</html>");
-					bw.close();
-
-				}else {
-					System.out.println("mypage File already exists");
-				}
-				
-				if(modifyprofile.createNewFile()) {
-					System.out.println("modifyprofile File created");
-					FileWriter fw = new FileWriter(modifyprofile);
-					BufferedWriter bw = new BufferedWriter(fw);
-					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
-							"    pageEncoding=\"UTF-8\"%>\r\n" + 
-							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
-							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
-							"<!DOCTYPE html>\r\n" + 
-							"<html>\r\n" + 
-							"<head>\r\n" + 
-							"    <meta charset=\"UTF-8\">\r\n" + 
-							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
-							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" ${"+url+"_userId} modify profile</title>\r\n" + 
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_modifyprofile.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
-							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
-							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
-							"    <link\r\n" + 
-							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">\r\n"+
-							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
-							"</head>\r\n" + 
-							"<body>\r\n" + 
-							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
-							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
-							"	<div id='modifyprofile_entry'>\r\n"+
-							"		<div id=\"reg_info\"></div>\r\n"+
-							"		<div id='header'></div>\r\n"+
-							"		<div id='modifyprofile_content'>\r\n"+
-							"			<div id=\"modifyprofile_div\">\r\n" + 
-							"				<div class=\"modifyprofile_div\">\r\n" + 
-							"					<table>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<label>비밀번호 수정</label>\r\n" + 
-							"							</td>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"password\" id=\"pw\"><span style=\"position:absolute\" class=\"pw\"></span>\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<label>비밀번호 수정 확인</label>\r\n" + 
-							"							</td>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"password\" id=\"pwc\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
-							"								<input type=\"button\" value=\"비밀번호 수정\" id=\"pw_btn\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"					</table>\r\n" + 
-							"				</div>\r\n" + 
-							"				<div class=\"modifyprofile_div\">\r\n" + 
-							"					<table>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<label>이름 수정</label>\r\n" + 
-							"							</td>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"text\" id=\"name\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
-							"								<input type=\"button\" value=\"이름 수정\" id=\"name_btn\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"					</table>\r\n" + 
-							"				</div>\r\n" + 
-							"				<div class=\"modifyprofile_div\">\r\n" + 
-							"					<table>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<label>전화번호 수정</label>\r\n" + 
-							"							</td>\r\n" + 
-							"							<td>\r\n" + 
-							"								<select id=\"f_phone\">\r\n" + 
-							"									<option value=\"010\">010</option>\r\n" + 
-							"									<option value=\"011\">011</option>\r\n" + 
-							"									<option value=\"016\">016</option>\r\n" + 
-							"									<option value=\"017\">017</option>\r\n" + 
-							"									<option value=\"018\">018</option>\r\n" + 
-							"									<option value=\"019\">019</option>\r\n" + 
-							"								</select>\r\n" + 
-							"								<input type=\"text\" id=\"phone\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
-							"								<input type=\"button\" value=\"번호 수정\" id=\"phone_btn\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"					</table>\r\n" + 
-							"				</div>\r\n" + 
-							"				<div class=\"modifyprofile_div\">\r\n" + 
-							"					<table>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<label>이메일 수정</label>\r\n" + 
-							"							</td>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"text\" id=\"email\">@\r\n" + 
-							"								<input type=\"text\" id=\"e_address\" readonly>\r\n" + 
-							"								<select id=\"e_select\">\r\n" + 
-							"									<option value=\"naver.com\">naver.com</option>\r\n" + 
-							"									<option value=\"google.com\">google.com</option>\r\n" + 
-							"									<option value=\"dir\">직접입력</option>\r\n" + 
-							"								</select>\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
-							"								<input type=\"button\" value=\"이메일 수정\" id=\"email_btn\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"					</table>\r\n" + 
-							"				</div>\r\n" + 
-							"				<div class=\"modifyprofile_div\">\r\n" + 
-							"					<table>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<label>생년월일 수정</label>\r\n" + 
-							"							</td>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"date\" id=\"birth\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td colspan=\"2\" class=\"td_btn\">\r\n" + 
-							"								<input type=\"button\" value=\"생년월일 수정\" id=\"birth_btn\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"					</table>\r\n" + 
-							"				</div>\r\n" + 
-							"				<div class=\"modifyprofile_div\">\r\n" + 
-							"					<table>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<label>배송지 설정</label>\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<select id=\"des_select\">\r\n" + 
-							"									<option value=\"new\">새로운 배송지</option>\r\n" + 
-							"								</select>\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"text\" id=\"des_label\" placeholder=\"배송지 이름\" required>\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"text\" id=\"des_name\" placeholder=\"이름\" required>\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"text\" id=\"des_address\" placeholder=\"배송지 주소\" required>\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"text\" id=\"des_phone\" placeholder=\"연락처\" required>\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"text\" id=\"des_memo\" placeholder=\"메모\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"						<tr>\r\n" + 
-							"							<td>\r\n" + 
-							"								<input type=\"button\" id=\"des_add_btn\" value=\"추가\">\r\n" + 
-							"								<input type=\"button\" id=\"des_modify_btn\" value=\"수정\">\r\n" + 
-							"								<input type=\"button\" id=\"des_remove_btn\" value=\"삭제\">\r\n" + 
-							"							</td>\r\n" + 
-							"						</tr>\r\n" + 
-							"					</table>\r\n" + 
-							"				</div>"+
-							"			</div>"+
-							"		</div>\r\n"+
-							"		<div id='footer'></div>\r\n"+
-							"	</div>\r\n"+
-							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
-							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
-							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
-							"    <script src=\"../resources/js/url_modifyprofile.js\"></script>\r\n"+
-							"</body>\r\n"+
-							"</html>");
-					bw.close();
-
-				}else {
-					System.out.println("modifyprofile File already exists");
-				}
-				
 			}else if(opt.equals("community")) {
 				if(board.createNewFile()) {
 					System.out.println("board File created");
@@ -2408,70 +2417,6 @@ public class EWBController {
 					
 				}else {
 					System.out.println("modifyboard File already exists");
-				}
-				
-				if(mypage.createNewFile()) {
-					System.out.println("mypage File created");
-					FileWriter fw = new FileWriter(mypage);
-					BufferedWriter bw = new BufferedWriter(fw);
-					bw.write("<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n" + 
-							"    pageEncoding=\"UTF-8\"%>\r\n" + 
-							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>      \r\n" +
-							"<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n"+
-							"<!DOCTYPE html>\r\n" + 
-							"<html>\r\n" + 
-							"<head>\r\n" + 
-							"    <meta charset=\"UTF-8\">\r\n" + 
-							"    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
-							"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + 
-							"    <title>"+url+" ${"+url+"_userId} mypage</title>\r\n" + 
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_mypage.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/css/url_home.css\">\r\n" +
-							"    <link rel=\"stylesheet\" href=\"../resources/color_picker/jquery.minicolors.css\">\r\n" +
-							"	 <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n" + 
-							"    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n" + 
-							"    <link\r\n" + 
-							"        href=\"https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR&family=Poor+Story&display=swap\"\r\n" + 
-							"        rel=\"stylesheet\">\r\n"+
-							"	<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0\" />\r\n"+
-							"</head>\r\n" + 
-							"<body>\r\n" + 
-							"<input type='hidden' value='${userInfo.admin}' id='admin'>\r\n"+
-							"<input type='hidden' value='"+url+"' id='url'>\r\n"+
-							"<input type='hidden' value='"+opt+"' id='opt'>\r\n"+
-							"<input type='hidden' value='${ewbUser.id}' id='ewb_id'>\r\n"+
-							"<input type='hidden' value='${"+url+"_userId}' id='user_id'>\r\n"+
-							"	<div id='mypage_entry'>\r\n"+
-							"		<div id='header'></div>\r\n"+
-							"		<div id='mypage_content'>\r\n"+
-							"			<table id='mypage_table'>\r\n"+
-							"				<tr>\r\n"+
-							"					<td>\r\n"+
-							"						<a href='/${url}/modifyprofile'>정보수정</a>\r\n"+
-							"					</td>\r\n"+
-							"					<td>\r\n"+
-							"						<a href='/${url}/checkwrite'>작성 글 보기</a>\r\n"+
-							"					</td>\r\n"+
-							"					<td>\r\n"+
-							"						<a href='/${url}/checkreply'>작성 댓글 보기</a>\r\n"+
-							"					</td>\r\n"+
-							"				</tr>\r\n"+
-							"			</table>\r\n"+
-							"		</div>\r\n"+
-							"		<div id='footer'></div>\r\n"+
-							"	</div>\r\n"+
-							"	<div id=\"chat_btn\">💬</div>\r\n" + 
-							"	<iframe id=\"if\"	width=\"400\" height=\"500\" src=\"http://localhost:8080/chat?chat_url=${url}&id=${"+url+"_userId}\"></iframe>\r\n" + 
-							"    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n" + 
-							"    <script src=\"../resources/color_picker/jquery.minicolors.js\"></script>\r\n" + 
-							"	<script src=\"../resources/js/url_chat.js\"></script>\r\n"+
-							"    <script src=\"../resources/js/url_mypage.js\"></script>\r\n"+
-							"</body>\r\n"+
-							"</html>");
-					bw.close();
-
-				}else {
-					System.out.println("mypage File already exists");
 				}
 				
 				if(checkwrite.createNewFile()) {

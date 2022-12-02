@@ -12,6 +12,13 @@ if(userId == ""){
 	location.href=`/${url}/login`;
 }
 
+const opt = $("#opt").val()
+if(opt == "shopping"){
+	$(".comm").toggle();
+}else{
+	$(".prod").toggle();
+}
+
 function getHF() {
 	$.getJSON("/loadcontent",{type:"header",url},function(res){
 		$("#header").html(res.content);
