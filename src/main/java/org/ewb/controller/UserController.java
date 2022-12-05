@@ -1,5 +1,8 @@
 package org.ewb.controller;
 
+import java.io.Console;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -140,6 +143,12 @@ public class UserController {
 	
 	@RequestMapping(value = "/loaddes1", method = RequestMethod.GET)
 	public ResponseEntity<DestinationVO> loadDes1(DestinationVO dvo) {
+		try {
+			dvo.setLabel(URLDecoder.decode(dvo.getLabel(),"UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		System.out.println(dvo);
 		return new ResponseEntity<>(us.loadDes1(dvo),HttpStatus.OK);
 	}
 	

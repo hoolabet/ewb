@@ -298,7 +298,7 @@ $("#des_remove_btn").on("click", function() {
 		return false;
 	}
 	const dData = {
-			id,url,
+			id:userId,url,
 			label:$("#des_label").val()
 	}
 	$.ajax({
@@ -313,37 +313,36 @@ $("#des_remove_btn").on("click", function() {
 })
 
 if(opt == "shopping"){
-
-
-
 	$.getJSON("/loaddes",{url,id:userId}, function(res) {
 		res.forEach(function(r) {
 			const option = `<option value="${r.label}">${r.label}</option>`;
 			$("#des_select").append(option);
 		})
 	})
-
-	$("#des_select").on("change", function() {
-		const label = $(this).val();
-		if(label == "new"){
-			$("#des_label").val("");
-			$("#des_name").val("");
-			$("#des_address").val("");
-			$("#des_phone").val("");
-			$("#des_memo").val("");
-			return false;
-		}
-		$.getJSON("/loaddes1",{url,id:userId,label}, function(res) {
-			$("#des_label").val(res.label);
-			$("#des_name").val(res.name);
-			$("#des_address").val(res.address);
-			$("#des_phone").val(res.phone);
-			$("#des_memo").val(res.memo);
-		})
-
-	})
-
 }
+$("#des_select").on("change", function() {
+	const label = $(this).val();
+	if(label == "new"){
+		$("#des_label").val("");
+		$("#des_name").val("");
+		$("#des_address").val("");
+		$("#des_phone").val("");
+		$("#des_memo").val("");
+		return false;
+	}
+	$.getJSON("/loaddes1",{url,id:userId,label:encodeURIComponent(label)}, function(res) {
+		$("#des_label").val(res.label);
+		$("#des_name").val(res.name);
+		$("#des_address").val(res.address);
+		$("#des_phone").val(res.phone);
+		$("#des_memo").val(res.memo);
+	})
+	.fail(function() {
+		console.log("실패")
+	})
+})
+
+
 $("#user_delete_btn").on("click", function() {
 	if(prompt(`계정을 삭제하시겠습니까? \n"삭제한다/${userId}"`) ==`삭제한다/${userId}`){
 		$.ajax({

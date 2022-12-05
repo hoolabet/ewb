@@ -5,9 +5,10 @@ let url = $("#url").val();
 if(url == ""){
 	url = location.href.split("/")[3]
 }
+const ewbId = $("#ewb_id").val();
 const id = $("#user_id").val();
 const userId = id;
-if(id == ""){
+if(id == "" || ewbId == ""){
 	alert("로그인이 필요합니다.");
 	location.href=`/${url}/login`;
 }

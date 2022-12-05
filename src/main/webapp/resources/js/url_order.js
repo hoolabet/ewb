@@ -180,7 +180,7 @@ $("#des_select").on("change", function() {
 		$("#memo").val("");
 		return false;
 	}
-	$.getJSON("/loaddes1",{url,id,label}, function(res) {
+	$.getJSON("/loaddes1",{url,id,label:encodeURIComponent(label)}, function(res) {
 		$("#label").val(res.label);
 		$("#name").val(res.name);
 		$("#address").val(res.address);

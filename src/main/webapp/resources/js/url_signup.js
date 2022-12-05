@@ -75,6 +75,7 @@ function pageLoad(){
 		if(ewbId == ""){
 			$("#sign_img").css("display","none");
 			$("#btns").css("display","none");
+			$(".tr_remove").css("display","none");
 		}
 	})
 	.fail(function() {
