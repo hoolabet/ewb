@@ -74,7 +74,7 @@ function getHF() {
 				$(`#li_a_${target}_${ndnow}`).on("click", function(e) {
 					e.preventDefault();
 					$.getJSON("/logout",0,function(){
-						console.log("haha");
+						
 						$(`#li_a_${target}_${ndnow}`).attr("href",`/${url}/login`);
 						$(`#li_span_${target}_${ndnow}`).html("log in");
 						$(`#li_span_${target}_${ndnow}_modi`).html("log in");

@@ -227,6 +227,7 @@ function loadFunc() {
 			location.href = `/${url}/home`;
 		})
 		.fail(function() {
+			alert("아이디와 비밀번호를 다시 확인하세요.");
 			$("#input_id").val("");
 			$("#input_pw").val("");
 		})
